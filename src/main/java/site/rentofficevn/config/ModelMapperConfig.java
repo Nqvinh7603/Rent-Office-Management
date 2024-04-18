@@ -6,7 +6,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ComponentScan(basePackages = "com.laptrinhjavaweb")
+@ComponentScan(basePackages = "site.rentofficevn")
 public class ModelMapperConfig {
     @Bean
     public ModelMapper modelMapper(){

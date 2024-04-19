@@ -5,6 +5,15 @@ public class BuildingDTO {
     private String street;
     private String ward;
     private Integer floorArea;
+    private Integer numberOfBasement;
+
+    public Integer getNumberOfBasement() {
+        return numberOfBasement;
+    }
+
+    public void setNumberOfBasement(Integer numberOfBasement) {
+        this.numberOfBasement = numberOfBasement;
+    }
 
     public Integer getFloorArea() {
         return floorArea;
@@ -38,4 +47,3 @@ public class BuildingDTO {
         this.ward = ward;
     }
 }
-

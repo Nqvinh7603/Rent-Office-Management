@@ -1,7 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/common/taglib.jsp" %>
 <c:url var="buildingListURL" value="/admin/building-list"/>
-
 <html>
 <head>
     <title>Danh sách tòa nhà</title>
@@ -110,7 +109,7 @@
                                                 <div>
                                                     <label for="name" style="font-weight: bold; color: black;">Số tầng
                                                         hầm</label>
-                                                    <input type="text" id="numberOfBasement" class="form-control"/><br>
+                                                    <input type="number" id="numberOfBasement" class="form-control"/><br>
                                                 </div>
                                             </div>
 
@@ -247,6 +246,7 @@
                             <tr>
                                 <th></th>
                                 <th>Tên sản phẩm</th>
+                                <th>Số tầng hầm</th>
                                 <th>Địa chỉ</th>
                                 <th>Tên quản lí</th>
                                 <th>Số điện thoại</th>
@@ -258,9 +258,11 @@
                             </thead>
 
                             <tbody>
+                            <c:forEach var="item" items="${buildings}">
                             <tr>
                                 <td><input type="checkbox" value="1" id="checkbox_1"></td>
-                                <td>Building Tower</td>
+                                <td>${item.name}</td>
+                                <td>${item.numberOfBasement}</td>
                                 <td>Quận Tân Bình</td>
                                 <td>a Vinh</td>
                                 <td>0123456789</td>
@@ -274,6 +276,7 @@
                                     </button>
                                 </td>
                             </tr>
+                            </c:forEach>
                             </tbody>
                         </table>
                     </div>

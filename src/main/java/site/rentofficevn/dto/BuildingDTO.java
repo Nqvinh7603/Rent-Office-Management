@@ -4,6 +4,15 @@ public class BuildingDTO {
     private String name;
     private String street;
     private String ward;
+    private Integer floorArea;
+
+    public Integer getFloorArea() {
+        return floorArea;
+    }
+
+    public void setFloorArea(Integer floorArea) {
+        this.floorArea = floorArea;
+    }
 
     public String getName() {
         return name;
@@ -29,3 +38,4 @@ public class BuildingDTO {
         this.ward = ward;
     }
 }
+

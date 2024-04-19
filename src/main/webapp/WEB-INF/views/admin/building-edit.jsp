@@ -1,14 +1,8 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Admin
-  Date: 29/03/2024
-  Time: 9:14 SA
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@include file="/common/taglib.jsp" %>
 <html>
 <head>
-    <title>Chỉnh sửa thông tin tòa nhà </title>
+    <title>Chỉnh sửa tòa nhà</title>
 </head>
 <body>
 <div class="main-content">
@@ -32,24 +26,14 @@
                 <div class="col-xs-12">
                     <form class="form-horizontal" role="form" id="formEdit">
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="name"> Tên tòa nhà </label>
+                            <label class="col-sm-2 control-label no-padding-right" for="name"> Tên tòa nhà </label>
                             <div class="col-sm-9">
                                 <input type="text" id="name" class="form-control" name="name" value=""/>
                             </div>
                         </div>
+
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="">Quận hiện có</label>
-                            <div class="col-sm-2">
-                                <select class="form-control" name="district" aria-label="Default select example">
-                                    <option selected>--Chọn quận--</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for=""> Phường </label>
+                            <label class="col-sm-2 control-label no-padding-right" for=""> Phường </label>
                             <div class="col-sm-9">
                                 <input type="number" id="ff" class="form-control" name="ward" />
                             </div>
@@ -57,49 +41,49 @@
 
 
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="" > Đường </label>
+                            <label class="col-sm-2 control-label no-padding-right" for="" > Đường </label>
                             <div class="col-sm-9">
-                                <input type="text" id="o" class="form-control" name="street" />
+                                <input type="number" id="o" class="form-control" name="street" />
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for=""> Kết cấu </label>
+                            <label class="col-sm-2 control-label no-padding-right" for=""> Kết cấu </label>
                             <div class="col-sm-9">
-                                <input type="text" id="n" class="form-control" name="" />
+                                <input type="number" id="n" class="form-control" name="" />
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="numberOfBasement"> Số tầng hầm </label>
+                            <label class="col-sm-2 control-label no-padding-right" for="numberOfBasement"> Số tầng hầm </label>
                             <div class="col-sm-9">
                                 <input type="number" id="numberOfBasement" class="form-control" name="numberOfBasement" value="" />
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for=""> Diện tích sàn </label>
+                            <label class="col-sm-2 control-label no-padding-right" for=""> Diện tích sàn </label>
                             <div class="col-sm-9">
                                 <input type="number" id="m" class="form-control" name="" />
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for=""> Hướng </label>
+                            <label class="col-sm-2 control-label no-padding-right" for=""> Hướng </label>
                             <div class="col-sm-9">
                                 <input type="text" id="l" class="form-control" name="" />
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for=""> Hạng </label>
+                            <label class="col-sm-2 control-label no-padding-right" for=""> Hạng </label>
                             <div class="col-sm-9">
                                 <input type="text" id="k" class="form-control" name="" />
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for=""> Diện tích thuê </label>
+                            <label class="col-sm-2 control-label no-padding-right" for=""> Diện tích thuê </label>
                             <div class="col-sm-9">
                                 <input type="number" id="h" class="form-control" name="" />
                             </div>
@@ -107,78 +91,65 @@
 
 
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for=""> Mô tả diện tích </label>
+                            <label class="col-sm-2 control-label no-padding-right" for=""> Mô tả diện tích </label>
                             <div class="col-sm-9">
                                 <input type="text" id="g" class="form-control" name="" />
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for=""> Gía thuê </label>
+                            <label class="col-sm-2 control-label no-padding-right" for=""> Gía thuê </label>
                             <div class="col-sm-9">
                                 <input type="number" id="f" class="form-control" name=""  />
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for=""> Mô tả giá </label>
+                            <label class="col-sm-2 control-label no-padding-right" for=""> Mô tả giá </label>
                             <div class="col-sm-9">
                                 <input type="text" id="e" class="form-control"  name="" />
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for=""> Phí dịch vụ </label>
+                            <label class="col-sm-2 control-label no-padding-right" for=""> Phí dịch vụ </label>
                             <div class="col-sm-9">
                                 <input type="number" id="d" class="form-control" name=""  />
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for=""> Phí ngoài giờ </label>
+                            <label class="col-sm-2 control-label no-padding-right" for=""> Phí ngoài giờ </label>
                             <div class="col-sm-9">
                                 <input type="number" id="c" class="form-control" name=""  />
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for=""> Tiền điện </label>
+                            <label class="col-sm-2 control-label no-padding-right" for=""> Tiền điện </label>
                             <div class="col-sm-9">
                                 <input type="number" id="b" class="form-control" name="" />
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for=""> Phí dịch vụ </label>
+                            <label class="col-sm-2 control-label no-padding-right" for=""> Phí dịch vụ </label>
                             <div class="col-sm-9">
                                 <input type="number" id="a" class="form-control" name="" />
                             </div>
                         </div>
+
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="buildingTypes" > Loại tòa nhà </label>
-                            <div class="col-sm-9">
-                                <label class="checkbox-inline">
-                                    <input type="checkbox" value="TANG_TRET" id="buildingTypes1" name=""  >Tầng trệt
-                                </label>
-                                <label class="checkbox-inline">
-                                    <input type="checkbox" value="NGUYEN_CAN" id="buildingTypes2" name=""  >Nguyên căn
-                                </label>
-                                <label class="checkbox-inline">
-                                    <input type="checkbox" value="NOI_THAT" id="buildingTypes3" name="" >Nội thất
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for=""> Ghi chú </label>
+                            <label class="col-sm-2 control-label no-padding-right" for=""> Ghi chú </label>
                             <div class="col-sm-9">
                                 <textarea class="form-control" id="" rows="6" name=""  ></textarea>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <div class="col-sm-offset-3 col-sm-9">
-                                <button type="button" class="btn btn-primary" id="btnAddBuilding" name="" >Thêm tòa nhà</button>
-                                <button type="button" class="btn btn-danger" id="btnRemove" name="" >Xóa</button>
+                            <div class="col-sm-offset-2 col-sm-9">
+                                <button type="button" class="btn btn-primary" id="btnAddBuilding" name="" >Add Building</button>
+                                <button type="button" class="btn btn-danger" id="btnRemove" name="" >Remove</button>
                             </div>
                         </div>
                     </form>
@@ -224,7 +195,6 @@
         });
     });
 </script>
+
 </body>
 </html>
-
-

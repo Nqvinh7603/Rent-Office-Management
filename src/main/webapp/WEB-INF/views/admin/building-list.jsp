@@ -1,17 +1,25 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Admin
-  Date: 29/03/2024
-  Time: 9:13 SA
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@include file="/common/taglib.jsp" %>
+<c:url var="buildingListURL" value="/admin/building-list"/>
+
 <html>
 <head>
     <title>Danh sách tòa nhà</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .main-content-inner,
+        .widget-title,
+        .widget-body,
+        label,
+        .btn {
+            font-family: Arial, sans-serif;
+        }
+    </style>
 </head>
 <body>
-
 <div class="main-content">
     <div class="main-content-inner">
         <div class="breadcrumbs" id="breadcrumbs">
@@ -21,7 +29,6 @@
                 } catch (e) {
                 }
             </script>
-
             <ul class="breadcrumb">
                 <li>
                     <i class="ace-icon fa fa-home home-icon"></i>
@@ -44,166 +51,172 @@
 
                         <div class="widget-body">
                             <div class="widget-main">
-                                <div class="row">
-                                    <div class="col-xs-12">
-                                        <!-- PAGE CONTENT BEGINS -->
-                                        <div class="col-sm-6">
-                                            <div>
-                                                <label for="name">Tên tòa nhà</label>
-                                                <input type="text" id="name" class="form-control"/>
+                                <form:form modelAttribute="modelSearch" action="${buildingListURL}" id="listForm"
+                                           method="GET">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <!-- PAGE CONTENT BEGINS -->
+                                            <div class="col-sm-6">
+                                                <div>
+                                                    <label for="name" style="font-weight: bold; color: black;">Tên tòa
+                                                        nhà</label>
+                                                        <%--<input type="text" id="name" class="form-control" name="name" value="${modelSearch.name}"/>--%>
+                                                    <!-- name="name" hỗ trợ việc chúng ta tìm kiếm, gửi dữ liệu từ client về server thì nó nhận ra đc  -->
+                                                    <form:input path="name" cssClass="form-control"/><br>
+                                                </div>
                                             </div>
-                                            <br>
-                                        </div>
 
-
-                                        <div class="col-sm-6">
-                                            <div>
-                                                <label for="name">Diện tích sàn</label>
-                                                <input type="number" id="areaRent" class="form-control"/>
+                                            <div class="col-sm-6">
+                                                <div>
+                                                    <label for="name" style="font-weight: bold; color: black;">Diện tích
+                                                        sàn</label>
+                                                    <input type="number" id="floorArea" name="floorArea"
+                                                           value="${modelSearch.floorArea}" class="form-control"/><br>
+                                                        <%-- type="number" -> dùng kiểu bình thường --%>
+                                                </div>
                                             </div>
-                                            <br>
-                                        </div>
 
-
-                                        <div class="col-sm-4">
-                                            <div>
-                                                <label for="name">Quận hiện có</label>
-                                                <select class="form-control" aria-label="Default select example">
-                                                    <option selected>--Chọn quận--</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                </select>
+                                            <div class="col-sm-2">
+                                                <div>
+                                                    <label for="name" style="font-weight: bold; color: black;">Quận hiện
+                                                        có</label>
+                                                    <select class="form-control" aria-label="Default select example">
+                                                        <option selected>--Chọn quận--</option>
+                                                        <option value="Q1">Quận 1</option>
+                                                        <option value="Q2">Quận 2</option>
+                                                        <option value="Q4">Quận 4</option>
+                                                    </select><br>
+                                                        <%--<form:select ></form:select>--%>
+                                                </div>
                                             </div>
-                                            <br>
-                                        </div>
 
-                                        <div class="col-sm-4">
-                                            <div>
-                                                <label for="name">Phường</label>
-                                                <input type="text" id="ward" class="form-control"/>
+                                            <div class="col-sm-5">
+                                                <div>
+                                                    <label for="ward"
+                                                           style="font-weight: bold; color: black;">Phường</label>
+                                                    <form:input path="ward" cssClass="form-control"/><br>
+                                                </div>
                                             </div>
-                                            <br>
-                                        </div>
 
-                                        <div class="col-sm-4">
-                                            <div>
-                                                <label for="name">Đường</label>
-                                                <input type="text" id="street" class="form-control"/>
+                                            <div class="col-sm-5">
+                                                <div>
+                                                    <label for="street"
+                                                           style="font-weight: bold; color: black;">Đường</label>
+                                                    <form:input path="street" cssClass="form-control"/><br>
+                                                </div>
                                             </div>
-                                            <br>
-                                        </div>
 
-                                        <div class="col-sm-4">
-                                            <div>
-                                                <label for="name">Số tầng hầm</label>
-                                                <input type="text" id="numberOfBasement" class="form-control"/>
+                                            <div class="col-sm-4">
+                                                <div>
+                                                    <label for="name" style="font-weight: bold; color: black;">Số tầng
+                                                        hầm</label>
+                                                    <input type="text" id="numberOfBasement" class="form-control"/><br>
+                                                </div>
                                             </div>
-                                            <br>
-                                        </div>
 
-                                        <div class="col-sm-4">
-                                            <div>
-                                                <label for="name">Hướng</label>
-                                                <input type="text" id="direction" class="form-control"/>
+                                            <div class="col-sm-4">
+                                                <div>
+                                                    <label for="name"
+                                                           style="font-weight: bold; color: black;">Hướng</label>
+                                                    <input type="text" id="direction" class="form-control"/><br>
+                                                </div>
                                             </div>
-                                            <br>
-                                        </div>
 
-                                        <div class="col-sm-4">
-                                            <div>
-                                                <label for="name">Hạng</label>
-                                                <input type="text" id="level" class="form-control"/>
+                                            <div class="col-sm-4">
+                                                <div>
+                                                    <label for="name"
+                                                           style="font-weight: bold; color: black;">Hạng</label>
+                                                    <input type="text" id="level" class="form-control"/><br>
+                                                </div>
                                             </div>
-                                            <br>
-                                        </div>
 
-                                        <div class="col-sm-3">
-                                            <div>
-                                                <label for="name">Diện tích từ</label>
-                                                <input type="text" id="areaRentFrom" class="form-control"/>
+                                            <div class="col-sm-3">
+                                                <div>
+                                                    <label for="name" style="font-weight: bold; color: black;">Diện tích
+                                                        từ</label>
+                                                    <input type="text" id="areaRentFrom" class="form-control"/><br>
+                                                </div>
                                             </div>
-                                            <br>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <div>
-                                                <label for="name">Diện tích đến</label>
-                                                <input type="text" id="areaRentTo" class="form-control"/>
+                                            <div class="col-sm-3">
+                                                <div>
+                                                    <label for="name" style="font-weight: bold; color: black;">Diện tích
+                                                        đến</label>
+                                                    <input type="text" id="areaRentTo" class="form-control"/><br>
+                                                </div>
                                             </div>
-                                            <br>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <div>
-                                                <label for="name">Gía thuê từ</label>
-                                                <input type="text" id="costRentFrom" class="form-control"/>
+                                            <div class="col-sm-3">
+                                                <div>
+                                                    <label for="name" style="font-weight: bold; color: black;">Gía thuê
+                                                        từ</label>
+                                                    <input type="text" id="costRentFrom" class="form-control"/><br>
+                                                </div>
                                             </div>
-                                            <br>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <div>
-                                                <label for="name">Gía thuê đến</label>
-                                                <input type="text" id="costRentTo" class="form-control"/>
+                                            <div class="col-sm-3">
+                                                <div>
+                                                    <label for="name" style="font-weight: bold; color: black;">Gía thuê
+                                                        đến</label>
+                                                    <input type="text" id="costRentTo" class="form-control"/><br>
+                                                </div>
                                             </div>
-                                            <br>
-                                        </div>
 
-                                        <div class="col-sm-4">
-                                            <div>
-                                                <label for="name">Tên quản lí</label>
-                                                <input type="text" id="nameManage" class="form-control"/>
+                                            <div class="col-sm-4">
+                                                <div>
+                                                    <label for="name" style="font-weight: bold; color: black;">Tên quản
+                                                        lí</label>
+                                                    <input type="text" id="nameManage" class="form-control"/><br>
+                                                </div>
                                             </div>
-                                            <br>
-                                        </div>
 
-                                        <div class="col-sm-4">
-                                            <div>
-                                                <label for="name">Điện thoại quản lý</label>
-                                                <input type="text" id="phoneManage" class="form-control"/>
+                                            <div class="col-sm-4">
+                                                <div>
+                                                    <label for="name" style="font-weight: bold; color: black;">Điện
+                                                        thoại quản lý</label>
+                                                    <input type="text" id="phoneManage" class="form-control"/><br>
+                                                </div>
                                             </div>
-                                            <br>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <div>
-                                                <label for="name">Chọn nhân viên quản lý</label>
-                                                <select class="form-control" id="staffId"
-                                                        aria-label="Default select example">
-                                                    <option selected>--Chọn nhân viên phụ trách--</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                </select>
+                                            <div class="col-sm-3">
+                                                <div>
+                                                    <label for="name" style="font-weight: bold; color: black;">Chọn nhân
+                                                        viên quản lý</label>
+                                                    <select class="form-control" id="staffId"
+                                                            aria-label="Default select example">
+                                                        <option selected>--Chọn nhân viên phụ trách--</option>
+                                                        <option value="1">One</option>
+                                                        <option value="2">Two</option>
+                                                        <option value="3">Three</option>
+                                                    </select><br>
+                                                </div>
                                             </div>
-                                            <br>
-                                        </div>
 
-                                        <div class="col-sm-3">
-                                            <input class="" type="checkbox" value="" id="checkbox1">
-                                            <label class="">
-                                                Tầng trệt
-                                            </label>
+                                            <div class="col-sm-3">
+                                                <input class="" type="checkbox" value="" id="checkbox1">
+                                                <label style="font-weight: bold; color: black;">
+                                                    Tầng trệt
+                                                </label>
 
-                                            <input class="" type="checkbox" value="" id="checkbox2" checked>
-                                            <label class="">
-                                                Nguyên căn
-                                            </label>
+                                                <input class="" type="checkbox" value="" id="checkbox2" checked>
+                                                <label style="font-weight: bold; color: black;">
+                                                    Nguyên căn
+                                                </label>
 
-                                            <input class="" type="checkbox" value="" id="checkbox3" checked>
-                                            <label class="">
-                                                Nội thất
-                                            </label>
-                                        </div>
+                                                <input class="" type="checkbox" value="" id="checkbox3" checked>
+                                                <label style="font-weight: bold; color: black;">
+                                                    Nội thất
+                                                </label>
+                                            </div>
 
 
-                                        <div class="col-sm-12">
-                                            <br>
-                                            <button type="button" class="btn btn-sm btn-success">
-                                                Tìm kiếm
-                                                <i class="ace-icon fa fa-arrow-right icon-on-right bigger-110"></i>
-                                            </button>
-                                        </div>
-                                        <!-- PAGE CONTENT ENDS -->
-                                    </div><!-- /.col -->
-                                </div>
+                                            <div class="col-sm-12">
+                                                <br>
+                                                <button type="button" id="btnSearch" class="btn btn-sm btn-success">
+                                                    Tìm kiếm
+                                                    <i class="ace-icon fa fa-arrow-right icon-on-right bigger-110"></i>
+                                                </button>
+                                            </div>
+                                            <!-- PAGE CONTENT ENDS -->
+                                        </div><!-- /.col -->
+                                    </div>
+                                </form:form>
                             </div>
                         </div>
                     </div>
@@ -248,20 +261,16 @@
                             <tr>
                                 <td><input type="checkbox" value="1" id="checkbox_1"></td>
                                 <td>Building Tower</td>
-                                <td>Quận 3</td>
+                                <td>Quận Tân Bình</td>
                                 <td>a Vinh</td>
                                 <td>0123456789</td>
                                 <td>150</td>
                                 <td>145</td>
                                 <td>45</td>
                                 <td>
-                                    <%--<button class="btn btn-xs" data-toggle="tooltip"
+                                    <button class="btn btn-xs" data-toggle="tooltip"
                                             title="Giao tòa nhà" onclick="assingmentBuilding(1)">
                                         <i class="fa fa-home" aria-hidden="true"></i>
-                                    </button>--%>
-                                    <button class="btn btn-primary btn-sm" data-toggle="tooltip"
-                                            title="Giao tòa nhà cho nhân viên quản lý" onclick="assignmentBuilding(1)">
-                                        <i class="fa fa-building" aria-hidden="true"></i>
                                     </button>
                                 </td>
                             </tr>
@@ -318,13 +327,13 @@
 </div>
 
 <script>
-    function assignmentBuilding(buildingId) {
-        openModalAssignmentBuilding();
+    function assingmentBuilding(buildingId) {
+        openModalAssingmentBuilding();
         $("#buildingId").val(buildingId);
         console.log($("#buildingId").val());
     }
 
-    function openModalAssignmentBuilding() {
+    function openModalAssingmentBuilding() {
         $('#assignmentBuildingModal').modal();
     }
 
@@ -350,12 +359,11 @@
             data: JSON.stringify(data),
             dataType: "json",
             contentType: "application/json",
-
             success: function (response) {
                 console.log('success');
             },
             error: function (response) {
-                console.log('faild')
+                console.log('failed')
                 console.log(response)
             }
         });
@@ -378,7 +386,6 @@
             data: JSON.stringify(data),
             dataType: "json",
             contentType: "application/json",
-
             success: function (response) {
                 console.log('success');
             },
@@ -388,8 +395,11 @@
             }
         });
     }
-</script>
 
+    $('#btnSearch').click(function (e) {
+        e.preventDefault();
+        $("#listForm").submit();
+    });
+</script>
 </body>
 </html>
-

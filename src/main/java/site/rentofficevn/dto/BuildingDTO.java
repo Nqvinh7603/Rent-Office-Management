@@ -6,6 +6,15 @@ public class BuildingDTO {
     private String ward;
     private Integer floorArea;
     private Integer numberOfBasement;
+    private Long staffId;
+
+    public Long getStaffId() {
+        return staffId;
+    }
+
+    public void setStaffId(Long staffId) {
+        this.staffId = staffId;
+    }
 
     public Integer getNumberOfBasement() {
         return numberOfBasement;

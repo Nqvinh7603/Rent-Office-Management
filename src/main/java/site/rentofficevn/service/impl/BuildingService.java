@@ -6,11 +6,12 @@ import org.springframework.transaction.annotation.Transactional;
 import site.rentofficevn.converter.BuildingConverter;
 import site.rentofficevn.dto.BuildingDTO;
 import site.rentofficevn.entity.BuildingEntity;
+import site.rentofficevn.entity.UserEntity;
 import site.rentofficevn.repository.BuildingRepository;
+import site.rentofficevn.repository.UserRepository;
 import site.rentofficevn.service.IBuildingService;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class BuildingService implements IBuildingService {
@@ -19,6 +20,9 @@ public class BuildingService implements IBuildingService {
 
     @Autowired
     BuildingConverter buildingConverter;
+
+    @Autowired
+    UserRepository userRepository;
 
     @Override
     public List<BuildingDTO> findAll() {

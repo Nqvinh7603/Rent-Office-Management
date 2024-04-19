@@ -175,7 +175,7 @@
                                             </div>
                                             <div class="col-sm-3">
                                                 <div>
-                                                    <label for="name" style="font-weight: bold; color: black;">Chọn nhân
+                                                    <%--<label for="name" style="font-weight: bold; color: black;">Chọn nhân
                                                         viên quản lý</label>
                                                     <select class="form-control" id="staffId"
                                                             aria-label="Default select example">
@@ -183,7 +183,14 @@
                                                         <option value="1">One</option>
                                                         <option value="2">Two</option>
                                                         <option value="3">Three</option>
-                                                    </select><br>
+                                                    </select>--%>
+                                                        <label for="name" style="font-weight: bold; color: black;">Chọn nhân
+                                                            viên quản lý</label>
+                                                    <form:select path="staffId" cssClass="form-control">
+                                                        <form:option value="-1" label="--Chọn nhân viên phụ trách--"/>
+                                                        <form:options items="${staffmaps}"/>
+                                                    </form:select>
+                                                    <br>
                                                 </div>
                                             </div>
 

@@ -28,7 +28,7 @@ public class BuildingController {
         return mav;
     }
 
-    @RequestMapping(value = "/admin/building-edit", method = RequestMethod.POST )
+    @RequestMapping(value = "/admin/building-edit", method = RequestMethod.GET)
     public ModelAndView buildingEdit() {
         ModelAndView mav = new ModelAndView("admin/building/edit");
         mav.addObject("buildingModel", new BuildingDTO());

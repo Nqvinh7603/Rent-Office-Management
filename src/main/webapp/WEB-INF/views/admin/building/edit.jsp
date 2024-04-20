@@ -190,7 +190,7 @@
 
         $.ajax({
             type: 'POST',
-            url: "http://localhost:8080 /api/building",
+            url: "http://localhost:8080/api/building",
             data: JSON.stringify(data),
             dataType: "json",
             contentType: "application/json",

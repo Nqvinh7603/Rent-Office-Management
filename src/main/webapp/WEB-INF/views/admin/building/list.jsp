@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/common/taglib.jsp" %>
 <c:url var="buildingListURL" value="/admin/building-list"/>
+<c:url var="loadStaffAPI" value="/api/building"/>
 <html>
 <head>
     <title>Danh sách tòa nhà</title>
@@ -109,7 +110,8 @@
                                                 <div>
                                                     <label for="name" style="font-weight: bold; color: black;">Số tầng
                                                         hầm</label>
-                                                    <input type="number" id="numberOfBasement" class="form-control"/><br>
+                                                    <input type="number" id="numberOfBasement"
+                                                           class="form-control"/><br>
                                                 </div>
                                             </div>
 
@@ -175,17 +177,8 @@
                                             </div>
                                             <div class="col-sm-3">
                                                 <div>
-                                                    <%--<label for="name" style="font-weight: bold; color: black;">Chọn nhân
+                                                    <label for="name" style="font-weight: bold; color: black;">Chọn nhân
                                                         viên quản lý</label>
-                                                    <select class="form-control" id="staffId"
-                                                            aria-label="Default select example">
-                                                        <option selected>--Chọn nhân viên phụ trách--</option>
-                                                        <option value="1">One</option>
-                                                        <option value="2">Two</option>
-                                                        <option value="3">Three</option>
-                                                    </select>--%>
-                                                        <label for="name" style="font-weight: bold; color: black;">Chọn nhân
-                                                            viên quản lý</label>
                                                     <form:select path="staffId" cssClass="form-control">
                                                         <form:option value="-1" label="--Chọn nhân viên phụ trách--"/>
                                                         <form:options items="${staffmaps}"/>
@@ -266,23 +259,23 @@
 
                             <tbody>
                             <c:forEach var="item" items="${buildings}">
-                            <tr>
-                                <td><input type="checkbox" value="1" id="checkbox_1"></td>
-                                <td>${item.name}</td>
-                                <td>${item.numberOfBasement}</td>
-                                <td>Quận Tân Bình</td>
-                                <td>a Vinh</td>
-                                <td>0123456789</td>
-                                <td>150</td>
-                                <td>145</td>
-                                <td>45</td>
-                                <td>
-                                    <button class="btn btn-xs" data-toggle="tooltip"
-                                            title="Giao tòa nhà" onclick="assingmentBuilding(1)">
-                                        <i class="fa fa-home" aria-hidden="true"></i>
-                                    </button>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td><input type="checkbox" value="1" id="checkbox_1"></td>
+                                    <td><b>${item.name}</b></td>
+                                    <td>${item.numberOfBasement}</td>
+                                    <td>Quận Tân Bình</td>
+                                    <td>a Vinh</td>
+                                    <td>0123456789</td>
+                                    <td>150</td>
+                                    <td>145</td>
+                                    <td>45</td>
+                                    <td>
+                                        <button class="btn btn-xs" data-toggle="tooltip"
+                                                title="Giao tòa nhà" onclick="assingmentBuilding(1)">
+                                            <i class="fa fa-home" aria-hidden="true"></i>
+                                        </button>
+                                    </td>
+                                </tr>
                             </c:forEach>
                             </tbody>
                         </table>
@@ -306,12 +299,12 @@
                 <table class="table table-bordered" id="staffList">
                     <thead>
                     <tr>
-                        <th>Choose Staff</th>
-                        <th>Name Staff</th>
+                        <th>Chọn nhân viên</th>
+                        <th>Tên nhân viên</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
+                    <%--<tr>
                         <td><input type="checkbox" value="1" id="customCheck1" checked></td>
                         <td>staff a</td>
                     </tr>
@@ -322,7 +315,7 @@
                     <tr>
                         <td><input type="checkbox" value="3" id="customCheck3" checked></td>
                         <td>staff c</td>
-                    </tr>
+                    </tr>--%>
                     </tbody>
                 </table>
                 <input type="hidden" name="buildingId" id="buildingId" value="">
@@ -337,8 +330,33 @@
 </div>
 
 <script>
+    function loadStaff() {
+        $.ajax({
+            type: "GET",
+            url: "${loadStaffAPI}/1/staffs",
+            //data: JSON.stringify(data),
+            dataType: "json",
+            //contentType: "application/json",
+            success: function (response) {
+                //console.log('success');
+                var row =  '';
+                $.each(response.data, function (index, item) {
+                    row += '<tr>';
+                    row += '<td class="text-center"><input type="checkbox" ' + item.checked + '  value=' + item.staffId  + ' id="checkbox_' + item.staffId + '" class="check-box-element" /></td>';
+                    row += '<td class="text-center">' + item.fullName + '</td>';
+                    row += '</tr>';
+                });
+                $('#staffList tbody').html(row);
+            },
+            error: function (response) {
+                console.log('failed')
+                console.log(response)
+            }
+        });
+    }
     function assingmentBuilding(buildingId) {
         openModalAssingmentBuilding();
+        loadStaff();
         $("#buildingId").val(buildingId);
         console.log($("#buildingId").val());
     }

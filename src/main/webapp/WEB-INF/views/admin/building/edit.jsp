@@ -178,6 +178,8 @@
         // t3. cái dữ liệu mình đẩy vô là chuỗi json - cần phải định nghĩa (chuỗi: text/plain / json: json)
         var data = {};
         var buildingTypes = [];
+        //Đoạn dưới là để lấy data tự động
+        //serializeArray: lấy ra tất cả các input trong form và nó sẽ get data từ frontend xuống backend
         var formData = $('#formEdit').serializeArray();
 
         $.each(formData, function (index, v) {
@@ -188,7 +190,7 @@
 
         $.ajax({
             type: 'POST',
-            url: "/api/building",
+            url: "http://localhost:8080 /api/building",
             data: JSON.stringify(data),
             dataType: "json",
             contentType: "application/json",

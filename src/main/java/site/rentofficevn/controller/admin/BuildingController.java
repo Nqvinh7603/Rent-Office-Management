@@ -3,28 +3,27 @@ package site.rentofficevn.controller.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import site.rentofficevn.dto.BuildingDTO;
+import site.rentofficevn.dto.request.BuildingSearchRequest;
 import site.rentofficevn.service.impl.BuildingService;
 import site.rentofficevn.service.impl.UserService;
 
 
-@Controller(value = "buildingControllerOfAdmin")
+@Controller
+@RestController("/admin")
 public class BuildingController {
     @Autowired
     BuildingService buildingService;
     @Autowired
     UserService userService;
 
-    @RequestMapping(value = "/admin/building-list", method = RequestMethod.GET)
-    public ModelAndView buildingList(@ModelAttribute("modelSearch") BuildingDTO buildingDTO) {
+    @GetMapping("/building-list")
+    public ModelAndView buildingList(@ModelAttribute("modelSearch")BuildingSearchRequest buildingSearchRequest) {
         ModelAndView mav = new ModelAndView ("admin/building/list");
-        mav.addObject("modelSearch", buildingDTO);
-        mav.addObject("buildings", buildingService.findAll());
-        mav.addObject("staffmaps",userService.getStaffMaps());
+        mav.addObject("buildings", buildingService.findAll(buildingSearchRequest));
+        //mav.addObject("staffmaps",userService.getStaffMaps());
         return mav;
     }
 

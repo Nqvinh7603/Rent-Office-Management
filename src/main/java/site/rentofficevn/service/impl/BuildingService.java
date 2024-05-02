@@ -3,15 +3,19 @@ package site.rentofficevn.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import site.rentofficevn.builder.BuildingSearchBuilder;
 import site.rentofficevn.converter.BuildingConverter;
 import site.rentofficevn.dto.BuildingDTO;
+import site.rentofficevn.dto.request.BuildingSearchRequest;
+import site.rentofficevn.dto.response.BuildingSearchResponse;
 import site.rentofficevn.entity.BuildingEntity;
-import site.rentofficevn.entity.UserEntity;
 import site.rentofficevn.repository.BuildingRepository;
 import site.rentofficevn.repository.UserRepository;
 import site.rentofficevn.service.IBuildingService;
+import site.rentofficevn.utils.MapUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class BuildingService implements IBuildingService {
@@ -40,5 +44,48 @@ public class BuildingService implements IBuildingService {
     public void save(BuildingDTO buildingDTO) {
         BuildingEntity buildingEntity = buildingConverter.convertToEntity(buildingDTO);
         buildingRepository.save(buildingEntity);
+    }
+
+    @Override
+    public List<BuildingSearchResponse> findAll(BuildingSearchRequest buildingSearchRequest) {
+        List<BuildingSearchResponse> results = new ArrayList<>();
+        BuildingSearchBuilder buildingSearchBuilder = convertParamToBuilder(buildingSearchRequest);
+
+        try {
+            List<BuildingEntity> buildingEntities = buildingRepository.findBuilding(buildingSearchBuilder);
+            return buildingEntities.stream()
+                    .map(entity -> buildingConverter.convertFromEntitytoBuildingSearchResponse(entity))
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
+
+    }
+    private BuildingSearchBuilder convertParamToBuilder(BuildingSearchRequest buildingSearchRequest) {
+        try {
+            BuildingSearchBuilder result = new BuildingSearchBuilder.Builder()
+                    .setName(buildingSearchRequest.getName())
+                    .setFloorArea(buildingSearchRequest.getFloorArea())
+                    .setDistrict(buildingSearchRequest.getDistrictCode())
+                    .setWard(buildingSearchRequest.getWard())
+                    .setStreet(buildingSearchRequest.getStreet())
+                    .setNumberOfBasement(buildingSearchRequest.getNumberOfBasement())
+                    .setDirection(buildingSearchRequest.getDirection())
+                    .setLevel(buildingSearchRequest.getLevel())
+                    .setRentAreaFrom(buildingSearchRequest.getRentAreaFrom())
+                    .setRentAreaTo(buildingSearchRequest.getRentAreaTo())
+                    .setRentPriceFrom(buildingSearchRequest.getRentPriceFrom())
+                    .setRentPriceTo(buildingSearchRequest.getRentPriceTo())
+                    .setManagerName(buildingSearchRequest.getManagerName())
+                    .setManagerPhone(buildingSearchRequest.getManagerPhone())
+                    .setStaffID(buildingSearchRequest.getStaffId())
+                    .setTypes(buildingSearchRequest.getTypes())
+                    .build();
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

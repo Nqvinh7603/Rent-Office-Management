@@ -70,7 +70,7 @@
                                                 <div>
                                                     <label for="name" style="font-weight: bold; color: black;">Diện tích
                                                         sàn</label>
-                                                    <input type="number" id="floorArea" name="floorArea"
+                                                    <form:input type="number" path="floorArea" name="floorArea"
                                                            value="${modelSearch.floorArea}" class="form-control"/><br>
                                                         <%-- type="number" -> dùng kiểu bình thường --%>
                                                 </div>
@@ -80,12 +80,19 @@
                                                 <div>
                                                     <label for="name" style="font-weight: bold; color: black;">Quận hiện
                                                         có</label>
-                                                    <select class="form-control" aria-label="Default select example">
+                                                    <%--<select class="form-control" aria-label="Default select example">
                                                         <option selected>--Chọn quận--</option>
                                                         <option value="Q1">Quận 1</option>
                                                         <option value="Q2">Quận 2</option>
                                                         <option value="Q4">Quận 4</option>
-                                                    </select><br>
+                                                    </select><br>--%>
+                                                    <form:select path="districtCode" cssClass="form-control">
+                                                        <option selected value="">Chọn Quận</option>
+                                                        <c:forEach var="item" items="${districts}">
+                                                            <form:option value="${item.code}">${item.name}</form:option>
+                                                        </c:forEach>
+                                                    </form:select>
+                                                    <br>
                                                         <%--<form:select ></form:select>--%>
                                                 </div>
                                             </div>
@@ -110,7 +117,7 @@
                                                 <div>
                                                     <label for="name" style="font-weight: bold; color: black;">Số tầng
                                                         hầm</label>
-                                                    <input type="number" id="numberOfBasement"
+                                                    <form:input type="number" path="numberOfBasement"
                                                            class="form-control"/><br>
                                                 </div>
                                             </div>
@@ -119,7 +126,7 @@
                                                 <div>
                                                     <label for="name"
                                                            style="font-weight: bold; color: black;">Hướng</label>
-                                                    <input type="text" id="direction" class="form-control"/><br>
+                                                    <form:input type="text" path="direction" class="form-control"/><br>
                                                 </div>
                                             </div>
 
@@ -127,7 +134,7 @@
                                                 <div>
                                                     <label for="name"
                                                            style="font-weight: bold; color: black;">Hạng</label>
-                                                    <input type="text" id="level" class="form-control"/><br>
+                                                    <form:input type="text" path="level" class="form-control"/><br>
                                                 </div>
                                             </div>
 
@@ -135,28 +142,28 @@
                                                 <div>
                                                     <label for="name" style="font-weight: bold; color: black;">Diện tích
                                                         từ</label>
-                                                    <input type="text" id="areaRentFrom" class="form-control"/><br>
+                                                    <form:input type="text" path="rentAreaFrom" class="form-control"/><br>
                                                 </div>
                                             </div>
                                             <div class="col-sm-3">
                                                 <div>
                                                     <label for="name" style="font-weight: bold; color: black;">Diện tích
                                                         đến</label>
-                                                    <input type="text" id="areaRentTo" class="form-control"/><br>
+                                                    <form:input type="text" path="rentAreaTo" class="form-control"/><br>
                                                 </div>
                                             </div>
                                             <div class="col-sm-3">
                                                 <div>
                                                     <label for="name" style="font-weight: bold; color: black;">Gía thuê
                                                         từ</label>
-                                                    <input type="text" id="costRentFrom" class="form-control"/><br>
+                                                    <form:input type="text" path="rentPriceFrom" class="form-control"/><br>
                                                 </div>
                                             </div>
                                             <div class="col-sm-3">
                                                 <div>
                                                     <label for="name" style="font-weight: bold; color: black;">Gía thuê
                                                         đến</label>
-                                                    <input type="text" id="costRentTo" class="form-control"/><br>
+                                                    <form:input type="text" path="rentPriceTo" class="form-control"/><br>
                                                 </div>
                                             </div>
 
@@ -172,7 +179,7 @@
                                                 <div>
                                                     <label for="name" style="font-weight: bold; color: black;">Điện
                                                         thoại quản lý</label>
-                                                    <input type="text" id="phoneManage" class="form-control"/><br>
+                                                    <form:input type="text" path="managerPhone" class="form-control"/><br>
                                                 </div>
                                             </div>
                                             <div class="col-sm-3">

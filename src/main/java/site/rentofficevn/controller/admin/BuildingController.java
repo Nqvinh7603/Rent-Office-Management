@@ -21,13 +21,14 @@ public class BuildingController {
 
     @GetMapping("/building-list")
     public ModelAndView buildingList(@ModelAttribute("modelSearch")BuildingSearchRequest buildingSearchRequest) {
-        ModelAndView mav = new ModelAndView ("admin/building/list");
-        mav.addObject("buildings", buildingService.findAll(buildingSearchRequest));
-        //mav.addObject("staffmaps",userService.getStaffMaps());
-        return mav;
+            ModelAndView mav = new ModelAndView("admin/building/list");
+            mav.addObject("buildings", buildingService.findAll(buildingSearchRequest));
+            //mav.addObject("staffmaps",userService.getStaffMaps());
+            return mav;
     }
 
-    @RequestMapping(value = "/admin/building-edit", method = RequestMethod.GET)
+    //@RequestMapping(value = "/admin/building-edit", method = RequestMethod.GET)
+    @GetMapping("/building-edit")
     public ModelAndView buildingEdit() {
         ModelAndView mav = new ModelAndView("admin/building/edit");
         mav.addObject("buildingModel", new BuildingDTO());

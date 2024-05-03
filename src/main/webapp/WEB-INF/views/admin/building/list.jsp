@@ -1,7 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/common/taglib.jsp" %>
 <c:url var="buildingListURL" value="/admin/building-list"/>
-<c:url var="loadStaffAPI" value="/api/building"/>
 <html>
 <head>
     <title>Danh sách tòa nhà</title>
@@ -70,8 +69,8 @@
                                                 <div>
                                                     <label for="name" style="font-weight: bold; color: black;">Diện tích
                                                         sàn</label>
-                                                    <form:input type="number" path="floorArea" name="floorArea"
-                                                           value="${modelSearch.floorArea}" class="form-control"/><br>
+                                                    <form:input type="number" path="floorArea"
+                                                           value="${modelSearch.floorArea}" cssClass="form-control"/><br>
                                                         <%-- type="number" -> dùng kiểu bình thường --%>
                                                 </div>
                                             </div>
@@ -80,12 +79,6 @@
                                                 <div>
                                                     <label for="name" style="font-weight: bold; color: black;">Quận hiện
                                                         có</label>
-                                                    <%--<select class="form-control" aria-label="Default select example">
-                                                        <option selected>--Chọn quận--</option>
-                                                        <option value="Q1">Quận 1</option>
-                                                        <option value="Q2">Quận 2</option>
-                                                        <option value="Q4">Quận 4</option>
-                                                    </select><br>--%>
                                                     <form:select path="districtCode" cssClass="form-control">
                                                         <option selected value="">Chọn Quận</option>
                                                         <c:forEach var="item" items="${districts}">
@@ -117,8 +110,9 @@
                                                 <div>
                                                     <label for="name" style="font-weight: bold; color: black;">Số tầng
                                                         hầm</label>
-                                                    <form:input type="number" path="numberOfBasement"
-                                                           class="form-control"/><br>
+                                                    <form:input type="number" path="numberOfBasement" value="${modelSearch.numberOfBasement}"
+                                                           cssClass="form-control"/><br>
+
                                                 </div>
                                             </div>
 
@@ -126,7 +120,7 @@
                                                 <div>
                                                     <label for="name"
                                                            style="font-weight: bold; color: black;">Hướng</label>
-                                                    <form:input type="text" path="direction" class="form-control"/><br>
+                                                    <form:input type="text" path="direction" cssClass="form-control"/><br>
                                                 </div>
                                             </div>
 
@@ -134,7 +128,7 @@
                                                 <div>
                                                     <label for="name"
                                                            style="font-weight: bold; color: black;">Hạng</label>
-                                                    <form:input type="text" path="level" class="form-control"/><br>
+                                                    <form:input type="text" path="level" cssClass="form-control"/><br>
                                                 </div>
                                             </div>
 
@@ -142,28 +136,28 @@
                                                 <div>
                                                     <label for="name" style="font-weight: bold; color: black;">Diện tích
                                                         từ</label>
-                                                    <form:input type="text" path="rentAreaFrom" class="form-control"/><br>
+                                                    <form:input type="text" path="rentAreaFrom" cssClass="form-control" value="${modelSearch.rentAreaFrom}"/><br>
                                                 </div>
                                             </div>
                                             <div class="col-sm-3">
                                                 <div>
                                                     <label for="name" style="font-weight: bold; color: black;">Diện tích
                                                         đến</label>
-                                                    <form:input type="text" path="rentAreaTo" class="form-control"/><br>
+                                                    <form:input type="text" path="rentAreaTo" cssClass="form-control" value="${modelSearch.rentAreaTo}"/><br>
                                                 </div>
                                             </div>
                                             <div class="col-sm-3">
                                                 <div>
                                                     <label for="name" style="font-weight: bold; color: black;">Gía thuê
                                                         từ</label>
-                                                    <form:input type="text" path="rentPriceFrom" class="form-control"/><br>
+                                                    <form:input type="text" path="rentPriceFrom" cssClass="form-control" value="${modelSearch.rentPriceFrom}"/><br>
                                                 </div>
                                             </div>
                                             <div class="col-sm-3">
                                                 <div>
                                                     <label for="name" style="font-weight: bold; color: black;">Gía thuê
                                                         đến</label>
-                                                    <form:input type="text" path="rentPriceTo" class="form-control"/><br>
+                                                    <form:input type="text" path="rentPriceTo" cssClass="form-control" value="${modelSearch.rentPriceTo}"/><br>
                                                 </div>
                                             </div>
 
@@ -171,7 +165,7 @@
                                                 <div>
                                                     <label for="name" style="font-weight: bold; color: black;">Tên quản
                                                         lí</label>
-                                                    <input type="text" id="nameManage" class="form-control"/><br>
+                                                    <form:input type="text" path="managerName" cssClass="form-control"/><br>
                                                 </div>
                                             </div>
 
@@ -179,7 +173,7 @@
                                                 <div>
                                                     <label for="name" style="font-weight: bold; color: black;">Điện
                                                         thoại quản lý</label>
-                                                    <form:input type="text" path="managerPhone" class="form-control"/><br>
+                                                    <form:input type="text" path="managerPhone" cssClass="form-control"/><br>
                                                 </div>
                                             </div>
                                             <div class="col-sm-3">

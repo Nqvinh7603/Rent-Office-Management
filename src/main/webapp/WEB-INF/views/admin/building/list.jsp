@@ -189,20 +189,26 @@
                                             </div>
 
                                             <div class="col-sm-3">
-                                                <input class="" type="checkbox" value="" id="checkbox1">
-                                                <label style="font-weight: bold; color: black;">
-                                                    Tầng trệt
-                                                </label>
+<%--                                                <input class="" type="checkbox" value="" id="checkbox1">--%>
+<%--                                                <label style="font-weight: bold; color: black;">--%>
+<%--                                                    Tầng trệt--%>
+<%--                                                </label>--%>
 
-                                                <input class="" type="checkbox" value="" id="checkbox2" checked>
-                                                <label style="font-weight: bold; color: black;">
-                                                    Nguyên căn
-                                                </label>
+<%--                                                <input class="" type="checkbox" value="" id="checkbox2" checked>--%>
+<%--                                                <label style="font-weight: bold; color: black;">--%>
+<%--                                                    Nguyên căn--%>
+<%--                                                </label>--%>
 
-                                                <input class="" type="checkbox" value="" id="checkbox3" checked>
-                                                <label style="font-weight: bold; color: black;">
-                                                    Nội thất
-                                                </label>
+<%--                                                <input class="" type="checkbox" value="" id="checkbox3" checked>--%>
+<%--                                                <label style="font-weight: bold; color: black;">--%>
+<%--                                                    Nội thất--%>
+<%--                                                </label>--%>
+                                                <div class="form-check">
+                                                    <c:forEach var="item" items="${buildingTypes}">
+                                                        <form:checkbox id="rent" path="types" value="${item.code}"
+                                                                       label="${item.name}" cssClass="form-check-input"/>
+                                                    </c:forEach>
+                                                </div>
                                             </div>
 
 
@@ -247,12 +253,11 @@
                             <tr>
                                 <th></th>
                                 <th>Tên sản phẩm</th>
-                                <th>Số tầng hầm</th>
                                 <th>Địa chỉ</th>
                                 <th>Tên quản lí</th>
                                 <th>Số điện thoại</th>
-                                <th>D.T sàn</th>
-                                <th>Gía thuê</th>
+                                <th>Diện tích sàn</th>
+                                <th>Giá thuê</th>
                                 <th>Phí dịch vụ</th>
                                 <th>Thao tác</th>
                             </tr>
@@ -262,14 +267,13 @@
                             <c:forEach var="item" items="${buildings}">
                                 <tr>
                                     <td><input type="checkbox" value="1" id="checkbox_1"></td>
-                                    <td><b>${item.name}</b></td>
-                                    <td>${item.numberOfBasement}</td>
-                                    <td>Quận Tân Bình</td>
-                                    <td>a Vinh</td>
-                                    <td>0123456789</td>
-                                    <td>150</td>
-                                    <td>145</td>
-                                    <td>45</td>
+                                    <td>${item.name}</td>
+                                    <td>${item.address}</td>
+                                    <td>${item.managerName}</td>
+                                    <td>${item.managerPhone}</td>
+                                    <td>${item.floorArea}</td>
+                                    <td>${item.rentPrice}</td>
+                                    <td>${item.serviceFee}</td>
                                     <td>
                                         <button class="btn btn-xs" data-toggle="tooltip"
                                                 title="Giao tòa nhà" onclick="assingmentBuilding(1)">

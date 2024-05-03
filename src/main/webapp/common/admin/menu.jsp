@@ -45,7 +45,7 @@
                 <li class="">
                     <a href='<c:url value='/admin/building-list'/>'>
                         <i class="menu-icon fa fa-caret-right"></i>
-                        DS tòa nhà
+                        Danh sách tòa nhà
                     </a>
 
                     <a href='<c:url value='/admin/building-edit'/>'>

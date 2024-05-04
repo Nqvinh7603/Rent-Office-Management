@@ -4,19 +4,6 @@
 <html>
 <head>
     <title>Danh sách tòa nhà</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-
-        .main-content-inner,
-        .widget-title,
-        .widget-body,
-        label,
-        .btn {
-            font-family: Arial, sans-serif;
-        }
-    </style>
 </head>
 <body>
 <div class="main-content">
@@ -41,7 +28,7 @@
             <div class="row">
                 <div class="widget-box">
                     <div class="widget-header">
-                        <h4 class="widget-title">Tìm kiếm</h4>
+                        <h4 class="widget-title">Tìm tòa nhà</h4>
                         <div class="widget-toolbar">
                             <a href="#" data-action="collapse">
                                 <i class="ace-icon fa fa-chevron-up"></i>
@@ -86,7 +73,6 @@
                                                         </c:forEach>
                                                     </form:select>
                                                     <br>
-                                                        <%--<form:select ></form:select>--%>
                                                 </div>
                                             </div>
 
@@ -203,12 +189,11 @@
 <%--                                                <label style="font-weight: bold; color: black;">--%>
 <%--                                                    Nội thất--%>
 <%--                                                </label>--%>
-                                                <div class="form-check">
+
                                                     <c:forEach var="item" items="${buildingTypes}">
                                                         <form:checkbox id="rent" path="types" value="${item.code}"
-                                                                       label="${item.name}" cssClass="form-check-input"/>
+                                                                       label="${item.name}" cssClass="bold-label" />
                                                     </c:forEach>
-                                                </div>
                                             </div>
 
 

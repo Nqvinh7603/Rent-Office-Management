@@ -34,183 +34,171 @@
                                 <i class="ace-icon fa fa-chevron-up"></i>
                             </a>
                         </div>
-
-                        <div class="widget-body">
-                            <div class="widget-main">
-                                <form:form modelAttribute="modelSearch" action="${buildingListURL}" id="listForm"
-                                           method="GET">
-                                    <div class="row">
-                                        <div class="col-xs-12">
-                                            <!-- PAGE CONTENT BEGINS -->
-                                            <div class="col-sm-6">
-                                                <div>
-                                                    <label for="name" style="font-weight: bold; color: black;">Tên tòa
-                                                        nhà</label>
-                                                        <%--<input type="text" id="name" class="form-control" name="name" value="${modelSearch.name}"/>--%>
-                                                    <!-- name="name" hỗ trợ việc chúng ta tìm kiếm, gửi dữ liệu từ client về server thì nó nhận ra đc  -->
-                                                    <form:input path="name" cssClass="form-control"/><br>
-                                                </div>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <form:form modelAttribute="modelSearch" action="${buildingListURL}" id="listForm"
+                                       method="GET">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <!-- PAGE CONTENT BEGINS -->
+                                        <div class="col-sm-6">
+                                            <div>
+                                                <label><b>Tên tòa
+                                                    nhà</b></label>
+                                                    <%--<input type="text" id="name" class="form-control" name="name" value="${modelSearch.name}"/>--%>
+                                                <!-- name="name" hỗ trợ việc chúng ta tìm kiếm, gửi dữ liệu từ client về server thì nó nhận ra đc  -->
+                                                <form:input path="name" cssClass="form-control"/><br>
                                             </div>
+                                        </div>
 
-                                            <div class="col-sm-6">
-                                                <div>
-                                                    <label for="name" style="font-weight: bold; color: black;">Diện tích
-                                                        sàn</label>
-                                                    <form:input type="number" path="floorArea"
-                                                           value="${modelSearch.floorArea}" cssClass="form-control"/><br>
-                                                        <%-- type="number" -> dùng kiểu bình thường --%>
-                                                </div>
+                                        <div class="col-sm-6">
+                                            <div>
+                                                <label><b>Diện tích
+                                                    sàn</b></label>
+                                                <form:input type="number" path="floorArea"
+                                                            value="${modelSearch.floorArea}"
+                                                            cssClass="form-control"/><br>
+                                                    <%-- type="number" -> dùng kiểu bình thường --%>
                                             </div>
+                                        </div>
 
-                                            <div class="col-sm-2">
-                                                <div>
-                                                    <label for="name" style="font-weight: bold; color: black;">Quận hiện
-                                                        có</label>
-                                                    <form:select path="districtCode" cssClass="form-control">
-                                                        <option selected value="">Chọn Quận</option>
-                                                        <c:forEach var="item" items="${districts}">
-                                                            <form:option value="${item.code}">${item.name}</form:option>
-                                                        </c:forEach>
-                                                    </form:select>
-                                                    <br>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-5">
-                                                <div>
-                                                    <label for="ward"
-                                                           style="font-weight: bold; color: black;">Phường</label>
-                                                    <form:input path="ward" cssClass="form-control"/><br>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-5">
-                                                <div>
-                                                    <label for="street"
-                                                           style="font-weight: bold; color: black;">Đường</label>
-                                                    <form:input path="street" cssClass="form-control"/><br>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-4">
-                                                <div>
-                                                    <label for="name" style="font-weight: bold; color: black;">Số tầng
-                                                        hầm</label>
-                                                    <form:input type="number" path="numberOfBasement" value="${modelSearch.numberOfBasement}"
-                                                           cssClass="form-control"/><br>
-
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-4">
-                                                <div>
-                                                    <label for="name"
-                                                           style="font-weight: bold; color: black;">Hướng</label>
-                                                    <form:input type="text" path="direction" cssClass="form-control"/><br>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-4">
-                                                <div>
-                                                    <label for="name"
-                                                           style="font-weight: bold; color: black;">Hạng</label>
-                                                    <form:input type="text" path="level" cssClass="form-control"/><br>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-3">
-                                                <div>
-                                                    <label for="name" style="font-weight: bold; color: black;">Diện tích
-                                                        từ</label>
-                                                    <form:input type="text" path="rentAreaFrom" cssClass="form-control" value="${modelSearch.rentAreaFrom}"/><br>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <div>
-                                                    <label for="name" style="font-weight: bold; color: black;">Diện tích
-                                                        đến</label>
-                                                    <form:input type="text" path="rentAreaTo" cssClass="form-control" value="${modelSearch.rentAreaTo}"/><br>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <div>
-                                                    <label for="name" style="font-weight: bold; color: black;">Gía thuê
-                                                        từ</label>
-                                                    <form:input type="text" path="rentPriceFrom" cssClass="form-control" value="${modelSearch.rentPriceFrom}"/><br>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <div>
-                                                    <label for="name" style="font-weight: bold; color: black;">Gía thuê
-                                                        đến</label>
-                                                    <form:input type="text" path="rentPriceTo" cssClass="form-control" value="${modelSearch.rentPriceTo}"/><br>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-4">
-                                                <div>
-                                                    <label for="name" style="font-weight: bold; color: black;">Tên quản
-                                                        lí</label>
-                                                    <form:input type="text" path="managerName" cssClass="form-control"/><br>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-4">
-                                                <div>
-                                                    <label for="name" style="font-weight: bold; color: black;">Điện
-                                                        thoại quản lý</label>
-                                                    <form:input type="text" path="managerPhone" cssClass="form-control"/><br>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <div>
-                                                    <label for="name" style="font-weight: bold; color: black;">Chọn nhân
-                                                        viên quản lý</label>
-                                                    <form:select path="staffId" cssClass="form-control">
-                                                        <form:option value="-1" label="--Chọn nhân viên phụ trách--"/>
-                                                        <form:options items="${staffmaps}"/>
-                                                    </form:select>
-                                                    <br>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-3">
-<%--                                                <input class="" type="checkbox" value="" id="checkbox1">--%>
-<%--                                                <label style="font-weight: bold; color: black;">--%>
-<%--                                                    Tầng trệt--%>
-<%--                                                </label>--%>
-
-<%--                                                <input class="" type="checkbox" value="" id="checkbox2" checked>--%>
-<%--                                                <label style="font-weight: bold; color: black;">--%>
-<%--                                                    Nguyên căn--%>
-<%--                                                </label>--%>
-
-<%--                                                <input class="" type="checkbox" value="" id="checkbox3" checked>--%>
-<%--                                                <label style="font-weight: bold; color: black;">--%>
-<%--                                                    Nội thất--%>
-<%--                                                </label>--%>
-
-                                                    <c:forEach var="item" items="${buildingTypes}">
-                                                        <form:checkbox id="rent" path="types" value="${item.code}"
-                                                                       label="${item.name}" cssClass="bold-label" />
+                                        <div class="col-sm-2">
+                                            <div>
+                                                <label><b>Quận hiện
+                                                    có</b></label>
+                                                <form:select path="districtCode" cssClass="form-control">
+                                                    <option selected value="">Chọn Quận</option>
+                                                    <c:forEach var="item" items="${districts}">
+                                                        <form:option value="${item.code}">${item.name}</form:option>
                                                     </c:forEach>
-                                            </div>
-
-
-                                            <div class="col-sm-12">
+                                                </form:select>
                                                 <br>
-                                                <button type="button" id="btnSearch" class="btn btn-sm btn-success">
-                                                    Tìm kiếm
-                                                    <i class="ace-icon fa fa-arrow-right icon-on-right bigger-110"></i>
-                                                </button>
                                             </div>
-                                            <!-- PAGE CONTENT ENDS -->
-                                        </div><!-- /.col -->
-                                    </div>
-                                </form:form>
-                            </div>
+                                        </div>
+
+                                        <div class="col-sm-5">
+                                            <div>
+                                                <label><b>Phường</b></label>
+                                                <form:input path="ward" cssClass="form-control"/><br>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-5">
+                                            <div>
+                                                <label><b>Đường</b></label>
+                                                <form:input path="street" cssClass="form-control"/><br>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-4">
+                                            <div>
+                                                <label><b>Số tầng
+                                                    hầm</b></label>
+                                                <form:input type="number" path="numberOfBasement"
+                                                            value="${modelSearch.numberOfBasement}"
+                                                            cssClass="form-control"/><br>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-4">
+                                            <div>
+                                                <label><b>Hướng</b></label>
+                                                <form:input type="text" path="direction" cssClass="form-control"/><br>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-4">
+                                            <div>
+                                                <label><b>Hạng</b></label>
+                                                <form:input type="text" path="level" cssClass="form-control"/><br>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-3">
+                                            <div>
+                                                <label><b>Diện tích
+                                                    từ</b></label>
+                                                <form:input type="text" path="rentAreaFrom" cssClass="form-control"
+                                                            value="${modelSearch.rentAreaFrom}"/><br>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div>
+                                                <label><b>Diện tích
+                                                    đến</b></label>
+                                                <form:input type="text" path="rentAreaTo" cssClass="form-control"
+                                                            value="${modelSearch.rentAreaTo}"/><br>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div>
+                                                <label><b>Gía thuê
+                                                    từ</b></label>
+                                                <form:input type="text" path="rentPriceFrom" cssClass="form-control"
+                                                            value="${modelSearch.rentPriceFrom}"/><br>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div>
+                                                <label><b>Gía thuê
+                                                    đến</b></label>
+                                                <form:input type="text" path="rentPriceTo" cssClass="form-control"
+                                                            value="${modelSearch.rentPriceTo}"/><br>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-4">
+                                            <div>
+                                                <label><b>Tên quản
+                                                    lí</b></label>
+                                                <form:input type="text" path="managerName" cssClass="form-control"/><br>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-4">
+                                            <div>
+                                                <label><b>Điện
+                                                    thoại quản lý</b></label>
+                                                <form:input type="text" path="managerPhone"
+                                                            cssClass="form-control"/><br>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div>
+                                                <label><b>Chọn nhân
+                                                    viên quản lý</b></label>
+                                                <form:select path="staffId" cssClass="form-control">
+                                                    <form:option value="-1" label="--Chọn nhân viên phụ trách--"/>
+                                                    <form:options items="${staffmaps}"/>
+                                                </form:select>
+                                                <br>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6 ">
+                                                <c:forEach var="item" items="${buildingTypes}">
+                                                    <input type="checkbox" id="rent" name="types" value="${item.code}" />
+                                                    <label for="rent" style="font-weight: bold; margin-right: 10px; display: inline-block">${item.name}</label>
+                                                </c:forEach>
+                                        </div>
+
+
+                                        <div class="col-sm-12">
+                                            <br>
+                                            <button type="button" id="btnSearch" class="btn btn-sm btn-success">
+                                                Tìm kiếm
+                                                <i class="ace-icon fa fa-arrow-right icon-on-right bigger-110"></i>
+                                            </button>
+                                        </div>
+                                        <!-- PAGE CONTENT ENDS -->
+                                    </div><!-- /.col -->
+                                </div>
+                            </form:form>
                         </div>
                     </div>
+
                 </div><!-- /.row -->
 
 
@@ -329,10 +317,10 @@
             //contentType: "application/json",
             success: function (response) {
                 //console.log('success');
-                var row =  '';
+                var row = '';
                 $.each(response.data, function (index, item) {
                     row += '<tr>';
-                    row += '<td class="text-center"><input type="checkbox" ' + item.checked + '  value=' + item.staffId  + ' id="checkbox_' + item.staffId + '" class="check-box-element" /></td>';
+                    row += '<td class="text-center"><input type="checkbox" ' + item.checked + '  value=' + item.staffId + ' id="checkbox_' + item.staffId + '" class="check-box-element" /></td>';
                     row += '<td class="text-center">' + item.fullName + '</td>';
                     row += '</tr>';
                 });
@@ -344,6 +332,7 @@
             }
         });
     }
+
     function assingmentBuilding(buildingId) {
         openModalAssingmentBuilding();
         loadStaff();
@@ -421,3 +410,4 @@
 </script>
 </body>
 </html>
+

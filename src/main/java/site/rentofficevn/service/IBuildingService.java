@@ -9,6 +9,8 @@ import java.util.Map;
 
 public interface IBuildingService {
     List<BuildingDTO> findAll();
-    void save(BuildingDTO buildingDTO);
+    BuildingDTO createBuilding(BuildingDTO buildingDTO);
     List<BuildingSearchResponse> findAll(BuildingSearchRequest buildingSearchRequest);
+    BuildingDTO findBuildingById(Long id);
+    BuildingDTO updateBuilding(BuildingDTO buildingDTO);
 }

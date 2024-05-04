@@ -32,8 +32,10 @@ public class BuildingEntity extends BaseEntity{
     private String serviceFee;
     @Column(name = "brokeragefee")
     private BigDecimal brokerageFee;
-
+    @Column(name = "type")
+    private String types;
     @OneToMany(mappedBy = "building")
+
     private List<RentAreaEntity> rentAreas;
 
     public List<RentAreaEntity> getRentAreas() {
@@ -125,5 +127,17 @@ public class BuildingEntity extends BaseEntity{
 
     public void setDistrictCode(String district) {
         this.district = district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    public String getTypes() {
+        return types;
+    }
+
+    public void setTypes(String types) {
+        this.types = types;
     }
 }

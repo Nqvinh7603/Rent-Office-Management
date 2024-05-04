@@ -208,7 +208,7 @@
                     <div class="col-xs-12">
                         <div class="pull-right">
                             <button type="button" class="btn btn-success" data-toggle="tooltip"
-                                    title="Thêm tòa nhà">
+                                    title="Thêm tòa nhà" onclick="window.location.href='<c:url value="/admin/building-edit"/>'">
                                 <i class="fa fa-plus-circle" aria-hidden="true"></i>
                             </button>
 
@@ -241,7 +241,7 @@
                             <tbody>
                             <c:forEach var="item" items="${buildings}">
                                 <tr>
-                                    <td><input type="checkbox" value="1" id="checkbox_1"></td>
+                                    <td> <input type="checkbox" value="${item.id}" name="checkBuildings[]"></td>
                                     <td>${item.name}</td>
                                     <td>${item.address}</td>
                                     <td>${item.managerName}</td>
@@ -253,6 +253,11 @@
                                         <button class="btn btn-xs" data-toggle="tooltip"
                                                 title="Giao tòa nhà" onclick="assingmentBuilding(1)">
                                             <i class="fa fa-home" aria-hidden="true"></i>
+                                        </button>
+                                        <button class="btn btn-xs btn-dark" data-toggle="tooltip"
+                                                title="Sửa thông tin toà nhà" value="${item.id}"
+                                                onclick="editBuilding(value)">
+                                            <i class="fa fa-edit" aria-hidden="true"></i>
                                         </button>
                                     </td>
                                 </tr>
@@ -284,19 +289,6 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <%--<tr>
-                        <td><input type="checkbox" value="1" id="customCheck1" checked></td>
-                        <td>staff a</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" value="2" id="customCheck2" checked></td>
-                        <td>staff b</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" value="3" id="customCheck3" checked></td>
-                        <td>staff c</td>
-                    </tr>--%>
-                    </tbody>
                 </table>
                 <input type="hidden" name="buildingId" id="buildingId" value="">
             </div>
@@ -408,6 +400,13 @@
     $('#btnSearch').click(function (e) {
         e.preventDefault();
         $("#listForm").submit();
+    });
+    function editBuilding(value) {
+        window.location.href = '<c:url value="/admin/building-edit" />' + '?buildingid=' + value;
+    }
+
+    $('#selectAll').change(function() {
+        $('input[name="checkBuildings[]"]').prop('checked', this.checked);
     });
 </script>
 </body>

@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import site.rentofficevn.dto.BuildingDTO;
 import site.rentofficevn.dto.request.BuildingSearchRequest;
-import site.rentofficevn.service.IDistrictService;
 import site.rentofficevn.service.impl.BuildingService;
 import site.rentofficevn.service.impl.BuildingTypesService;
 import site.rentofficevn.service.impl.DistrictService;
@@ -38,9 +37,19 @@ public class BuildingController {
             return mav;
     }
     @GetMapping("/building-edit")
-    public ModelAndView buildingEdit() {
+    public ModelAndView buildingEdit(@RequestParam(name = "buildingid", required = false) Long id) {
         ModelAndView mav = new ModelAndView("admin/building/edit");
-        mav.addObject("buildingModel", new BuildingDTO());
+
+        if (id != null) {  // edit
+            mav.addObject("modelBuildingEdit", buildingService.findBuildingById(id));
+            mav.addObject("buildingTypes", buildingTypesService.getAllByBuilding(buildingService.findBuildingById(id)));
+            mav.addObject("districts", districtService.getDistrictByBuilding(buildingService.findBuildingById(id)));
+        }
+        else { // add
+            mav.addObject("modelBuildingEdit", new BuildingDTO());
+            mav.addObject("buildingTypes", buildingTypesService.getAll());
+            mav.addObject("districts", districtService.getAllDistrict());
+        }
         return mav;
     }
 }

@@ -169,9 +169,11 @@
                                             <div>
                                                 <label><b>Chọn nhân
                                                     viên quản lý</b></label>
-                                                <form:select path="staffId" cssClass="form-control">
-                                                    <form:option value="-1" label="--Chọn nhân viên phụ trách--"/>
-                                                    <form:options items="${staffmaps}"/>
+                                                <form:select path="staffId" class="form-control">
+                                                    <option selected value="">Chọn nhân viên quản lí</option>
+                                                    <c:forEach var="item" items="${staffmaps}">
+                                                        <form:option value="${item.id}">${item.fullName}</form:option>
+                                                    </c:forEach>
                                                 </form:select>
                                                 <br>
                                             </div>

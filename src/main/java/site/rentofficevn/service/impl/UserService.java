@@ -161,4 +161,14 @@ public class UserService implements IUserService {
         }
         return results;
     }
+
+    @Override
+    public List<UserDTO> getAllStaff() {
+        List<UserEntity> listStaff = userRepository.getAllStaff();
+        List<UserDTO> result = listStaff.stream()
+                .map(userConverter::convertToDto)
+                .collect(Collectors.toList());
+        return result;
+
+    }
 }

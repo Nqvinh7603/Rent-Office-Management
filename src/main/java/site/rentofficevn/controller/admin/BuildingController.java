@@ -33,6 +33,7 @@ public class BuildingController {
             ModelAndView mav = new ModelAndView("admin/building/list");
             mav.addObject("buildings", buildingService.findAll(buildingSearchRequest));
             mav.addObject("districts", districtService.getAllDistrict());
+            mav.addObject("staffmaps", userService.getAllStaff());
             mav.addObject("buildingTypes", buildingTypesService.getAll());
             return mav;
     }

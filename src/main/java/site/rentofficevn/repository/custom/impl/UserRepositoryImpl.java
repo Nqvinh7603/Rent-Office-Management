@@ -26,7 +26,6 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
     public List<UserEntity> getAllStaffByBuilding(Long buildingId) {
         StringBuilder sql = new StringBuilder("select * from user as u inner join assignmentbuilding as ab on u.id = ab.staffid ");
         sql.append(" where ab.buildingid = ").append(buildingId);
-
         Query query = entityManager.createNativeQuery(sql.toString(), UserEntity.class);
         return query.getResultList();
     }

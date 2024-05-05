@@ -44,29 +44,21 @@
                                         <!-- PAGE CONTENT BEGINS -->
                                         <div class="col-sm-6">
                                             <div>
-                                                <label><b>Tên tòa
-                                                    nhà</b></label>
-                                                    <%--<input type="text" id="name" class="form-control" name="name" value="${modelSearch.name}"/>--%>
-                                                <!-- name="name" hỗ trợ việc chúng ta tìm kiếm, gửi dữ liệu từ client về server thì nó nhận ra đc  -->
+                                                <label><b>Tên tòa nhà</b></label>
                                                 <form:input path="name" cssClass="form-control"/><br>
                                             </div>
                                         </div>
 
                                         <div class="col-sm-6">
                                             <div>
-                                                <label><b>Diện tích
-                                                    sàn</b></label>
-                                                <form:input type="number" path="floorArea"
-                                                            value="${modelSearch.floorArea}"
-                                                            cssClass="form-control"/><br>
-                                                    <%-- type="number" -> dùng kiểu bình thường --%>
+                                                <label><b>Diện tích sàn</b></label>
+                                                <form:input path="floorArea" cssClass="form-control"/><br>
                                             </div>
                                         </div>
 
                                         <div class="col-sm-2">
                                             <div>
-                                                <label><b>Quận hiện
-                                                    có</b></label>
+                                                <label><b>Quận hiện có</b></label>
                                                 <form:select path="districtCode" cssClass="form-control">
                                                     <option selected value="">Chọn Quận</option>
                                                     <c:forEach var="item" items="${districts}">
@@ -93,82 +85,66 @@
 
                                         <div class="col-sm-4">
                                             <div>
-                                                <label><b>Số tầng
-                                                    hầm</b></label>
-                                                <form:input type="number" path="numberOfBasement"
-                                                            value="${modelSearch.numberOfBasement}"
-                                                            cssClass="form-control"/><br>
-
+                                                <label><b>Số tầng hầm</b></label>
+                                                <form:input path="numberOfBasement" cssClass="form-control"/><br>
                                             </div>
                                         </div>
 
                                         <div class="col-sm-4">
                                             <div>
                                                 <label><b>Hướng</b></label>
-                                                <form:input type="text" path="direction" cssClass="form-control"/><br>
+                                                <form:input path="direction" cssClass="form-control"/><br>
                                             </div>
                                         </div>
 
                                         <div class="col-sm-4">
                                             <div>
                                                 <label><b>Hạng</b></label>
-                                                <form:input type="text" path="level" cssClass="form-control"/><br>
+                                                <form:input path="level" cssClass="form-control"/><br>
                                             </div>
                                         </div>
 
                                         <div class="col-sm-3">
                                             <div>
-                                                <label><b>Diện tích
-                                                    từ</b></label>
-                                                <form:input type="text" path="rentAreaFrom" cssClass="form-control"
-                                                            value="${modelSearch.rentAreaFrom}"/><br>
+                                                <label><b>Diện tích từ</b></label>
+                                                <form:input path="rentAreaFrom" cssClass="form-control"/><br>
                                             </div>
                                         </div>
                                         <div class="col-sm-3">
                                             <div>
-                                                <label><b>Diện tích
-                                                    đến</b></label>
-                                                <form:input type="text" path="rentAreaTo" cssClass="form-control"
-                                                            value="${modelSearch.rentAreaTo}"/><br>
+                                                <label><b>Diện tích đến</b></label>
+                                                <form:input path="rentAreaTo" cssClass="form-control"/><br>
                                             </div>
                                         </div>
                                         <div class="col-sm-3">
                                             <div>
-                                                <label><b>Gía thuê
-                                                    từ</b></label>
-                                                <form:input type="text" path="rentPriceFrom" cssClass="form-control"
-                                                            value="${modelSearch.rentPriceFrom}"/><br>
+                                                <label><b>Giá thuê từ</b></label>
+                                                <form:input path="rentPriceFrom" cssClass="form-control"/><br>
                                             </div>
                                         </div>
                                         <div class="col-sm-3">
                                             <div>
-                                                <label><b>Gía thuê
-                                                    đến</b></label>
-                                                <form:input type="text" path="rentPriceTo" cssClass="form-control"
-                                                            value="${modelSearch.rentPriceTo}"/><br>
+                                                <label><b>Giá thuê đến</b></label>
+                                                <form:input path="rentPriceTo" cssClass="form-control"/><br>
                                             </div>
                                         </div>
 
                                         <div class="col-sm-4">
                                             <div>
-                                                <label><b>Tên quản
-                                                    lí</b></label>
-                                                <form:input type="text" path="managerName" cssClass="form-control"/><br>
+                                                <label><b>Tên quản lí</b></label>
+                                                <form:input path="managerName" cssClass="form-control"/><br>
                                             </div>
                                         </div>
 
                                         <div class="col-sm-4">
                                             <div>
-                                                <label><b>Điện
-                                                    thoại quản lý</b></label>
-                                                <form:input type="text" path="managerPhone"
-                                                            cssClass="form-control"/><br>
+                                                <label><b>Điện thoại quản lý</b></label>
+                                                <form:input path="managerPhone" cssClass="form-control"/><br>
                                             </div>
                                         </div>
                                         <div class="col-sm-3">
                                             <div>
-                                                <label><b>Chọn nhân
-                                                    viên quản lý</b></label>
+                                                <label><b>Chọn nhân viên quản lý</b></label>
                                                 <form:select path="staffId" class="form-control">
                                                     <option selected value="">Chọn nhân viên quản lí</option>
                                                     <c:forEach var="item" items="${staffmaps}">
@@ -179,13 +155,12 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-sm-6 ">
-                                                <c:forEach var="item" items="${buildingTypes}">
-                                                    <input type="checkbox" id="rent" name="types" value="${item.code}" />
-                                                    <label for="rent" style="font-weight: bold; margin-right: 10px; display: inline-block">${item.name}</label>
-                                                </c:forEach>
+                                        <div class="col-sm-6">
+                                            <c:forEach var="item" items="${buildingTypes}">
+                                                <input type="checkbox" id="type_${item.code}" name="types" value="${item.code}" />
+                                                <label for="type_${item.code}" style="font-weight: bold; margin-right: 10px; display: inline-block">${item.name}</label>
+                                            </c:forEach>
                                         </div>
-
 
                                         <div class="col-sm-12">
                                             <br>
@@ -211,7 +186,7 @@
                                 <i class="fa fa-plus-circle" aria-hidden="true"></i>
                             </button>
 
-                            <button type="button" class="btn btn-danger " data-toggle="tooltip"
+                            <button type="button" class="btn btn-danger" data-toggle="tooltip"
                                     title="Xóa tòa nhà" id="btnDeleteBuilding">
                                 <i class="fa fa-trash" aria-hidden="true"></i>
                             </button>
@@ -286,28 +261,28 @@
 
             <div class="modal-body">
                 <form>
-                <table class="table table-bordered" id="staffList">
-                    <thead>
-                    <tr>
-                        <th class="center">
-                            <label class="pos-rel">
-                                <input type="checkbox" id="selectAll2" class="ace"/>
-                                <span class="lbl"></span>
-                            </label>
-                        </th>
-                        <th class="text-center">Tên nhân viên</th>
-                    </tr>
-                    </thead>
-                    <tbody id="dsnv">
-                </table>
+                    <table class="table table-bordered" id="staffList">
+                        <thead>
+                        <tr>
+                            <th class="center">
+                                <label class="pos-rel">
+                                    <input type="checkbox" id="selectAll2" class="ace"/>
+                                    <span class="lbl"></span>
+                                </label>
+                            </th>
+                            <th class="text-center">Tên nhân viên</th>
+                        </tr>
+                        </thead>
+                        <tbody id="dsnv">
+                        </tbody>
+                    </table>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" id="assignment">Giao tòa nhà</button>
+                <button type="button" class="btn btn-default" id="assignment" data-dismiss="modal">Giao tòa nhà</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
-
     </div>
 </div>
 
@@ -315,28 +290,22 @@
     var buildingid;
     function assignmentBuilding(value) {
         buildingid = value;
-        // loadStaffAssign(value); // load nhân viên quản lí building
-        // function này sẽ call 1 api về từ dưới db - nó sẽ load dsach nv lên -> sử dụng ajax
         $("#dsnv").empty();
         $.ajax({
             type: "GET",
             url: "<c:url value='/api/building'/>" + '/' + value + '/staff',
-            //data: JSON.stringify(data),  // data gửi về
-            dataType: "json",              // kiểu dữ liệu gửi từ server
-            contentType: "application/json",   // gửi từ server
-
+            dataType: "json",
+            contentType: "application/json",
             success: function (response) {
-                // data : chính là cục chứa data của tk staffListDTO
-                var arrBuilding  = response;
-                var row = '';
+                var arrBuilding = response;
                 arrBuilding.forEach(function(item) {
-                    var row = '<tr>'
+                    var newRow = '<tr>'
                         +  '<td class=text-center>' +
                         '<input type="checkbox" ' + item.checked + ' name="checkStaffs[]" value="' + item.id  + '" />'
                         +  '</td>'
                         +  '<td>'+ item.fullName + '</td>' +
-                        '</tr>'
-                    $("#dsnv").append(row);
+                        '</tr>';
+                    $("#dsnv").append(newRow);
                 });
             },
             error: function (response) {
@@ -347,7 +316,6 @@
         openModalAssignmentBuilding();
     }
 
-    /* Giao Toà Nhà */
     $("#assignment").click(function (e) {
         e.preventDefault();
         var values = [];
@@ -364,10 +332,10 @@
             type: "POST",
             url: '<c:url value="/api/building"/>' + '/' + buildingid + '/assignment',
             data: JSON.stringify(data),
-            dataType: "json",               //kieu du lieu tu server tra ve client
-            contentType: "application/json",//kieu du lieu tu client gui ve server
+            dataType: "json",
+            contentType: "application/json",
             success: function (response) {
-                console.log("sucess");
+                console.log("success");
                 window.location.reload();
             },
             error: function (response) {
@@ -376,6 +344,8 @@
             }
         });
     })
+
+
 
     function openModalAssignmentBuilding() {
         $('#assignmentBuildingModal').modal();
@@ -387,7 +357,7 @@
         var buildingIds = $('#buildingList').find('tbody input[type=checkbox]:checked').map(function () {
             return $(this).val();
         }).get();
-        data['buildingIds'] = buildingIds; // push buildingIds vào data
+        data['buildingIds'] = buildingIds;
         deleteBuilding(data);
     });
 
@@ -416,7 +386,6 @@
         window.location.href = '<c:url value="/admin/building-edit" />' + '?buildingid=' + value;
     }
 
-
     var idOne;
     $("#btnDeleteBuilding").click(function (e) {
         e.preventDefault();
@@ -432,8 +401,8 @@
             type: "DELETE",
             url: '<c:url value="/api/building"/>',
             data:JSON.stringify(data),
-            dataType: "json",//kieu du lieu tu server tra ve client
-            contentType: "application/json",//kieu du lieu tu client gui ve server
+            dataType: "json",
+            contentType: "application/json",
             success: function (response) {
                 window.location.reload();
             },
@@ -447,7 +416,6 @@
         $('input[name="checkBuildings[]"]').prop('checked', this.checked);
     });
 
-    // id : selectAll2 -> checkbox - staff
     $("#selectAll2").click(function () {
         $('input[name="checkStaffs[]"]').prop('checked', this.checked);
     })
@@ -455,4 +423,3 @@
 </script>
 </body>
 </html>
-

@@ -17,5 +17,4 @@ public interface UserRepository extends UserRepositoryCustom,JpaRepository<UserE
     UserEntity findOneByUserName(String userName);
     List<UserEntity> findByStatusAndRoles_Code(Integer status, String roleCode);
     UserEntity findOnedById(Long id);
-
 }

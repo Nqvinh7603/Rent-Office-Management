@@ -16,7 +16,6 @@ import site.rentofficevn.repository.BuildingRepository;
 import site.rentofficevn.repository.UserRepository;
 import site.rentofficevn.service.IBuildingService;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -101,11 +100,11 @@ public class BuildingService implements IBuildingService {
     @Override
     @Transactional
     public void assignmentBuilding(AssignmentBuildingRequest assignmentBuildingRequest, Long buildingID) {
-        List<UserEntity> userEntities = assignmentBuildingRequest.getStaffIds().stream()
-                .map(id -> userRepository.findOnedById(id.longValue()))
-                .collect(Collectors.toList());
-        BuildingEntity buildingEntity = buildingRepository.findById(buildingID)
-                .orElseThrow(() -> new EntityNotFoundException("Building not found with id: " + buildingID));
+        List<UserEntity> userEntities = new ArrayList<>();
+        for (Integer item : assignmentBuildingRequest.getStaffIds()) {
+            userEntities.add(userRepository.findOnedById(item.longValue()));
+        }
+        BuildingEntity buildingEntity = buildingRepository.findById(buildingID).get();
         buildingRepository.assignmentBuilding(userEntities, buildingEntity);
     }
 

@@ -11,4 +11,9 @@ public class AssignmentBuildingRequest {
     public void setStaffIds(List<Integer> staffIds) {
         this.staffIds = staffIds;
     }
+    public void sanitize() {
+        if (staffIds != null) {
+            staffIds.removeIf(Objects::isNull);
+        }
+    }
 }

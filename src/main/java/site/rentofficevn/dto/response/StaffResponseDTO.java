@@ -1,6 +1,8 @@
 package site.rentofficevn.dto.response;
 
-public class StaffResponseDTO {
+import site.rentofficevn.dto.UserDTO;
+
+public class StaffResponseDTO extends UserDTO {
     private String fullName;
     private Long staffId;
     private String checked;

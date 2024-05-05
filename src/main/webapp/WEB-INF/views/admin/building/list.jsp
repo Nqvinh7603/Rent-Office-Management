@@ -203,7 +203,6 @@
 
                 </div><!-- /.row -->
 
-
                 <div class="row">
                     <div class="col-xs-12">
                         <div class="pull-right">
@@ -212,7 +211,7 @@
                                 <i class="fa fa-plus-circle" aria-hidden="true"></i>
                             </button>
 
-                            <button type="button" class="btn btn-danger " data-toggle="tooltip" \
+                            <button type="button" class="btn btn-danger " data-toggle="tooltip"
                                     title="Xóa tòa nhà" id="btnDeleteBuilding">
                                 <i class="fa fa-trash" aria-hidden="true"></i>
                             </button>
@@ -226,7 +225,12 @@
                         <table id="buildingList" class="table table-striped table-bordered table-hover">
                             <thead>
                             <tr>
-                                <th></th>
+                                <th class="center">
+                                    <label class="pos-rel">
+                                        <input type="checkbox" class="checkItem" id="selectAll" class="ace"/>
+                                        <span class="lbl"></span>
+                                    </label>
+                                </th>
                                 <th>Tên sản phẩm</th>
                                 <th>Địa chỉ</th>
                                 <th>Tên quản lí</th>
@@ -405,9 +409,37 @@
         window.location.href = '<c:url value="/admin/building-edit" />' + '?buildingid=' + value;
     }
 
+
+    var idOne;
+    $("#btnDeleteBuilding").click(function (e) {
+        e.preventDefault();
+        var values = [];
+        if (idOne != null)
+            values.push(idOne);
+        $.each($("input[name='checkBuildings[]']:checked"), function () {
+            values.push($(this).val());
+        });
+        var data = {};
+        data["buildingId"] = values;
+        $.ajax({
+            type: "DELETE",
+            url: '<c:url value="/api/building"/>',
+            data:JSON.stringify(data),
+            dataType: "json",//kieu du lieu tu server tra ve client
+            contentType: "application/json",//kieu du lieu tu client gui ve server
+            success: function (response) {
+                window.location.reload();
+            },
+            error: function (response) {
+                alert("fail")
+                console.log(response)
+            }
+        });
+    })
     $('#selectAll').change(function() {
         $('input[name="checkBuildings[]"]').prop('checked', this.checked);
     });
+
 </script>
 </body>
 </html>

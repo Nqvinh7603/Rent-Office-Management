@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import site.rentofficevn.builder.BuildingSearchBuilder;
 import site.rentofficevn.converter.BuildingConverter;
 import site.rentofficevn.dto.BuildingDTO;
+import site.rentofficevn.dto.request.BuildingDeleteRequest;
 import site.rentofficevn.dto.request.BuildingSearchRequest;
 import site.rentofficevn.dto.response.BuildingSearchResponse;
 import site.rentofficevn.entity.BuildingEntity;
@@ -85,6 +86,14 @@ public class BuildingService implements IBuildingService {
             System.out.println("Error building update in service");
         }
         return null;
+    }
+
+    @Override
+    @Transactional
+    public void removeBuilding(BuildingDeleteRequest buildingDeleteRequest)  {
+        if (buildingDeleteRequest.getBuildingId() != null) {
+            buildingRepository.deleteByIdIn(buildingDeleteRequest.getBuildingId());
+        }
     }
 
     private BuildingSearchBuilder convertParamToBuilder(BuildingSearchRequest buildingSearchRequest) {

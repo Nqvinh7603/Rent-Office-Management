@@ -235,11 +235,9 @@
             dataType: "json",               // kiểu dữ liệu server gửi cho client
             contentType: "application/json",//kieu du lieu tu client gui ve server
             success: function (response) {
-                $('#loading_image').hide();
                 window.location.href = '<c:url value="/admin/building-list" />'
             },
             error: function (response) {
-                $('#loading_image').hide();
                 alert("error : fail")
                 console.log(response)
             }

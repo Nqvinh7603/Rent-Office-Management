@@ -56,7 +56,7 @@
                 </li>
             </ul>
         </li>
-        <%--<li class="">
+        <li class="">
             <a href="#" class="dropdown-toggle">
                 <i class="menu-icon fa fas fa-users"></i>
                 <span class="menu-text">QL tài khoản</span>
@@ -72,7 +72,7 @@
                     <b class="arrow"></b>
                 </li>
             </ul>
-        </li>--%>
+        </li>
     </ul>
     <div class="sidebar-toggle sidebar-collapse">
         <i class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>

@@ -1,4 +1,4 @@
-package site.rentofficevn.config;
+package site.rentofficevn.constant.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

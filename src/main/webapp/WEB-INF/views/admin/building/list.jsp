@@ -255,7 +255,7 @@
                                     <td>${item.serviceFee}</td>
                                     <td>
                                         <button class="btn btn-xs" data-toggle="tooltip"
-                                                title="Giao tòa nhà" onclick="assingmentBuilding(1)">
+                                                title="Giao tòa nhà" value="${item.id}" onclick="assignmentBuilding(value)">
                                             <i class="fa fa-home" aria-hidden="true"></i>
                                         </button>
                                         <button class="btn btn-xs btn-dark" data-toggle="tooltip"
@@ -285,19 +285,25 @@
             </div>
 
             <div class="modal-body">
+                <form>
                 <table class="table table-bordered" id="staffList">
                     <thead>
                     <tr>
-                        <th>Chọn nhân viên</th>
-                        <th>Tên nhân viên</th>
+                        <th class="center">
+                            <label class="pos-rel">
+                                <input type="checkbox" id="selectAll2" class="ace"/>
+                                <span class="lbl"></span>
+                            </label>
+                        </th>
+                        <th class="text-center">Tên nhân viên</th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="dsnv">
                 </table>
-                <input type="hidden" name="buildingId" id="buildingId" value="">
+                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" id="btnAssignBuilding">Giao tòa nhà</button>
+                <button type="button" class="btn btn-default" id="assignment">Giao tòa nhà</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -306,72 +312,73 @@
 </div>
 
 <script>
-    function loadStaff() {
+    var buildingid;
+    function assignmentBuilding(value) {
+        buildingid = value;
+        // loadStaffAssign(value); // load nhân viên quản lí building
+        // function này sẽ call 1 api về từ dưới db - nó sẽ load dsach nv lên -> sử dụng ajax
+        $("#dsnv").empty();
         $.ajax({
             type: "GET",
-            url: "${loadStaffAPI}/1/staffs",
-            //data: JSON.stringify(data),
-            dataType: "json",
-            //contentType: "application/json",
+            url: "<c:url value='/api/building'/>" + '/' + value + '/staff',
+            //data: JSON.stringify(data),  // data gửi về
+            dataType: "json",              // kiểu dữ liệu gửi từ server
+            contentType: "application/json",   // gửi từ server
+
             success: function (response) {
-                //console.log('success');
+                // data : chính là cục chứa data của tk staffListDTO
+                var arrBuilding  = response;
                 var row = '';
-                $.each(response.data, function (index, item) {
-                    row += '<tr>';
-                    row += '<td class="text-center"><input type="checkbox" ' + item.checked + '  value=' + item.staffId + ' id="checkbox_' + item.staffId + '" class="check-box-element" /></td>';
-                    row += '<td class="text-center">' + item.fullName + '</td>';
-                    row += '</tr>';
+                arrBuilding.forEach(function(item) {
+                    var row = '<tr>'
+                        +  '<td class=text-center>' +
+                        '<input type="checkbox" ' + item.checked + ' name="checkStaffs[]" value="' + item.id  + '" />'
+                        +  '</td>'
+                        +  '<td>'+ item.fullName + '</td>' +
+                        '</tr>'
+                    $("#dsnv").append(row);
                 });
-                $('#staffList tbody').html(row);
             },
             error: function (response) {
                 console.log('failed')
                 console.log(response)
             }
         });
+        openModalAssignmentBuilding();
     }
 
-    function assingmentBuilding(buildingId) {
-        openModalAssingmentBuilding();
-        loadStaff();
-        $("#buildingId").val(buildingId);
-        console.log($("#buildingId").val());
-    }
-
-    function openModalAssingmentBuilding() {
-        $('#assignmentBuildingModal').modal();
-    }
-
-    $('#btnAssignBuilding').click(function (e) {
+    /* Giao Toà Nhà */
+    $("#assignment").click(function (e) {
         e.preventDefault();
-        //call api
+        var values = [];
         var data = {};
-        var staffs = [];
-        data['buildingId'] = $('#buildingId').val();
-        // $('#staffList').find('tbody input[type=checkbox]:checked')
-        // đoạn code này tương tự staff = [1,2,3], là 1 mảng chứa staff
-        var staffs = $('#staffList').find('tbody input[type=checkbox]:checked').map(function () {
-            return $(this).val();
-        }).get();
-        data['staffs'] = staffs;
-        assignStaff(data);
-    });
+        var checkData = $('input[name="checkStaffs[]"]:checked')
 
-    function assignStaff(data) {
+        $.each(checkData, function () {
+            values.push($(this).val());
+        });
+
+        data["staffIds"] = values;
+
         $.ajax({
             type: "POST",
-            url: "http://localhost:8080/api-user-assignment",
+            url: '<c:url value="/api/building"/>' + '/' + buildingid + '/assignment',
             data: JSON.stringify(data),
-            dataType: "json",
-            contentType: "application/json",
+            dataType: "json",               //kieu du lieu tu server tra ve client
+            contentType: "application/json",//kieu du lieu tu client gui ve server
             success: function (response) {
-                console.log('success');
+                console.log("sucess");
+                window.location.reload();
             },
             error: function (response) {
-                console.log('failed')
+                alert("fail")
                 console.log(response)
             }
         });
+    })
+
+    function openModalAssignmentBuilding() {
+        $('#assignmentBuildingModal').modal();
     }
 
     $('#btnDeleteBuilding').click(function (e) {
@@ -439,6 +446,11 @@
     $('#selectAll').change(function() {
         $('input[name="checkBuildings[]"]').prop('checked', this.checked);
     });
+
+    // id : selectAll2 -> checkbox - staff
+    $("#selectAll2").click(function () {
+        $('input[name="checkStaffs[]"]').prop('checked', this.checked);
+    })
 
 </script>
 </body>

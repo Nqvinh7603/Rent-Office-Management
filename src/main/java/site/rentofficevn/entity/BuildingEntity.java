@@ -34,9 +34,21 @@ public class BuildingEntity extends BaseEntity{
     private BigDecimal brokerageFee;
     @Column(name = "type")
     private String types;
-    @OneToMany(mappedBy = "building")
 
+    @OneToMany(mappedBy = "building")
     private List<RentAreaEntity> rentAreas;
+
+    // 1 building - n assignmentBuiding
+    @OneToMany(mappedBy="building")
+    private List<AssignBuildingEntity> assignBuildings;
+
+    public List<AssignBuildingEntity> getAssignBuildings() {
+        return assignBuildings;
+    }
+
+    public void setAssignBuildings(List<AssignBuildingEntity> assignBuildings) {
+        this.assignBuildings = assignBuildings;
+    }
 
     public List<RentAreaEntity> getRentAreas() {
         return rentAreas;

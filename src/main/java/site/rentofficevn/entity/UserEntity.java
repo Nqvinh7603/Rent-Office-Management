@@ -3,6 +3,7 @@ package site.rentofficevn.entity;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "user")
@@ -30,6 +31,10 @@ public class UserEntity extends BaseEntity {
             joinColumns = @JoinColumn(name = "userid", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "roleid", nullable = false))
     private List<RoleEntity> roles = new ArrayList<>();
+
+    // 1 user - n assignBuilding
+    @OneToMany(mappedBy="user") //
+    private List<AssignBuildingEntity> buildings;
 
     public String getUserName() {
         return userName;

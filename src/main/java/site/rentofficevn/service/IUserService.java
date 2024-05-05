@@ -2,6 +2,7 @@ package site.rentofficevn.service;
 
 import site.rentofficevn.dto.PasswordDTO;
 import site.rentofficevn.dto.UserDTO;
+import site.rentofficevn.dto.response.StaffResponseDTO;
 import site.rentofficevn.exception.MyException;
 import org.springframework.data.domain.Pageable;
 
@@ -22,4 +23,5 @@ public interface IUserService {
     void delete(long[] ids);
     Map<Long,String> getStaffMaps();
     List<UserDTO> getAllStaff();
+    List<StaffResponseDTO> finAllStaffByBuilding(Long id);
 }

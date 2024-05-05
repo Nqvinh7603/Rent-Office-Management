@@ -1,9 +1,15 @@
 package site.rentofficevn.repository.custom.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import site.rentofficevn.builder.BuildingSearchBuilder;
 import site.rentofficevn.constant.SystemConstant;
+import site.rentofficevn.entity.AssignBuildingEntity;
 import site.rentofficevn.entity.BuildingEntity;
+import site.rentofficevn.entity.UserEntity;
+import site.rentofficevn.repository.AssignmentBuildingRepository;
+import site.rentofficevn.repository.UserRepository;
 import site.rentofficevn.repository.custom.BuildingRepositoryCustom;
 import site.rentofficevn.utils.CheckInputSearchUtils;
 
@@ -19,6 +25,12 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private AssignmentBuildingRepository assignmentRepo;
 
     @Override
     public List<BuildingEntity> findBuilding(BuildingSearchBuilder buildingSearchBuilder) {
@@ -112,4 +124,35 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
         }
         return sqlSpecial.toString();
     }
+
+    @Transactional
+    @Override
+    public void assignmentBuilding(List<UserEntity> userEntities, BuildingEntity buildingEntity) {
+
+        // Xóa những người dùng không nằm trong danh sách userEntities
+        userRepository.getAllStaffByBuilding(buildingEntity.getId()).stream()
+                .filter(item -> userEntities.stream().noneMatch(item1 -> item.getId() == item1.getId()))
+                .map(item -> assignmentRepo.findByBuildingAndUser(buildingEntity, item))
+                .forEach(entityManager::remove);
+
+        // Thêm những người dùng mới vào danh sách
+        userEntities.stream()
+                .filter(item -> userRepository.getAllStaffByBuilding(buildingEntity.getId()).stream()
+                        .noneMatch(item2 -> item.getId() == item2.getId()))
+                .map(item -> {
+                    AssignBuildingEntity assignmentBuildingEntity = new AssignBuildingEntity();
+                    assignmentBuildingEntity.setBuilding(buildingEntity);
+                    assignmentBuildingEntity.setUser(item);
+                    return assignmentBuildingEntity;
+                })
+                .forEach(entityManager::persist);
+    }
+
+    // set vào Assignment ->
+    // list : A,B,C,D,E
+    // tích : a,b     - listStaff
+    // h muốn set thêm c,d - listUserId
+    // c,d,a,b
+    //  != => set vào assigment
+    //  }
 }

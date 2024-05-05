@@ -4,11 +4,13 @@ import site.rentofficevn.constant.SystemConstant;
 import site.rentofficevn.converter.UserConverter;
 import site.rentofficevn.dto.PasswordDTO;
 import site.rentofficevn.dto.UserDTO;
+import site.rentofficevn.dto.response.StaffResponseDTO;
 import site.rentofficevn.entity.RoleEntity;
 import site.rentofficevn.entity.UserEntity;
 import site.rentofficevn.exception.MyException;
 import site.rentofficevn.repository.RoleRepository;
 import site.rentofficevn.repository.UserRepository;
+import site.rentofficevn.repository.custom.impl.UserRepositoryImpl;
 import site.rentofficevn.service.IUserService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -170,5 +172,10 @@ public class UserService implements IUserService {
                 .collect(Collectors.toList());
         return result;
 
+    }
+
+    @Override
+    public List<StaffResponseDTO> finAllStaffByBuilding(Long id) {
+        return userConverter.convertToDtoResponse(userRepository.getAllStaffByBuilding(id));
     }
 }

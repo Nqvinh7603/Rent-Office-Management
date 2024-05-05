@@ -1,20 +1,22 @@
 package site.rentofficevn.service.impl;
 
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.rentofficevn.builder.BuildingSearchBuilder;
 import site.rentofficevn.converter.BuildingConverter;
 import site.rentofficevn.dto.BuildingDTO;
+import site.rentofficevn.dto.request.AssignmentBuildingRequest;
 import site.rentofficevn.dto.request.BuildingDeleteRequest;
 import site.rentofficevn.dto.request.BuildingSearchRequest;
 import site.rentofficevn.dto.response.BuildingSearchResponse;
 import site.rentofficevn.entity.BuildingEntity;
+import site.rentofficevn.entity.UserEntity;
 import site.rentofficevn.repository.BuildingRepository;
 import site.rentofficevn.repository.UserRepository;
 import site.rentofficevn.service.IBuildingService;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -95,6 +97,18 @@ public class BuildingService implements IBuildingService {
             buildingRepository.deleteByIdIn(buildingDeleteRequest.getBuildingId());
         }
     }
+
+    @Override
+    @Transactional
+    public void assignmentBuilding(AssignmentBuildingRequest assignmentBuildingRequest, Long buildingID) {
+        List<UserEntity> userEntities = assignmentBuildingRequest.getStaffIds().stream()
+                .map(id -> userRepository.findOnedById(id.longValue()))
+                .collect(Collectors.toList());
+        BuildingEntity buildingEntity = buildingRepository.findById(buildingID)
+                .orElseThrow(() -> new EntityNotFoundException("Building not found with id: " + buildingID));
+        buildingRepository.assignmentBuilding(userEntities, buildingEntity);
+    }
+
 
     private BuildingSearchBuilder convertParamToBuilder(BuildingSearchRequest buildingSearchRequest) {
         try {

@@ -186,7 +186,7 @@
                                 <i class="fa fa-plus-circle" aria-hidden="true"></i>
                             </button>
 
-                            <button type="button" class="btn btn-danger" data-toggle="tooltip"
+                            <button type="button" class="btn btn-danger btn-bold" data-toggle="tooltip"
                                     title="Xóa tòa nhà" id="btnDeleteBuilding" onclick="warningDelete()">
                                 <i class="fa fa-trash" aria-hidden="true"></i>
                             </button>
@@ -349,48 +349,13 @@
         $('#assignmentBuildingModal').modal();
     }
 
-    <%--var idOne;--%>
-    <%--$("#btnDeleteBuilding").click(function (e) {--%>
-    <%--    e.preventDefault();--%>
-    <%--    var values = [];--%>
-    <%--    if (idOne != null) {--%>
-    <%--        values.push(idOne);--%>
-    <%--    }--%>
-    <%--    $("input[name='checkBuildings[]']:checked").each(function () {--%>
-    <%--        values.push($(this).val());--%>
-    <%--    });--%>
-    <%--    if (values.length > 0) {--%>
-    <%--        deleteBuilding(values);--%>
-    <%--    } else {--%>
-    <%--        alert("Please select at least one building to delete.");--%>
-    <%--    }--%>
-    <%--});--%>
-
-    <%--function deleteBuilding(data) {--%>
-    <%--    $.ajax({--%>
-    <%--        type: "DELETE",--%>
-    <%--        url: '<c:url value="/api/building"/>',--%>
-    <%--        data: JSON.stringify({ "buildingId": data }),--%>
-    <%--        dataType: "json",--%>
-    <%--        contentType: "application/json",--%>
-    <%--        success: function (response) {--%>
-    <%--            window.location.reload();--%>
-    <%--        },--%>
-    <%--        error: function (response) {--%>
-    <%--            alert("Failed to delete buildings.");--%>
-    <%--            console.log(response);--%>
-    <%--        }--%>
-    <%--    });--%>
-    <%--}--%>
     function warningDelete() {
-        showAlertBeforeDeleteBuilding(function () {
+        showAlertBeforeDelete(function () {
             var dataArray = $('tbody input[type=checkbox]:checked').map(function () {
                 return $(this).val();
             }).get();
             deleteBuilding(dataArray);
         });
-        // Di chuyển e.preventDefault() ra khỏi hàm callback
-        // vì không thể ngăn chặn mặc định hành vi của sự kiện click bằng cách này
         e.preventDefault();
     }
     function deleteBuilding(data) {

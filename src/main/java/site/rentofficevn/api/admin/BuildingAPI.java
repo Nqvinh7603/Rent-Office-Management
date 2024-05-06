@@ -22,18 +22,12 @@ public class BuildingAPI {
     @Autowired
     private UserService userService;
 
-
     @PutMapping
     public BuildingDTO updateBuilding(@RequestBody(required = false) BuildingDTO buildingDTO) {
         BuildingDTO buildingUpdate = buildingService.updateBuilding(buildingDTO);
         return buildingUpdate;
     }
 
-    /*@DeleteMapping
-    public BuildingDeleteRequest deleteBuilding(@RequestBody BuildingDeleteRequest buildingDeleteRequest) throws NotFoundException {
-        buildingService.removeBuilding(buildingDeleteRequest);
-        return buildingDeleteRequest;
-    }*/
     @DeleteMapping
     public ResponseEntity<Void> deleteBuildings(@RequestBody List<Long> ids) { // @RequestBody
         if (ids.size() != 0) {
@@ -41,7 +35,6 @@ public class BuildingAPI {
         }
         return ResponseEntity.noContent().build();
     }
-
     // assigment building to staff
     @PostMapping("/{id}/assignment")
     public AssignmentBuildingRequest assignmentBuilding(@RequestBody(required = false) AssignmentBuildingRequest assignmentBuilding
@@ -50,7 +43,6 @@ public class BuildingAPI {
         buildingService.assignmentBuilding(assignmentBuilding, buildingId);
         return assignmentBuilding;
     }
-
     // api load satff
     @GetMapping("/{id}/staff")
     public List<StaffResponseDTO> loadStaffByBuilding(@PathVariable("id") Long id) {

@@ -1,9 +1,11 @@
 package site.rentofficevn.dto.request;
 
+import site.rentofficevn.dto.AbstractDTO;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class BuildingSearchRequest {
+public class BuildingSearchRequest extends AbstractDTO {
     private String name;
     private Integer floorArea;
     private String districtCode;      // quận : Q1, Q2, ..

@@ -2,7 +2,7 @@ package site.rentofficevn.dto.response;
 
 import site.rentofficevn.dto.AbstractDTO;
 
-public class BuildingSearchResponse extends AbstractDTO<BuildingSearchResponse> {
+public class BuildingSearchResponse extends AbstractDTO{
     private String name;            // tên sản phẩm
     private String address;         // địa chỉ
     private String managerName;     // tên quản lí

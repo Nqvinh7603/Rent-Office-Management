@@ -29,29 +29,25 @@ import java.util.stream.Collectors;
 public class BuildingService implements IBuildingService {
 
     @Autowired
-    private RentAreaRepository rentAreaRepository;
-
-    @Autowired
-    private RentAreaService rentAreaService;
-
-    @Autowired
-    private RentAreaConverter rentAreaConverter;
-    @Autowired
     BuildingRepository buildingRepository;
-
     @Autowired
     BuildingConverter buildingConverter;
-
     @Autowired
     UserRepository userRepository;
     @Autowired
     AssignmentBuildingRepository assignmentBuildingRepository;
+    @Autowired
+    private RentAreaRepository rentAreaRepository;
+    @Autowired
+    private RentAreaService rentAreaService;
+    @Autowired
+    private RentAreaConverter rentAreaConverter;
 
     @Override
     public List<BuildingDTO> findAll() {
         List<BuildingDTO> results = new ArrayList<>();
-        List<BuildingEntity> buildingEntities =buildingRepository.findAll();
-        for(BuildingEntity item : buildingEntities){
+        List<BuildingEntity> buildingEntities = buildingRepository.findAll();
+        for (BuildingEntity item : buildingEntities) {
             BuildingDTO buildingDTO = buildingConverter.convertToDto(item);
             results.add(buildingDTO);
         }
@@ -107,79 +103,59 @@ public class BuildingService implements IBuildingService {
         return null;
     }
 
-//    @Override
-//    @Transactional
-//    public void removeBuilding(BuildingDeleteRequest buildingDeleteRequest)    {
-//        if (buildingDeleteRequest.getBuildingId() != null) {
-//            rentAreaRepository.deleteByBuilding_IdIn(buildingDeleteRequest.getBuildingId());
-//            assignmentBuildingRepository.deleteByBuildingIdIn(buildingDeleteRequest.getBuildingId());
-//            buildingRepository.deleteByIdIn(buildingDeleteRequest.getBuildingId());
-//        }
-//    }
-@Override
-@Transactional
-public void removeBuilding(BuildingDeleteRequest buildingDeleteRequest) {
-    if (buildingDeleteRequest.getBuildingId() != null) {
-        List<Long> buildingIds = buildingDeleteRequest.getBuildingId();
-        for (Long buildingId : buildingIds) {
-            // Xóa tất cả các bản ghi trong bảng AssignmentBuilding liên quan đến tòa nhà
-            assignmentBuildingRepository.deleteByBuildingId(buildingId);
+    @Override
+    @Transactional
+    public void delete(List<Long> buildingIds) {
+        for (Long item : buildingIds) {
+            BuildingEntity buildingDelete = buildingRepository.findById(item).get();
 
-            // Lấy ra tòa nhà cần xóa
-            Optional<BuildingEntity> buildingOptional = buildingRepository.findById(buildingId);
-            if (buildingOptional.isPresent()) {
-                BuildingEntity building = buildingOptional.get();
+            if (buildingDelete.getRentAreas().size() > 0) {
+                rentAreaRepository.deleteByBuilding_Id(buildingDelete.getId());
+            }
+            if (buildingDelete.getAssignBuildings().size() > 0) {
+                assignmentBuildingRepository.deleteByBuilding_Id(buildingDelete.getId());
+            }
+            buildingRepository.deleteById(buildingDelete.getId());
+        }
+    }
 
-                // Lấy ra danh sách RentArea của tòa nhà
-                List<RentAreaEntity> rentAreas = building.getRentAreas();
 
-                // Xóa tất cả các RentArea của tòa nhà
-                rentAreaRepository.deleteAll(rentAreas);
+        @Override
+        @Transactional
+        public void assignmentBuilding (AssignmentBuildingRequest assignmentBuildingRequest, Long buildingID){
+            List<UserEntity> userEntities = new ArrayList<>();
+            for (Integer item : assignmentBuildingRequest.getStaffIds()) {
+                userEntities.add(userRepository.findOnedById(item.longValue()));
+            }
+            BuildingEntity buildingEntity = buildingRepository.findById(buildingID).get();
+            buildingRepository.assignmentBuilding(userEntities, buildingEntity);
+        }
 
-                // Xóa tòa nhà
-                buildingRepository.deleteById(buildingId);
+
+        private BuildingSearchBuilder convertParamToBuilder (BuildingSearchRequest buildingSearchRequest){
+            try {
+                BuildingSearchBuilder result = new BuildingSearchBuilder.Builder()
+                        .setName(buildingSearchRequest.getName())
+                        .setFloorArea(buildingSearchRequest.getFloorArea())
+                        .setDistrict(buildingSearchRequest.getDistrictCode())
+                        .setWard(buildingSearchRequest.getWard())
+                        .setStreet(buildingSearchRequest.getStreet())
+                        .setNumberOfBasement(buildingSearchRequest.getNumberOfBasement())
+                        .setDirection(buildingSearchRequest.getDirection())
+                        .setLevel(buildingSearchRequest.getLevel())
+                        .setRentAreaFrom(buildingSearchRequest.getRentAreaFrom())
+                        .setRentAreaTo(buildingSearchRequest.getRentAreaTo())
+                        .setRentPriceFrom(buildingSearchRequest.getRentPriceFrom())
+                        .setRentPriceTo(buildingSearchRequest.getRentPriceTo())
+                        .setManagerName(buildingSearchRequest.getManagerName())
+                        .setManagerPhone(buildingSearchRequest.getManagerPhone())
+                        .setStaffID(buildingSearchRequest.getStaffId())
+                        .setTypes(buildingSearchRequest.getTypes())
+                        .build();
+                return result;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
             }
         }
     }
-}
-
-
-    @Override
-    @Transactional
-    public void assignmentBuilding(AssignmentBuildingRequest assignmentBuildingRequest, Long buildingID) {
-        List<UserEntity> userEntities = new ArrayList<>();
-        for (Integer item : assignmentBuildingRequest.getStaffIds()) {
-            userEntities.add(userRepository.findOnedById(item.longValue()));
-        }
-        BuildingEntity buildingEntity = buildingRepository.findById(buildingID).get();
-        buildingRepository.assignmentBuilding(userEntities, buildingEntity);
-    }
-
-
-    private BuildingSearchBuilder convertParamToBuilder(BuildingSearchRequest buildingSearchRequest) {
-        try {
-            BuildingSearchBuilder result = new BuildingSearchBuilder.Builder()
-                    .setName(buildingSearchRequest.getName())
-                    .setFloorArea(buildingSearchRequest.getFloorArea())
-                    .setDistrict(buildingSearchRequest.getDistrictCode())
-                    .setWard(buildingSearchRequest.getWard())
-                    .setStreet(buildingSearchRequest.getStreet())
-                    .setNumberOfBasement(buildingSearchRequest.getNumberOfBasement())
-                    .setDirection(buildingSearchRequest.getDirection())
-                    .setLevel(buildingSearchRequest.getLevel())
-                    .setRentAreaFrom(buildingSearchRequest.getRentAreaFrom())
-                    .setRentAreaTo(buildingSearchRequest.getRentAreaTo())
-                    .setRentPriceFrom(buildingSearchRequest.getRentPriceFrom())
-                    .setRentPriceTo(buildingSearchRequest.getRentPriceTo())
-                    .setManagerName(buildingSearchRequest.getManagerName())
-                    .setManagerPhone(buildingSearchRequest.getManagerPhone())
-                    .setStaffID(buildingSearchRequest.getStaffId())
-                    .setTypes(buildingSearchRequest.getTypes())
-                    .build();
-            return result;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-}

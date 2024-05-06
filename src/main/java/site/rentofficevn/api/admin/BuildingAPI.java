@@ -2,6 +2,7 @@ package site.rentofficevn.api.admin;
 
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import site.rentofficevn.dto.BuildingDTO;
 import site.rentofficevn.dto.request.AssignmentBuildingRequest;
@@ -28,10 +29,17 @@ public class BuildingAPI {
         return buildingUpdate;
     }
 
-    @DeleteMapping
+    /*@DeleteMapping
     public BuildingDeleteRequest deleteBuilding(@RequestBody BuildingDeleteRequest buildingDeleteRequest) throws NotFoundException {
         buildingService.removeBuilding(buildingDeleteRequest);
         return buildingDeleteRequest;
+    }*/
+    @DeleteMapping
+    public ResponseEntity<Void> deleteBuildings(@RequestBody List<Long> ids) { // @RequestBody
+        if (ids.size() != 0) {
+            buildingService.delete(ids);
+        }
+        return ResponseEntity.noContent().build();
     }
 
     // assigment building to staff

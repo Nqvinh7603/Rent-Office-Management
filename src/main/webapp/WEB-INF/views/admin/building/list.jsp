@@ -187,7 +187,7 @@
                             </button>
 
                             <button type="button" class="btn btn-danger" data-toggle="tooltip"
-                                    title="Xóa tòa nhà" id="btnDeleteBuilding">
+                                    title="Xóa tòa nhà" id="btnDeleteBuilding" onclick="warningDelete()">
                                 <i class="fa fa-trash" aria-hidden="true"></i>
                             </button>
                         </div>
@@ -345,38 +345,71 @@
         });
     })
 
-
-
     function openModalAssignmentBuilding() {
         $('#assignmentBuildingModal').modal();
     }
 
-    $('#btnDeleteBuilding').click(function (e) {
-        e.preventDefault();
-        var data = {};
-        var buildingIds = $('#buildingList').find('tbody input[type=checkbox]:checked').map(function () {
-            return $(this).val();
-        }).get();
-        data['buildingIds'] = buildingIds;
-        deleteBuilding(data);
-    });
+    <%--var idOne;--%>
+    <%--$("#btnDeleteBuilding").click(function (e) {--%>
+    <%--    e.preventDefault();--%>
+    <%--    var values = [];--%>
+    <%--    if (idOne != null) {--%>
+    <%--        values.push(idOne);--%>
+    <%--    }--%>
+    <%--    $("input[name='checkBuildings[]']:checked").each(function () {--%>
+    <%--        values.push($(this).val());--%>
+    <%--    });--%>
+    <%--    if (values.length > 0) {--%>
+    <%--        deleteBuilding(values);--%>
+    <%--    } else {--%>
+    <%--        alert("Please select at least one building to delete.");--%>
+    <%--    }--%>
+    <%--});--%>
 
+    <%--function deleteBuilding(data) {--%>
+    <%--    $.ajax({--%>
+    <%--        type: "DELETE",--%>
+    <%--        url: '<c:url value="/api/building"/>',--%>
+    <%--        data: JSON.stringify({ "buildingId": data }),--%>
+    <%--        dataType: "json",--%>
+    <%--        contentType: "application/json",--%>
+    <%--        success: function (response) {--%>
+    <%--            window.location.reload();--%>
+    <%--        },--%>
+    <%--        error: function (response) {--%>
+    <%--            alert("Failed to delete buildings.");--%>
+    <%--            console.log(response);--%>
+    <%--        }--%>
+    <%--    });--%>
+    <%--}--%>
+    function warningDelete() {
+        showAlertBeforeDeleteBuilding(function () {
+            var dataArray = $('tbody input[type=checkbox]:checked').map(function () {
+                return $(this).val();
+            }).get();
+            deleteBuilding(dataArray);
+        });
+        // Di chuyển e.preventDefault() ra khỏi hàm callback
+        // vì không thể ngăn chặn mặc định hành vi của sự kiện click bằng cách này
+        e.preventDefault();
+    }
     function deleteBuilding(data) {
         $.ajax({
-            type: "DELETE",
-            url: "http://localhost:8080/api-deleteBuilding",
+            url: '<c:url value="/api/building"/>',
+            type: 'DELETE',
+            dataType: 'json',
+            contentType: 'application/json',
             data: JSON.stringify(data),
-            dataType: "json",
-            contentType: "application/json",
-            success: function (response) {
-                console.log('success');
+            success: function (res) {
+                window.location.href = "<c:url value='/admin/building-list?message=delete_success'/>";
             },
-            error: function (response) {
-                console.log('failed')
-                console.log(response)
+            error: function (res) {
+                console.log(res);
+                window.location.href = "<c:url value='/admin/building-list?message=error_system'/>";
             }
         });
     }
+
 
     $('#btnSearch').click(function (e) {
         e.preventDefault();
@@ -386,65 +419,7 @@
         window.location.href = '<c:url value="/admin/building-edit" />' + '?buildingid=' + value;
     }
 
-    var valueType = ${modelSearch.types} + '';
-    if (valueType != '') {
-        $.each(valueType, function (index, value) {
-            $("#rent[value='" + value + "']").prop('checked', true);
-        });
-    }
 
-    /*var idOne;
-    $("#btnDeleteBuilding").click(function (e) {
-        e.preventDefault();
-        var values = [];
-        if (idOne != null)
-            values.push(idOne);
-        $.each($("input[name='checkBuildings[]']:checked"), function () {
-            values.push($(this).val());
-        });
-        var data = {};
-        data["buildingId"] = values;
-        $.ajax({
-            type: "DELETE",
-            url: '<c:url value="/api/building"/>',
-            data:JSON.stringify(data),
-            dataType: "json",
-            contentType: "application/json",
-            success: function (response) {
-                window.location.reload();
-            },
-            error: function (response) {
-                alert("fail")
-                console.log(response)
-            }
-        });
-    })*/
-    var idOne;
-    $("#btnDeleteBuilding").click(function (e) {
-        e.preventDefault();
-        var values = [];
-        if (idOne != null)
-            values.push(idOne);
-        $.each($("input[name='checkBuildings[]']:checked"), function () {
-            values.push($(this).val());
-        });
-        var data = {};
-        data["buildingId"] = values;
-        $.ajax({
-            type: "DELETE",
-            url: '<c:url value="/api/building"/>',
-            data:JSON.stringify(data),
-            dataType: "json",//kieu du lieu tu server tra ve client
-            contentType: "application/json",//kieu du lieu tu client gui ve server
-            success: function (response) {
-                window.location.reload();
-            },
-            error: function (response) {
-                alert("failed")
-                console.log(response)
-            }
-        });
-    })
     $('#selectAll').change(function() {
         $('input[name="checkBuildings[]"]').prop('checked', this.checked);
     });
@@ -452,6 +427,13 @@
     $("#selectAll2").click(function () {
         $('input[name="checkStaffs[]"]').prop('checked', this.checked);
     })
+
+    var valueType = ${modelSearch.types} + '';
+    if (valueType != '') {
+        $.each(valueType, function (index, value) {
+            $("#rent[value='" + value + "']").prop('checked', true);
+        });
+    }
 
 </script>
 </body>

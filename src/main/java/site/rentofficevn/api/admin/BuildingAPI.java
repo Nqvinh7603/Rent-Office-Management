@@ -28,11 +28,6 @@ public class BuildingAPI {
         return buildingUpdate;
     }
 
-    @PostMapping
-    public BuildingDTO createBuilding(@RequestBody(required = false) BuildingDTO buildingDTO) {
-        return buildingService.createBuilding(buildingDTO);
-    }
-
     @DeleteMapping
     public BuildingDeleteRequest deleteBuilding(@RequestBody BuildingDeleteRequest buildingDeleteRequest) throws NotFoundException {
         buildingService.removeBuilding(buildingDeleteRequest);

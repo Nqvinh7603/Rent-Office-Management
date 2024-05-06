@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface IBuildingService {
     List<BuildingDTO> findAll();
-    BuildingDTO createBuilding(BuildingDTO buildingDTO);
+    //BuildingDTO createBuilding(BuildingDTO buildingDTO);
     List<BuildingSearchResponse> findAll(BuildingSearchRequest buildingSearchRequest);
     BuildingDTO findBuildingById(Long id);
     BuildingDTO updateBuilding(BuildingDTO buildingDTO);

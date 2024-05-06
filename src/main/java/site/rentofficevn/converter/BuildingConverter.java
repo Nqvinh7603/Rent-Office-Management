@@ -11,9 +11,7 @@ import site.rentofficevn.enums.DistrictsEnum;
 import site.rentofficevn.repository.RentAreaRepository;
 import site.rentofficevn.utils.ValidateUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -43,7 +41,7 @@ public class BuildingConverter {
         buildingSearchResponse.setAddress(buildingEntity.getStreet() + " - " + buildingEntity.getWard() + " - " + districtName);
 
         //Xử lý rent area -> By Stream API
-        List<RentAreaEntity> rentAreaEntities = rentAreaRepository.findByBuildingId(buildingEntity.getId());
+        List<RentAreaEntity> rentAreaEntities = rentAreaRepository.findByBuilding(buildingEntity);
         String rentAreaString = rentAreaEntities.stream()
                 .map(rentAreaEntity -> String.valueOf(rentAreaEntity.getValue())).collect(Collectors.joining(", "));
         buildingSearchResponse.setEmptyArea(rentAreaString);
@@ -61,21 +59,27 @@ public class BuildingConverter {
         return result;
     }
 
+    // convert entity -> dto custom
     public BuildingDTO convertToDTOCustom(BuildingEntity entity) {
         BuildingDTO result = modelMapper.map(entity, BuildingDTO.class);
         // rent area
-        List<RentAreaEntity> rentAreaEntities = rentAreaRepository.findByBuildingId(entity.getId());
-        String rentAreaString = rentAreaEntities.stream()
-                .map(rentAreaEntity -> String.valueOf(rentAreaEntity.getValue())).collect(Collectors.joining(", "));
-        result.setRentArea(rentAreaString);
+        List<String> rentareas = new ArrayList<>();
+        if (entity.getRentAreas() != null) {
+            for (RentAreaEntity itemRentArea : entity.getRentAreas()) {
+                rentareas.add(String.valueOf(itemRentArea.getValue()));
+            }
+            String rentArea = String.join(",", rentareas);  // tách = dấu phẩy
+            result.setRentArea(rentArea);
+        }
 
         // types
         // db: NGUYEN_CAN, NOI_THAT
         if (entity.getTypes() != null) {
-            String[] arrTypes = entity.getTypes().trim().split(",");
-            List<String> types = Arrays.stream(arrTypes)
-                    .map(String::trim)
-                    .collect(Collectors.toList());
+            List<String> types = new ArrayList<>();
+            String[] arrTypes = entity.getTypes().trim().split(",");  // tách = dấu phẩy
+            for (String item : arrTypes) {
+                types.add(item);
+            }
             result.setTypes(types);
         }
         return result;
@@ -90,16 +94,15 @@ public class BuildingConverter {
             String type = String.join(",", dto.getTypes());
             result.setTypes(type);
         }
-
         if (!ValidateUtils.checkNullEmpty(dto.getRentArea())) {
-            List<RentAreaEntity> rentareaEntities = Arrays.stream(dto.getRentArea().replaceAll(" ", "").trim().split(","))
-                    .map(item -> {
-                        RentAreaEntity rentareaEntity = new RentAreaEntity();
-                        rentareaEntity.setBuilding(result);
-                        rentareaEntity.setValue(ValidateUtils.parseInteger(item));
-                        return rentareaEntity;
-                    })
-                    .collect(Collectors.toList());
+            List<RentAreaEntity> rentareaEntities = new ArrayList<>();
+            String[] arrAreaRent = dto.getRentArea().replaceAll(" ", "").trim().split(","); // tách chuỗi qa dau ','
+            for (String item : arrAreaRent) {
+                RentAreaEntity rentareaEntity = new RentAreaEntity();
+                rentareaEntity.setBuilding(result); //
+                rentareaEntity.setValue(ValidateUtils.parseInteger(item));
+                rentareaEntities.add(rentareaEntity);
+            }
             result.setRentAreas(rentareaEntities);
         }
         return result;

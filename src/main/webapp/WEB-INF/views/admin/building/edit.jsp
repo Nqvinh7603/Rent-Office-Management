@@ -212,6 +212,7 @@
     $('#btnEditBuilding').click(function (e) {
         e.preventDefault();
         var data = {};
+        //var buildingTypes = [];
         var formData = $('#formEdit').serializeArray();
         var id = ${modelBuildingEdit.id} + '';
         if(id != '') {
@@ -219,15 +220,14 @@
         }
         var types = [];
 
-        formData.forEach(function(item, e) {
+        formData.forEach(function(item) {
             if (item.name == "types") {
                 types.push(item.value);
-            } else if (item.name != "types") {
+            } else {
                 data[item.name] = item.value;
             }
-        });
+        })
         data["types"] = types;
-
         $.ajax({
             type: "PUT",
             url: '<c:url value="/api/building"/>',

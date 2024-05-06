@@ -10,7 +10,6 @@ public class BuildingDTO extends AbstractDTO<BuildingDTO> {
     private String ward;
     private String district;
     private String structure;
-    private Integer costRent;
     private Integer floorArea;
     private String direction;
     private String level;
@@ -86,14 +85,6 @@ public class BuildingDTO extends AbstractDTO<BuildingDTO> {
 
     public void setStructure(String structure) {
         this.structure = structure;
-    }
-
-    public Integer getCostRent() {
-        return costRent;
-    }
-
-    public void setCostRent(Integer costRent) {
-        this.costRent = costRent;
     }
 
     public Integer getFloorArea() {

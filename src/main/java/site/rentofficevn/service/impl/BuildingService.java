@@ -1,18 +1,24 @@
 package site.rentofficevn.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import javassist.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.rentofficevn.builder.BuildingSearchBuilder;
 import site.rentofficevn.converter.BuildingConverter;
+import site.rentofficevn.converter.RentAreaConverter;
 import site.rentofficevn.dto.BuildingDTO;
+import site.rentofficevn.dto.RentAreaDTO;
 import site.rentofficevn.dto.request.AssignmentBuildingRequest;
 import site.rentofficevn.dto.request.BuildingDeleteRequest;
 import site.rentofficevn.dto.request.BuildingSearchRequest;
 import site.rentofficevn.dto.response.BuildingSearchResponse;
 import site.rentofficevn.entity.BuildingEntity;
+import site.rentofficevn.entity.RentAreaEntity;
 import site.rentofficevn.entity.UserEntity;
+import site.rentofficevn.repository.AssignmentBuildingRepository;
 import site.rentofficevn.repository.BuildingRepository;
+import site.rentofficevn.repository.RentAreaRepository;
 import site.rentofficevn.repository.UserRepository;
 import site.rentofficevn.service.IBuildingService;
 
@@ -21,6 +27,15 @@ import java.util.stream.Collectors;
 
 @Service
 public class BuildingService implements IBuildingService {
+
+    @Autowired
+    private RentAreaRepository rentAreaRepository;
+
+    @Autowired
+    private RentAreaService rentAreaService;
+
+    @Autowired
+    private RentAreaConverter rentAreaConverter;
     @Autowired
     BuildingRepository buildingRepository;
 
@@ -29,6 +44,8 @@ public class BuildingService implements IBuildingService {
 
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    AssignmentBuildingRepository assignmentBuildingRepository;
 
     @Override
     public List<BuildingDTO> findAll() {
@@ -40,14 +57,6 @@ public class BuildingService implements IBuildingService {
         }
         return results;
     }
-
-    @Override
-    public BuildingDTO createBuilding(BuildingDTO buildingDTO) {
-        BuildingEntity buildingEntity = buildingConverter.convertToEntityCustom(buildingDTO);
-        BuildingDTO buildingDTOAfter = buildingConverter.convertToDTOCustom(buildingRepository.save(buildingEntity));
-        return buildingDTOAfter;
-    }
-
 
     @Override
     public List<BuildingSearchResponse> findAll(BuildingSearchRequest buildingSearchRequest) {
@@ -80,8 +89,17 @@ public class BuildingService implements IBuildingService {
     @Transactional
     public BuildingDTO updateBuilding(BuildingDTO buildingDTO) {
         BuildingEntity buildingEntity = buildingConverter.convertToEntityCustom(buildingDTO); // trả ra cho dto
+        BuildingEntity building = buildingRepository.save(buildingEntity);
         try {
-            return buildingConverter.convertToDTOCustom(buildingRepository.save(buildingEntity)); // sửa
+            if (buildingDTO.getId() != null) {
+                rentAreaRepository.deleteByBuilding_Id(buildingDTO.getId());
+            }
+            if (buildingDTO.getRentArea() != null) {
+                List<RentAreaDTO> listRentAreaDTO = rentAreaConverter.convertToRentArea(building.getId(), buildingDTO);
+                rentAreaService.saveAllRentArea(listRentAreaDTO, building);
+            }
+            BuildingDTO buildingdto = buildingConverter.convertToDTOCustom(building);
+            return buildingdto;
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error building update in service");
@@ -89,13 +107,42 @@ public class BuildingService implements IBuildingService {
         return null;
     }
 
-    @Override
-    @Transactional
-    public void removeBuilding(BuildingDeleteRequest buildingDeleteRequest)  {
-        if (buildingDeleteRequest.getBuildingId() != null) {
-            buildingRepository.deleteByIdIn(buildingDeleteRequest.getBuildingId());
+//    @Override
+//    @Transactional
+//    public void removeBuilding(BuildingDeleteRequest buildingDeleteRequest)    {
+//        if (buildingDeleteRequest.getBuildingId() != null) {
+//            rentAreaRepository.deleteByBuilding_IdIn(buildingDeleteRequest.getBuildingId());
+//            assignmentBuildingRepository.deleteByBuildingIdIn(buildingDeleteRequest.getBuildingId());
+//            buildingRepository.deleteByIdIn(buildingDeleteRequest.getBuildingId());
+//        }
+//    }
+@Override
+@Transactional
+public void removeBuilding(BuildingDeleteRequest buildingDeleteRequest) {
+    if (buildingDeleteRequest.getBuildingId() != null) {
+        List<Long> buildingIds = buildingDeleteRequest.getBuildingId();
+        for (Long buildingId : buildingIds) {
+            // Xóa tất cả các bản ghi trong bảng AssignmentBuilding liên quan đến tòa nhà
+            assignmentBuildingRepository.deleteByBuildingId(buildingId);
+
+            // Lấy ra tòa nhà cần xóa
+            Optional<BuildingEntity> buildingOptional = buildingRepository.findById(buildingId);
+            if (buildingOptional.isPresent()) {
+                BuildingEntity building = buildingOptional.get();
+
+                // Lấy ra danh sách RentArea của tòa nhà
+                List<RentAreaEntity> rentAreas = building.getRentAreas();
+
+                // Xóa tất cả các RentArea của tòa nhà
+                rentAreaRepository.deleteAll(rentAreas);
+
+                // Xóa tòa nhà
+                buildingRepository.deleteById(buildingId);
+            }
         }
     }
+}
+
 
     @Override
     @Transactional

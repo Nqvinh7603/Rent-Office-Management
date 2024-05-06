@@ -386,7 +386,14 @@
         window.location.href = '<c:url value="/admin/building-edit" />' + '?buildingid=' + value;
     }
 
-    var idOne;
+    var valueType = ${modelSearch.types} + '';
+    if (valueType != '') {
+        $.each(valueType, function (index, value) {
+            $("#rent[value='" + value + "']").prop('checked', true);
+        });
+    }
+
+    /*var idOne;
     $("#btnDeleteBuilding").click(function (e) {
         e.preventDefault();
         var values = [];
@@ -408,6 +415,32 @@
             },
             error: function (response) {
                 alert("fail")
+                console.log(response)
+            }
+        });
+    })*/
+    var idOne;
+    $("#btnDeleteBuilding").click(function (e) {
+        e.preventDefault();
+        var values = [];
+        if (idOne != null)
+            values.push(idOne);
+        $.each($("input[name='checkBuildings[]']:checked"), function () {
+            values.push($(this).val());
+        });
+        var data = {};
+        data["buildingId"] = values;
+        $.ajax({
+            type: "DELETE",
+            url: '<c:url value="/api/building"/>',
+            data:JSON.stringify(data),
+            dataType: "json",//kieu du lieu tu server tra ve client
+            contentType: "application/json",//kieu du lieu tu client gui ve server
+            success: function (response) {
+                window.location.reload();
+            },
+            error: function (response) {
+                alert("failed")
                 console.log(response)
             }
         });

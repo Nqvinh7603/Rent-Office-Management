@@ -1,5 +1,8 @@
 package site.rentofficevn.dto;
 
+import site.rentofficevn.dto.response.BuildingTypesResponse;
+import site.rentofficevn.dto.response.DistrictResponse;
+
 import java.util.List;
 
 public class BuildingDTO extends AbstractDTO<BuildingDTO> {
@@ -38,6 +41,25 @@ public class BuildingDTO extends AbstractDTO<BuildingDTO> {
     private String avatar;
     private Integer managerPhone;
     private String managerName;
+
+    private List<BuildingTypesResponse> buildingTypes;
+    private List<DistrictResponse> districts;
+
+    public List<DistrictResponse> getDistricts() {
+        return districts;
+    }
+
+    public void setDistricts(List<DistrictResponse> districts) {
+        this.districts = districts;
+    }
+
+    public List<BuildingTypesResponse> getBuildingTypes() {
+        return buildingTypes;
+    }
+
+    public void setBuildingTypes(List<BuildingTypesResponse> buildingTypes) {
+        this.buildingTypes = buildingTypes;
+    }
 
     public String getName() {
         return name;

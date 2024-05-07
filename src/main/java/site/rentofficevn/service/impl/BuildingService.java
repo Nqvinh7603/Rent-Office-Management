@@ -1,7 +1,6 @@
 package site.rentofficevn.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import javassist.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.rentofficevn.builder.BuildingSearchBuilder;
@@ -10,11 +9,11 @@ import site.rentofficevn.converter.RentAreaConverter;
 import site.rentofficevn.dto.BuildingDTO;
 import site.rentofficevn.dto.RentAreaDTO;
 import site.rentofficevn.dto.request.AssignmentBuildingRequest;
-import site.rentofficevn.dto.request.BuildingDeleteRequest;
 import site.rentofficevn.dto.request.BuildingSearchRequest;
 import site.rentofficevn.dto.response.BuildingSearchResponse;
+import site.rentofficevn.dto.response.BuildingTypesResponse;
+import site.rentofficevn.dto.response.DistrictResponse;
 import site.rentofficevn.entity.BuildingEntity;
-import site.rentofficevn.entity.RentAreaEntity;
 import site.rentofficevn.entity.UserEntity;
 import site.rentofficevn.repository.AssignmentBuildingRepository;
 import site.rentofficevn.repository.BuildingRepository;
@@ -29,17 +28,29 @@ import java.util.stream.Collectors;
 public class BuildingService implements IBuildingService {
 
     @Autowired
+    private BuildingTypesService buildingTypesService;
+
+    @Autowired
+    private DistrictService districtService;
+
+    @Autowired
     BuildingRepository buildingRepository;
+
     @Autowired
     BuildingConverter buildingConverter;
+
     @Autowired
     UserRepository userRepository;
+
     @Autowired
     AssignmentBuildingRepository assignmentBuildingRepository;
+
     @Autowired
     private RentAreaRepository rentAreaRepository;
+
     @Autowired
     private RentAreaService rentAreaService;
+
     @Autowired
     private RentAreaConverter rentAreaConverter;
 
@@ -119,8 +130,24 @@ public class BuildingService implements IBuildingService {
         }
     }
 
+    @Override
+    public BuildingDTO getBuildingDetails(Long id) {
+        BuildingDTO buildingDTO = new BuildingDTO();
+        BuildingTypesResponse buildingTypesResponse = new BuildingTypesResponse();
+        DistrictResponse districtResponse = new DistrictResponse();
+        if (id != null && buildingRepository.existsById(id)) {
+            buildingDTO = findBuildingById(id);
+            buildingDTO.setBuildingTypes(buildingTypesService.getAllByBuilding(buildingDTO));
+            buildingDTO.setDistricts(districtService.getDistrictByBuilding(buildingDTO));
+        } else {
+            buildingDTO.setBuildingTypes(buildingTypesService.getAll());
+            buildingDTO.setDistricts(districtService.getAllDistrict());
+        }
+        return buildingDTO;
+    }
 
-        @Override
+
+    @Override
         @Transactional
         public void assignmentBuilding (AssignmentBuildingRequest assignmentBuildingRequest, Long buildingID){
             List<UserEntity> userEntities = new ArrayList<>();

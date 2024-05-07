@@ -41,7 +41,7 @@
                             <div class="col-sm-9">
                                 <select class="form-control" name="district">
                                     <option>Chọn quận</option>
-                                    <c:forEach items="${districts}" var="item">
+                                    <c:forEach items="${modelBuildingEdit.districts}" var="item">
                                         <option ${item.selected} value="${item.code}">${item.name}</option>
                                     </c:forEach>
                                 </select>
@@ -155,7 +155,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label no-padding-right"> Loại tòa nhà </label>
                             <div class="col-sm-9">
-                                <c:forEach items="${buildingTypes}" var="item">
+                                <c:forEach items="${modelBuildingEdit.buildingTypes}" var="item">
                                     <input class="form-check-input" type="checkbox" name="types"
                                         ${item.checked} value="${item.code}"/>
                                     <label class="form-check-label"

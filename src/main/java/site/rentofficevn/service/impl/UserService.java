@@ -165,9 +165,9 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public List<UserDTO> getAllStaff() {
-        List<UserEntity> listStaff = userRepository.getAllStaff();
-        List<UserDTO> result = listStaff.stream()
+    public List<UserDTO> getAll() {
+        List<UserEntity> listUser = userRepository.findAll();
+        List<UserDTO> result = listUser.stream()
                 .map(userConverter::convertToDto)
                 .collect(Collectors.toList());
         return result;

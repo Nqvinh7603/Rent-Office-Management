@@ -38,7 +38,7 @@ public class BuildingAPI {
     // assigment building to staff
     @PostMapping("/{id}/assignment")
     public AssignmentBuildingRequest assignmentBuilding(@RequestBody(required = false) AssignmentBuildingRequest assignmentBuilding
-            ,@PathVariable("id") Long buildingId) {
+            ,@PathVariable("id") Long buildingId) throws NotFoundException {
         assignmentBuilding.sanitize();
         buildingService.assignmentBuilding(assignmentBuilding, buildingId);
         return assignmentBuilding;

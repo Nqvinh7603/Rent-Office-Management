@@ -1,5 +1,6 @@
 package site.rentofficevn.service.impl;
 
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +14,9 @@ import site.rentofficevn.dto.request.BuildingSearchRequest;
 import site.rentofficevn.dto.response.BuildingSearchResponse;
 import site.rentofficevn.dto.response.BuildingTypesResponse;
 import site.rentofficevn.dto.response.DistrictResponse;
+import site.rentofficevn.entity.AssignBuildingEntity;
 import site.rentofficevn.entity.BuildingEntity;
+import site.rentofficevn.entity.RentAreaEntity;
 import site.rentofficevn.entity.UserEntity;
 import site.rentofficevn.repository.AssignmentBuildingRepository;
 import site.rentofficevn.repository.BuildingRepository;
@@ -28,23 +31,17 @@ import java.util.stream.Collectors;
 public class BuildingService implements IBuildingService {
 
     @Autowired
-    private BuildingTypesService buildingTypesService;
-
-    @Autowired
-    private DistrictService districtService;
-
-    @Autowired
     BuildingRepository buildingRepository;
-
     @Autowired
     BuildingConverter buildingConverter;
-
     @Autowired
     UserRepository userRepository;
-
     @Autowired
     AssignmentBuildingRepository assignmentBuildingRepository;
-
+    @Autowired
+    private BuildingTypesService buildingTypesService;
+    @Autowired
+    private DistrictService districtService;
     @Autowired
     private RentAreaRepository rentAreaRepository;
 
@@ -95,25 +92,17 @@ public class BuildingService implements IBuildingService {
     @Override
     @Transactional
     public BuildingDTO updateBuilding(BuildingDTO buildingDTO) {
-        BuildingEntity buildingEntity = buildingConverter.convertToEntityCustom(buildingDTO); // trả ra cho dto
-        BuildingEntity building = buildingRepository.save(buildingEntity);
         try {
-            if (buildingDTO.getId() != null) {
-                rentAreaRepository.deleteByBuilding_Id(buildingDTO.getId());
-            }
-            if (buildingDTO.getRentArea() != null) {
-                List<RentAreaDTO> listRentAreaDTO = rentAreaConverter.convertToRentArea(building.getId(), buildingDTO);
-                rentAreaService.saveAllRentArea(listRentAreaDTO, building);
-            }
-            BuildingDTO buildingdto = buildingConverter.convertToDTOCustom(building);
-            return buildingdto;
+            BuildingEntity buildingEntity = buildingConverter.convertToEntityCustom(buildingDTO); // Chuyển đổi từ DTO sang Entity
+            BuildingEntity updatedBuilding = buildingRepository.save(buildingEntity); // Lưu hoặc cập nhật thông tin tòa nhà
+
+            return buildingConverter.convertToDTOCustom(updatedBuilding); // Chuyển đổi từ Entity sang DTO và trả về
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error building update in service");
         }
         return null;
     }
-
     @Override
     @Transactional
     public void delete(List<Long> buildingIds) {
@@ -137,10 +126,8 @@ public class BuildingService implements IBuildingService {
         DistrictResponse districtResponse = new DistrictResponse();
         if (id != null && buildingRepository.existsById(id)) {
             buildingDTO = findBuildingById(id);
-            //buildingDTO.setBuildingTypes(buildingTypesService.getAllByBuilding(buildingDTO));
             buildingDTO.setDistricts(districtService.getDistrictByBuilding(buildingDTO));
         } else {
-            //buildingDTO.setBuildingTypes(buildingTypesService.getAll());
             buildingDTO.setDistricts(districtService.getAllDistrict());
         }
         buildingDTO.setBuildingTypes(buildingTypesService.getAll());
@@ -148,42 +135,75 @@ public class BuildingService implements IBuildingService {
     }
 
 
-    @Override
-        @Transactional
-        public void assignmentBuilding (AssignmentBuildingRequest assignmentBuildingRequest, Long buildingID){
-            List<UserEntity> userEntities = new ArrayList<>();
-            for (Integer item : assignmentBuildingRequest.getStaffIds()) {
-                userEntities.add(userRepository.findOnedById(item.longValue()));
-            }
-            BuildingEntity buildingEntity = buildingRepository.findById(buildingID).get();
-            buildingRepository.assignmentBuilding(userEntities, buildingEntity);
+    /*@Override
+    @Transactional
+    public void assignmentBuilding(AssignmentBuildingRequest assignmentBuildingRequest, Long buildingID) {
+        List<UserEntity> userEntities = new ArrayList<>();
+        for (Integer item : assignmentBuildingRequest.getStaffIds()) {
+            userEntities.add(userRepository.findOnedById(item.longValue()));
         }
+        BuildingEntity buildingEntity = buildingRepository.findById(buildingID).get();
+        buildingRepository.assignmentBuilding(userEntities, buildingEntity);
+    }*/
+    @Override
+    @Transactional
+    public void assignmentBuilding(AssignmentBuildingRequest assignmentBuildingRequest, Long buildingID) throws NotFoundException {
+        // Lấy danh sách id của nhân viên từ AssignmentBuildingRequest
+        List<Long> staffIds = assignmentBuildingRequest.getStaffIds().stream()
+                .map(Long::valueOf)
+                .collect(Collectors.toList());
 
+        // Tìm kiếm tòa nhà dựa trên buildingID
+        Optional<BuildingEntity> buildingOptional = buildingRepository.findById(buildingID);
+        if (buildingOptional.isPresent()) {
+            BuildingEntity buildingEntity = buildingOptional.get();
 
-        private BuildingSearchBuilder convertParamToBuilder (BuildingSearchRequest buildingSearchRequest){
-            try {
-                BuildingSearchBuilder result = new BuildingSearchBuilder.Builder()
-                        .setName(buildingSearchRequest.getName())
-                        .setFloorArea(buildingSearchRequest.getFloorArea())
-                        .setDistrict(buildingSearchRequest.getDistrictCode())
-                        .setWard(buildingSearchRequest.getWard())
-                        .setStreet(buildingSearchRequest.getStreet())
-                        .setNumberOfBasement(buildingSearchRequest.getNumberOfBasement())
-                        .setDirection(buildingSearchRequest.getDirection())
-                        .setLevel(buildingSearchRequest.getLevel())
-                        .setRentAreaFrom(buildingSearchRequest.getRentAreaFrom())
-                        .setRentAreaTo(buildingSearchRequest.getRentAreaTo())
-                        .setRentPriceFrom(buildingSearchRequest.getRentPriceFrom())
-                        .setRentPriceTo(buildingSearchRequest.getRentPriceTo())
-                        .setManagerName(buildingSearchRequest.getManagerName())
-                        .setManagerPhone(buildingSearchRequest.getManagerPhone())
-                        .setStaffID(buildingSearchRequest.getStaffId())
-                        .setTypes(buildingSearchRequest.getTypes())
-                        .build();
-                return result;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
+            // Lấy danh sách người dùng cần được gán tòa nhà
+            List<UserEntity> userEntities = userRepository.findAllById(staffIds);
+
+            // Tạo ra các đối tượng AssignBuildingEntity và gán cho mỗi UserEntity
+            List<AssignBuildingEntity> assignBuildingEntities = new ArrayList<>();
+            userEntities.forEach(userEntity -> {
+                AssignBuildingEntity assignBuildingEntity = new AssignBuildingEntity();
+                assignBuildingEntity.setUser(userEntity);
+                assignBuildingEntity.setBuilding(buildingEntity);
+                assignBuildingEntities.add(assignBuildingEntity);
+            });
+
+            // Lưu các đối tượng AssignBuildingEntity vào cơ sở dữ liệu
+            assignmentBuildingRepository.saveAll(assignBuildingEntities);
+        }else{
+            throw new NotFoundException("Building not found with ID: " + buildingID);
         }
     }
+
+
+
+
+    private BuildingSearchBuilder convertParamToBuilder(BuildingSearchRequest buildingSearchRequest) {
+        try {
+            BuildingSearchBuilder result = new BuildingSearchBuilder.Builder()
+                    .setName(buildingSearchRequest.getName())
+                    .setFloorArea(buildingSearchRequest.getFloorArea())
+                    .setDistrict(buildingSearchRequest.getDistrictCode())
+                    .setWard(buildingSearchRequest.getWard())
+                    .setStreet(buildingSearchRequest.getStreet())
+                    .setNumberOfBasement(buildingSearchRequest.getNumberOfBasement())
+                    .setDirection(buildingSearchRequest.getDirection())
+                    .setLevel(buildingSearchRequest.getLevel())
+                    .setRentAreaFrom(buildingSearchRequest.getRentAreaFrom())
+                    .setRentAreaTo(buildingSearchRequest.getRentAreaTo())
+                    .setRentPriceFrom(buildingSearchRequest.getRentPriceFrom())
+                    .setRentPriceTo(buildingSearchRequest.getRentPriceTo())
+                    .setManagerName(buildingSearchRequest.getManagerName())
+                    .setManagerPhone(buildingSearchRequest.getManagerPhone())
+                    .setStaffID(buildingSearchRequest.getStaffId())
+                    .setTypes(buildingSearchRequest.getTypes())
+                    .build();
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+}

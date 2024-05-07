@@ -137,12 +137,13 @@ public class BuildingService implements IBuildingService {
         DistrictResponse districtResponse = new DistrictResponse();
         if (id != null && buildingRepository.existsById(id)) {
             buildingDTO = findBuildingById(id);
-            buildingDTO.setBuildingTypes(buildingTypesService.getAllByBuilding(buildingDTO));
+            //buildingDTO.setBuildingTypes(buildingTypesService.getAllByBuilding(buildingDTO));
             buildingDTO.setDistricts(districtService.getDistrictByBuilding(buildingDTO));
         } else {
-            buildingDTO.setBuildingTypes(buildingTypesService.getAll());
+            //buildingDTO.setBuildingTypes(buildingTypesService.getAll());
             buildingDTO.setDistricts(districtService.getAllDistrict());
         }
+        buildingDTO.setBuildingTypes(buildingTypesService.getAll());
         return buildingDTO;
     }
 

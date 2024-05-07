@@ -156,12 +156,10 @@
                             <label class="col-sm-2 control-label no-padding-right"> Loại tòa nhà </label>
                             <div class="col-sm-9">
                                 <c:forEach items="${modelBuildingEdit.buildingTypes}" var="item">
-                                    <input class="form-check-input" type="checkbox" name="types"
-                                        ${item.checked} value="${item.code}"/>
-                                    <label class="form-check-label"
-                                           style="margin-right: 10px; display: inline-block">
-                                            ${item.name}
-                                    </label>
+                                    <div class="form-check" style="display:inline-block; margin-right: 20px; vertical-align: bottom;">
+                                        <form:checkbox path="types" value="${item.code}" cssClass="form-check-input"/>
+                                        <label class="form-check-label">${item.name}</label>
+                                    </div>
                                 </c:forEach>
                             </div>
                         </div>

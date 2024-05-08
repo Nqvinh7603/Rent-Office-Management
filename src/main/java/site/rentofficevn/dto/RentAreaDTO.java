@@ -1,6 +1,6 @@
 package site.rentofficevn.dto;
 
-public class RentAreaDTO {
+public class RentAreaDTO extends AbstractDTO{
     private Integer value;
     private Long buildingid;
 

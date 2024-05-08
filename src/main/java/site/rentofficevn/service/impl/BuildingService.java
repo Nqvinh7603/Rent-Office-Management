@@ -18,6 +18,7 @@ import site.rentofficevn.entity.AssignBuildingEntity;
 import site.rentofficevn.entity.BuildingEntity;
 import site.rentofficevn.entity.RentAreaEntity;
 import site.rentofficevn.entity.UserEntity;
+import site.rentofficevn.exception.MyException;
 import site.rentofficevn.repository.AssignmentBuildingRepository;
 import site.rentofficevn.repository.BuildingRepository;
 import site.rentofficevn.repository.RentAreaRepository;
@@ -91,12 +92,45 @@ public class BuildingService implements IBuildingService {
 
     @Override
     @Transactional
-    public BuildingDTO updateBuilding(BuildingDTO buildingDTO) {
+    public BuildingDTO createAndUpdateBuilding(BuildingDTO buildingDTO) {
         try {
-            BuildingEntity buildingEntity = buildingConverter.convertToEntityCustom(buildingDTO); // Chuyển đổi từ DTO sang Entity
-            BuildingEntity updatedBuilding = buildingRepository.save(buildingEntity); // Lưu hoặc cập nhật thông tin tòa nhà
-
-            return buildingConverter.convertToDTOCustom(updatedBuilding); // Chuyển đổi từ Entity sang DTO và trả về
+            // Chuyển đổi DTO thành entity
+            BuildingEntity buildingEntity = buildingConverter.convertToEntityCustom(buildingDTO);
+            // Lưu hoặc cập nhật building
+            buildingEntity = buildingRepository.save(buildingEntity);
+            // Nếu có id của building và có rentArea, thực hiện tối ưu hóa việc xử lý rent areas
+            if (buildingDTO.getId() != null && buildingDTO.getRentArea() != null) {
+                // Lấy danh sách rent areas mới từ buildingDTO
+                List<RentAreaDTO> newRentAreas = rentAreaConverter.convertToRentArea(buildingEntity.getId(), buildingDTO);
+                // Lấy danh sách rent areas cũ từ cơ sở dữ liệu
+                List<RentAreaEntity> oldRentAreas = rentAreaRepository.findByBuilding(buildingEntity);
+                // Xác định rent areas cần xóa và cần thêm
+                List<RentAreaEntity> rentAreasToDelete = new ArrayList<>();
+                List<RentAreaEntity> rentAreasToAdd = new ArrayList<>();
+                // Tạo danh sách các giá trị rent areas cần xóa và cần thêm
+                List<Integer> oldRentAreaValues = oldRentAreas.stream().map(RentAreaEntity::getValue).collect(Collectors.toList());
+                List<Integer> newRentAreaValues = newRentAreas.stream().map(RentAreaDTO::getValue).collect(Collectors.toList());
+                // Xác định rent areas cần xóa
+                for (RentAreaEntity oldRentArea : oldRentAreas) {
+                    if (!newRentAreaValues.contains(oldRentArea.getValue())) {
+                        rentAreasToDelete.add(oldRentArea);
+                    }
+                }
+                // Xác định rent areas cần thêm
+                for (RentAreaDTO newRentArea : newRentAreas) {
+                    if (!oldRentAreaValues.contains(newRentArea.getValue())) {
+                        RentAreaEntity newRentAreaEntity = rentAreaConverter.convertToEntity(newRentArea);
+                        newRentAreaEntity.setBuilding(buildingEntity);
+                        rentAreasToAdd.add(newRentAreaEntity);
+                    }
+                }
+                // Xóa rent areas cũ
+                rentAreaRepository.deleteAll(rentAreasToDelete);
+                // Lưu rent areas mới
+                rentAreaRepository.saveAll(rentAreasToAdd);
+            }
+            // Chuyển đổi entity thành DTO và trả về
+            return buildingConverter.convertToDTOCustom(buildingEntity);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error building update in service");
@@ -122,8 +156,6 @@ public class BuildingService implements IBuildingService {
     @Override
     public BuildingDTO getBuildingDetails(Long id) {
         BuildingDTO buildingDTO = new BuildingDTO();
-        BuildingTypesResponse buildingTypesResponse = new BuildingTypesResponse();
-        DistrictResponse districtResponse = new DistrictResponse();
         if (id != null && buildingRepository.existsById(id)) {
             buildingDTO = findBuildingById(id);
             buildingDTO.setDistricts(districtService.getDistrictByBuilding(buildingDTO));
@@ -134,17 +166,6 @@ public class BuildingService implements IBuildingService {
         return buildingDTO;
     }
 
-
-    /*@Override
-    @Transactional
-    public void assignmentBuilding(AssignmentBuildingRequest assignmentBuildingRequest, Long buildingID) {
-        List<UserEntity> userEntities = new ArrayList<>();
-        for (Integer item : assignmentBuildingRequest.getStaffIds()) {
-            userEntities.add(userRepository.findOnedById(item.longValue()));
-        }
-        BuildingEntity buildingEntity = buildingRepository.findById(buildingID).get();
-        buildingRepository.assignmentBuilding(userEntities, buildingEntity);
-    }*/
     @Override
     @Transactional
     public void assignmentBuilding(AssignmentBuildingRequest assignmentBuildingRequest, Long buildingID) throws NotFoundException {
@@ -172,12 +193,10 @@ public class BuildingService implements IBuildingService {
 
             // Lưu các đối tượng AssignBuildingEntity vào cơ sở dữ liệu
             assignmentBuildingRepository.saveAll(assignBuildingEntities);
-        }else{
+        } else {
             throw new NotFoundException("Building not found with ID: " + buildingID);
         }
     }
-
-
 
 
     private BuildingSearchBuilder convertParamToBuilder(BuildingSearchRequest buildingSearchRequest) {

@@ -6,8 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import site.rentofficevn.dto.BuildingDTO;
 import site.rentofficevn.dto.request.AssignmentBuildingRequest;
-import site.rentofficevn.dto.request.BuildingDeleteRequest;
 import site.rentofficevn.dto.response.StaffResponseDTO;
+import site.rentofficevn.exception.MyException;
 import site.rentofficevn.service.impl.BuildingService;
 import site.rentofficevn.service.impl.UserService;
 
@@ -21,11 +21,11 @@ public class BuildingAPI {
 
     @Autowired
     private UserService userService;
-
+    //create and update
     @PutMapping
-    public BuildingDTO updateBuilding(@RequestBody(required = false) BuildingDTO buildingDTO) {
-        BuildingDTO buildingUpdate = buildingService.updateBuilding(buildingDTO);
-        return buildingUpdate;
+    public BuildingDTO createAndUpdateBuilding(@RequestBody(required = false) BuildingDTO buildingDTO) throws MyException {
+        BuildingDTO newBuilding = buildingService.createAndUpdateBuilding(buildingDTO);
+        return newBuilding;
     }
 
     @DeleteMapping

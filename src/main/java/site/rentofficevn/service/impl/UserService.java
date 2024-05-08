@@ -10,7 +10,6 @@ import site.rentofficevn.entity.UserEntity;
 import site.rentofficevn.exception.MyException;
 import site.rentofficevn.repository.RoleRepository;
 import site.rentofficevn.repository.UserRepository;
-import site.rentofficevn.repository.custom.impl.UserRepositoryImpl;
 import site.rentofficevn.service.IUserService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

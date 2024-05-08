@@ -168,36 +168,15 @@ public class BuildingService implements IBuildingService {
 
     @Override
     @Transactional
-    public void assignmentBuilding(AssignmentBuildingRequest assignmentBuildingRequest, Long buildingID) throws NotFoundException {
-        // Lấy danh sách id của nhân viên từ AssignmentBuildingRequest
-        List<Long> staffIds = assignmentBuildingRequest.getStaffIds().stream()
-                .map(Long::valueOf)
-                .collect(Collectors.toList());
-
-        // Tìm kiếm tòa nhà dựa trên buildingID
-        Optional<BuildingEntity> buildingOptional = buildingRepository.findById(buildingID);
-        if (buildingOptional.isPresent()) {
-            BuildingEntity buildingEntity = buildingOptional.get();
-
-            // Lấy danh sách người dùng cần được gán tòa nhà
-            List<UserEntity> userEntities = userRepository.findAllById(staffIds);
-
-            // Tạo ra các đối tượng AssignBuildingEntity và gán cho mỗi UserEntity
-            List<AssignBuildingEntity> assignBuildingEntities = new ArrayList<>();
-            userEntities.forEach(userEntity -> {
-                AssignBuildingEntity assignBuildingEntity = new AssignBuildingEntity();
-                assignBuildingEntity.setUser(userEntity);
-                assignBuildingEntity.setBuilding(buildingEntity);
-                assignBuildingEntities.add(assignBuildingEntity);
-            });
-
-            // Lưu các đối tượng AssignBuildingEntity vào cơ sở dữ liệu
-            assignmentBuildingRepository.saveAll(assignBuildingEntities);
-        } else {
-            throw new NotFoundException("Building not found with ID: " + buildingID);
+    public void assignmentBuilding(AssignmentBuildingRequest assignmentBuildingRequest, Long buildingID) {
+        List<UserEntity> userEntities = new ArrayList<>();
+        for (Integer item : assignmentBuildingRequest.getStaffIds()) {
+            userEntities.add(userRepository.findById(item.longValue()).get());
         }
-    }
+        BuildingEntity buildingEntity = buildingRepository.findById(buildingID).get();
+        buildingRepository.assignmentBuilding(userEntities, buildingEntity);
 
+    }
 
     private BuildingSearchBuilder convertParamToBuilder(BuildingSearchRequest buildingSearchRequest) {
         try {

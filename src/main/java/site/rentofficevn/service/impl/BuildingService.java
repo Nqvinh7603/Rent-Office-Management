@@ -93,11 +93,11 @@ public class BuildingService implements IBuildingService {
     @Override
     @Transactional
     public BuildingDTO createAndUpdateBuilding(BuildingDTO buildingDTO) {
+        // Chuyển đổi DTO thành entity
+        BuildingEntity buildingEntity = buildingConverter.convertToEntityCustom(buildingDTO);
+        // Lưu hoặc cập nhật building
+        buildingEntity = buildingRepository.save(buildingEntity);
         try {
-            // Chuyển đổi DTO thành entity
-            BuildingEntity buildingEntity = buildingConverter.convertToEntityCustom(buildingDTO);
-            // Lưu hoặc cập nhật building
-            buildingEntity = buildingRepository.save(buildingEntity);
             // Nếu có id của building và có rentArea, thực hiện tối ưu hóa việc xử lý rent areas
             if (buildingDTO.getId() != null && buildingDTO.getRentArea() != null) {
                 // Lấy danh sách rent areas mới từ buildingDTO
@@ -137,6 +137,7 @@ public class BuildingService implements IBuildingService {
         }
         return null;
     }
+
     @Override
     @Transactional
     public void delete(List<Long> buildingIds) {

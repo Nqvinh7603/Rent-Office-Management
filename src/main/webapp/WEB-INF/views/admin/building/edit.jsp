@@ -233,13 +233,7 @@
             dataType: "json",               // kiểu dữ liệu server gửi cho client
             contentType: "application/json",//kieu du lieu tu client gui ve server
             success: function (response) {
-                swal({
-                    title: "Cập nhật thành công",
-                    text: "Thông tin đã được cập nhật thành công",
-                    icon: "success",
-                    button: "OK"
-                });
-
+                window.location.href = '<c:url value="/admin/building-list" />'
             },
             error: function (response) {
                 alert("error : failed")

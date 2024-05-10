@@ -11,6 +11,7 @@ import site.rentofficevn.dto.RentAreaDTO;
 import site.rentofficevn.dto.request.AssignmentBuildingRequest;
 import site.rentofficevn.dto.request.BuildingSearchRequest;
 import site.rentofficevn.dto.response.BuildingSearchResponse;
+import site.rentofficevn.entity.AssignBuildingEntity;
 import site.rentofficevn.entity.BuildingEntity;
 import site.rentofficevn.entity.RentAreaEntity;
 import site.rentofficevn.entity.UserEntity;
@@ -160,7 +161,7 @@ public class BuildingService implements IBuildingService {
         return buildingDTO;
     }
 
-    @Override
+   /* @Override
     @Transactional
     public void assignmentBuilding(AssignmentBuildingRequest assignmentBuildingRequest, Long buildingID) {
         List<UserEntity> userEntities = new ArrayList<>();
@@ -170,7 +171,36 @@ public class BuildingService implements IBuildingService {
         BuildingEntity buildingEntity = buildingRepository.findById(buildingID).get();
         buildingRepository.assignmentBuilding(userEntities, buildingEntity);
 
-    }
+    }*/
+   @Override
+   @Transactional
+   public void assignmentBuilding(AssignmentBuildingRequest assignmentBuildingRequest, Long buildingID) {
+       // Lấy danh sách người dùng từ assignmentBuildingRequest
+       List<Long> userIds = assignmentBuildingRequest.getStaffIds().stream().map(Long::valueOf).collect(Collectors.toList());
+       List<UserEntity> users = userRepository.findAllById(userIds);
+
+       Optional<BuildingEntity> buildingOptional = buildingRepository.findById(buildingID);
+       if (buildingOptional.isPresent()) {
+           BuildingEntity buildingEntity = buildingOptional.get();
+           List<AssignBuildingEntity> oldAssignments = assignmentBuildingRepository.findByBuilding(buildingEntity);
+           List<AssignBuildingEntity> oldAssignmentsCopy = new ArrayList<>(oldAssignments);
+           oldAssignmentsCopy.removeIf(oldAssignment -> users.stream().anyMatch(newUser -> oldAssignment.getUser().getId().equals(newUser.getId())));
+           assignmentBuildingRepository.deleteAll(oldAssignmentsCopy);
+           List<AssignBuildingEntity> newAssignments = users.stream()
+                   .filter(newUser -> oldAssignments.stream().noneMatch(oldAssignment -> oldAssignment.getUser().getId().equals(newUser.getId())))
+                   .map(user -> {
+                       AssignBuildingEntity assignment = new AssignBuildingEntity();
+                       assignment.setUser(user);
+                       assignment.setBuilding(buildingEntity);
+                       return assignment;
+                   })
+                   .collect(Collectors.toList());
+
+           // Lưu danh sách assignment mới vào cơ sở dữ liệu
+           assignmentBuildingRepository.saveAll(newAssignments);
+       }
+   }
+
 
     private BuildingSearchBuilder convertParamToBuilder(BuildingSearchRequest buildingSearchRequest) {
         try {

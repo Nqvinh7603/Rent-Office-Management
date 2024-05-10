@@ -7,5 +7,5 @@ import site.rentofficevn.entity.RentAreaEntity;
 
 import java.util.*;
 public interface IRentAreaService {
-    void saveAllRentArea(List<RentAreaDTO> listRentAreaDTO, BuildingEntity buildingEntity);
+    void updateRentAreas(BuildingEntity building, List<RentAreaDTO> newRentAreas);
 }

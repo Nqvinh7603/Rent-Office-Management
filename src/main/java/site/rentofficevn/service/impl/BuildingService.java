@@ -1,6 +1,5 @@
 package site.rentofficevn.service.impl;
 
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,13 +11,9 @@ import site.rentofficevn.dto.RentAreaDTO;
 import site.rentofficevn.dto.request.AssignmentBuildingRequest;
 import site.rentofficevn.dto.request.BuildingSearchRequest;
 import site.rentofficevn.dto.response.BuildingSearchResponse;
-import site.rentofficevn.dto.response.BuildingTypesResponse;
-import site.rentofficevn.dto.response.DistrictResponse;
-import site.rentofficevn.entity.AssignBuildingEntity;
 import site.rentofficevn.entity.BuildingEntity;
 import site.rentofficevn.entity.RentAreaEntity;
 import site.rentofficevn.entity.UserEntity;
-import site.rentofficevn.exception.MyException;
 import site.rentofficevn.repository.AssignmentBuildingRepository;
 import site.rentofficevn.repository.BuildingRepository;
 import site.rentofficevn.repository.RentAreaRepository;
@@ -93,41 +88,40 @@ public class BuildingService implements IBuildingService {
     @Override
     @Transactional
     public BuildingDTO createAndUpdateBuilding(BuildingDTO buildingDTO) {
-        // Chuyển đổi DTO thành entity
-        BuildingEntity buildingEntity = buildingConverter.convertToEntityCustom(buildingDTO);
         // Lưu hoặc cập nhật building
-        buildingEntity = buildingRepository.save(buildingEntity);
+        BuildingEntity buildingEntity = buildingRepository.save(buildingConverter.convertToEntityCustom(buildingDTO));
         try {
-            // Nếu có id của building và có rentArea, thực hiện tối ưu hóa việc xử lý rent areas
-            if (buildingDTO.getId() != null && buildingDTO.getRentArea() != null) {
-                // Lấy danh sách rent areas mới từ buildingDTO
-                List<RentAreaDTO> newRentAreas = rentAreaConverter.convertToRentArea(buildingEntity.getId(), buildingDTO);
-                // Lấy danh sách rent areas cũ từ cơ sở dữ liệu
-                List<RentAreaEntity> oldRentAreas = rentAreaRepository.findByBuilding(buildingEntity);
-                // Xác định rent areas cần xóa và cần thêm
-                List<RentAreaEntity> rentAreasToDelete = new ArrayList<>();
-                List<RentAreaEntity> rentAreasToAdd = new ArrayList<>();
-                // Tạo danh sách các giá trị rent areas cần xóa và cần thêm
-                List<Integer> oldRentAreaValues = oldRentAreas.stream().map(RentAreaEntity::getValue).collect(Collectors.toList());
-                List<Integer> newRentAreaValues = newRentAreas.stream().map(RentAreaDTO::getValue).collect(Collectors.toList());
-                // Xác định rent areas cần xóa
-                for (RentAreaEntity oldRentArea : oldRentAreas) {
-                    if (!newRentAreaValues.contains(oldRentArea.getValue())) {
-                        rentAreasToDelete.add(oldRentArea);
+            List<RentAreaDTO> newRentAreas = rentAreaConverter.convertToRentArea(buildingEntity.getId(), buildingDTO);
+            if (buildingDTO.getId() != null ) {
+                if( buildingDTO.getRentArea() != null) {
+                    // Lấy danh sách rent areas cũ từ cơ sở dữ liệu
+                    List<RentAreaEntity> oldRentAreas = rentAreaRepository.findByBuilding(buildingEntity);
+                    // Xác định rent areas cần xóa và cần thêm
+                    List<RentAreaEntity> rentAreasToDelete = new ArrayList<>();
+                    List<RentAreaEntity> rentAreasToAdd = new ArrayList<>();
+                    // Tạo danh sách các giá trị rent areas cần xóa và cần thêm
+                    List<Integer> oldRentAreaValues = oldRentAreas.stream().map(RentAreaEntity::getValue).collect(Collectors.toList());
+                    List<Integer> newRentAreaValues = newRentAreas.stream().map(RentAreaDTO::getValue).collect(Collectors.toList());
+                    // Xác định rent areas cần xóa
+                    for (RentAreaEntity oldRentArea : oldRentAreas) {
+                        if (!newRentAreaValues.contains(oldRentArea.getValue())) {
+                            rentAreasToDelete.add(oldRentArea);
+                        }
                     }
-                }
-                // Xác định rent areas cần thêm
-                for (RentAreaDTO newRentArea : newRentAreas) {
-                    if (!oldRentAreaValues.contains(newRentArea.getValue())) {
-                        RentAreaEntity newRentAreaEntity = rentAreaConverter.convertToEntity(newRentArea);
-                        newRentAreaEntity.setBuilding(buildingEntity);
-                        rentAreasToAdd.add(newRentAreaEntity);
+                    // Xác định rent areas cần thêm
+                    for (RentAreaDTO newRentArea : newRentAreas) {
+                        if (!oldRentAreaValues.contains(newRentArea.getValue())) {
+                            RentAreaEntity newRentAreaEntity = rentAreaConverter.convertToEntity(newRentArea);
+                            newRentAreaEntity.setBuilding(buildingEntity);
+                            rentAreasToAdd.add(newRentAreaEntity);
+                        }
                     }
+                    // Xóa rent areas cũ
+                    rentAreaRepository.deleteAll(rentAreasToDelete);
+                    rentAreaRepository.saveAll(rentAreasToAdd);
                 }
-                // Xóa rent areas cũ
-                rentAreaRepository.deleteAll(rentAreasToDelete);
-                // Lưu rent areas mới
-                rentAreaRepository.saveAll(rentAreasToAdd);
+            }else {
+                rentAreaRepository.saveAll(newRentAreas.stream().map(rentAreaConverter::convertToEntity).collect(Collectors.toList()));
             }
             // Chuyển đổi entity thành DTO và trả về
             return buildingConverter.convertToDTOCustom(buildingEntity);
@@ -137,7 +131,6 @@ public class BuildingService implements IBuildingService {
         }
         return null;
     }
-
     @Override
     @Transactional
     public void delete(List<Long> buildingIds) {

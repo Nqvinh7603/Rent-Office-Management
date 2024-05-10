@@ -60,7 +60,6 @@ public class RentAreaConverter {
 
         String[] stringRentArea = buildingDTO.getRentArea() != null
                 ? buildingDTO.getRentArea().trim().split(",") : null;
-
         for(String item : stringRentArea) {
             RentAreaDTO rentAreaDTO = new RentAreaDTO();
             rentAreaDTO.setValue(Integer.parseInt(item));

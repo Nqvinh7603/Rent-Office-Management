@@ -210,7 +210,6 @@
     $('#btnEditBuilding').click(function (e) {
         e.preventDefault();
         var data = {};
-        //var buildingTypes = [];
         var formData = $('#formEdit').serializeArray();
         var id = ${modelBuildingEdit.id} + '';
         if(id != '') {

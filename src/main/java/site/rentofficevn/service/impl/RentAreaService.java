@@ -10,8 +10,8 @@
     import site.rentofficevn.repository.RentAreaRepository;
     import site.rentofficevn.service.IRentAreaService;
 
-    import java.util.ArrayList;
-    import java.util.List;
+    import java.util.*;
+    import java.util.stream.Collectors;
 
     @Service
     public class RentAreaService implements IRentAreaService {
@@ -24,15 +24,32 @@
         @Autowired
         private BuildingRepository buildingRepository;
 
-        public void saveAllRentArea(List<RentAreaDTO> listRentAreaDTO, BuildingEntity buildingEntity) {
-            // convert dto -> entity -> save
-            List<RentAreaEntity> listRentAreaEntity = new ArrayList<>();
-            for (RentAreaDTO item : listRentAreaDTO) {
-                RentAreaEntity rentareaEntity = rentAreaConverter.convertToEntity(item);
-                listRentAreaEntity.add(rentareaEntity);
+        public void updateRentAreas(BuildingEntity building, List<RentAreaDTO> newRentAreas) {
+            List<RentAreaEntity> oldRentAreas = rentAreaRepository.findByBuilding(building);
+            List<RentAreaEntity> rentAreasToAdd = new ArrayList<>();
+            List<RentAreaEntity> rentAreasToDelete = new ArrayList<>();
+
+            for (RentAreaDTO newRentArea : newRentAreas) {
+                boolean exists = oldRentAreas.stream()
+                        .anyMatch(oldRentArea -> Objects.equals(oldRentArea.getValue(), newRentArea.getValue()));
+
+                if (!exists) {
+                    RentAreaEntity newRentAreaEntity = rentAreaConverter.convertToEntity(newRentArea);
+                    newRentAreaEntity.setBuilding(building);
+                    rentAreasToAdd.add(newRentAreaEntity);
+                }
             }
 
-            BuildingEntity building = buildingRepository.findById(buildingEntity.getId()).get();
-            rentAreaRepository.saveRentAreas(listRentAreaEntity, building);
+            for (RentAreaEntity oldRentArea : oldRentAreas) {
+                boolean exists = newRentAreas.stream()
+                        .anyMatch(newRentArea -> Objects.equals(oldRentArea.getValue(), newRentArea.getValue()));
+
+                if (!exists) {
+                    rentAreasToDelete.add(oldRentArea);
+                }
+            }
+
+            rentAreaRepository.deleteAll(rentAreasToDelete);
+            rentAreaRepository.saveAll(rentAreasToAdd);
         }
     }

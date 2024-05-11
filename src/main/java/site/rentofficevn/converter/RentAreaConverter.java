@@ -56,7 +56,7 @@ public class RentAreaConverter {
     }
     // convert building qua rentarea dto
     public List<RentAreaDTO> convertToRentArea(Long idBuilding, BuildingDTO buildingDTO) {
-        List<RentAreaDTO> listRentArea = new ArrayList<>();
+        /*List<RentAreaDTO> listRentArea = new ArrayList<>();
 
         String[] stringRentArea = buildingDTO.getRentArea() != null
                 ? buildingDTO.getRentArea().trim().split(",") : null;
@@ -67,6 +67,18 @@ public class RentAreaConverter {
             listRentArea.add(rentAreaDTO);
         }
         //  123,345 rent area
+        return listRentArea;*/
+        List<RentAreaDTO> listRentArea = new ArrayList<>();
+
+        if (buildingDTO.getRentArea() != null && !buildingDTO.getRentArea().isEmpty()) {
+            String[] stringRentArea = buildingDTO.getRentArea().trim().split(",");
+            for (String item : stringRentArea) {
+                RentAreaDTO rentAreaDTO = new RentAreaDTO();
+                rentAreaDTO.setValue(Integer.parseInt(item));
+                rentAreaDTO.setBuildingid(idBuilding);
+                listRentArea.add(rentAreaDTO);
+            }
+        }
         return listRentArea;
     }
 }

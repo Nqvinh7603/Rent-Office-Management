@@ -161,17 +161,6 @@ public class BuildingService implements IBuildingService {
         return buildingDTO;
     }
 
-   /* @Override
-    @Transactional
-    public void assignmentBuilding(AssignmentBuildingRequest assignmentBuildingRequest, Long buildingID) {
-        List<UserEntity> userEntities = new ArrayList<>();
-        for (Integer item : assignmentBuildingRequest.getStaffIds()) {
-            userEntities.add(userRepository.findById(item.longValue()).get());
-        }
-        BuildingEntity buildingEntity = buildingRepository.findById(buildingID).get();
-        buildingRepository.assignmentBuilding(userEntities, buildingEntity);
-
-    }*/
    @Override
    @Transactional
    public void assignmentBuilding(AssignmentBuildingRequest assignmentBuildingRequest, Long buildingID) {
@@ -195,7 +184,6 @@ public class BuildingService implements IBuildingService {
                        return assignment;
                    })
                    .collect(Collectors.toList());
-
            // Lưu danh sách assignment mới vào cơ sở dữ liệu
            assignmentBuildingRepository.saveAll(newAssignments);
        }

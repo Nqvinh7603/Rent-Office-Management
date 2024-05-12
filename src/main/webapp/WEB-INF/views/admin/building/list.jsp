@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/common/taglib.jsp" %>
 <c:url var="buildingListURL" value="/admin/building-list"/>
 <html>
@@ -197,60 +197,14 @@
                     </div>
                 </div>
                 <br/>
-
+                <%--${modelSearch.maxPageItems}--%>
                 <div class="row">
                     <div class="col-xs-12">
-                        <%--<table id="buildingList" class="table table-striped table-bordered table-hover">
-                            <thead>
-                            <tr>
-                                <th class="center">
-                                    <label class="pos-rel">
-                                        <input type="checkbox" class="checkItem" id="selectAll" class="ace"/>
-                                        <span class="lbl"></span>
-                                    </label>
-                                </th>
-                                <th>Tên sản phẩm</th>
-                                <th>Địa chỉ</th>
-                                <th>Tên quản lí</th>
-                                <th>Số điện thoại</th>
-                                <th>Diện tích sàn</th>
-                                <th>Giá thuê</th>
-                                <th>Phí dịch vụ</th>
-                                <th>Thao tác</th>
-                            </tr>
-                            </thead>
-
-                            <tbody>
-                            <c:forEach var="item" items="${buildings}">
-                                <tr>
-                                    <td> <input type="checkbox" value="${item.id}" name="checkBuildings[]"></td>
-                                    <td>${item.name}</td>
-                                    <td>${item.address}</td>
-                                    <td>${item.managerName}</td>
-                                    <td>${item.managerPhone}</td>
-                                    <td>${item.floorArea}</td>
-                                    <td>${item.rentPrice}</td>
-                                    <td>${item.serviceFee}</td>
-                                    <td>
-                                        <button class="btn btn-xs" data-toggle="tooltip"
-                                                title="Giao tòa nhà" value="${item.id}" onclick="assignmentBuilding(value)">
-                                            <i class="fa fa-home" aria-hidden="true"></i>
-                                        </button>
-                                        <button class="btn btn-xs btn-dark" data-toggle="tooltip"
-                                                title="Sửa thông tin toà nhà" value="${item.id}"
-                                                onclick="editBuilding(value)">
-                                            <i class="fa fa-edit" aria-hidden="true"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                            </tbody>
-                        </table>--%>
                         <div class="table-responsive">
                             <display:table name="modelSearch.listResult" cellspacing="0" cellpadding="0"
                                            requestURI="${buildingListURL}" partialList="true" sort="external"
                                            size="${modelSearch.totalItems}" defaultsort="2" defaultorder="ascending"
-                                           id="tableList" pagesize="${modelSearch.maxPageItems}"
+                                           id="tableList" pagesize="5"
                                            export="false"
                                            class="table table-fcv-ace table-striped table-bordered table-hover dataTable no-footer"
                                            style="margin: 3em 0 1.5em;">
@@ -272,7 +226,6 @@
                                 <display:column headerClass="text-left" property="serviceFee" title="Phí Dịch Vụ"/>
 
                                 <display:column headerClass="col-actions" title="Thao tác">
-                                    <%--<c:if test="${tableList.roleCode != 'ADMIN'}">--%>
                                     <button class="btn btn-xs" data-toggle="tooltip"
                                             title="Giao toà nhà cho nhân viên quản lí" value="${tableList.id}"
                                             onclick="assignmentBuilding(value)">
@@ -447,5 +400,6 @@
         }
 
     </script>
+</div>
 </body>
 </html>

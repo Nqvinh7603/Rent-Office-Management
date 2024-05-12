@@ -1,16 +1,15 @@
 package site.rentofficevn.utils;
 
+import org.slf4j.Logger;
 import site.rentofficevn.dto.AbstractDTO;
 import org.apache.commons.lang.StringUtils;
-//import org.apache.log4j.Logger;
 import org.displaytag.tags.TableTagParameters;
 import org.displaytag.util.ParamEncoder;
-
 import javax.servlet.http.HttpServletRequest;
 
 public class DisplayTagUtils {
 
-    //private static final Logger log = Logger.getLogger(DisplayTagUtils.class);
+    //private static final Logger log =  Logger.(DisplayTagUtils.class);
 
     public static void of(HttpServletRequest request, AbstractDTO dto) {
         if (dto != null) {

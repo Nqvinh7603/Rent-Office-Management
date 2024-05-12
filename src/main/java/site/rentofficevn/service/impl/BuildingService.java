@@ -1,6 +1,7 @@
 package site.rentofficevn.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.rentofficevn.builder.BuildingSearchBuilder;
@@ -19,6 +20,7 @@ import site.rentofficevn.repository.AssignmentBuildingRepository;
 import site.rentofficevn.repository.BuildingRepository;
 import site.rentofficevn.repository.RentAreaRepository;
 import site.rentofficevn.repository.UserRepository;
+import site.rentofficevn.security.utils.SecurityUtils;
 import site.rentofficevn.service.IBuildingService;
 
 import java.util.*;
@@ -161,7 +163,28 @@ public class BuildingService implements IBuildingService {
         return buildingDTO;
     }
 
-   @Override
+    @Override
+    public List<BuildingSearchResponse> pageBuilding(Pageable pageable, BuildingSearchRequest buildingSearchRequest) {
+        List<BuildingSearchResponse> result = new ArrayList<>();
+        // Nếu staff thì chỉ xem đc building mình quản lí
+        if (SecurityUtils.getAuthorities().contains("ROLE_STAFF")) {
+            buildingSearchRequest.setStaffId(SecurityUtils.getPrincipal().getId());
+        }
+
+        BuildingSearchBuilder buildingSearchBuilder = convertParamToBuilder(buildingSearchRequest);
+        List<BuildingEntity> buildingEntities = buildingRepository.pageBuilding(pageable, buildingSearchBuilder);
+        for (BuildingEntity item : buildingEntities) {
+            result.add(buildingConverter.convertFromEntitytoBuildingSearchResponse(item));
+        }
+        return result;
+    }
+
+    @Override
+    public int getTotalItems() {
+        return (int) buildingRepository.countAllBuilding();
+    }
+
+    @Override
    @Transactional
    public void assignmentBuilding(AssignmentBuildingRequest assignmentBuildingRequest, Long buildingID) {
        // Lấy danh sách người dùng từ assignmentBuildingRequest

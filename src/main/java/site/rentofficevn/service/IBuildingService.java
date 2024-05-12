@@ -7,6 +7,7 @@ import site.rentofficevn.dto.request.BuildingSearchRequest;
 import site.rentofficevn.dto.response.BuildingSearchResponse;
 import site.rentofficevn.exception.MyException;
 
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface IBuildingService {
@@ -17,4 +18,6 @@ public interface IBuildingService {
     void assignmentBuilding(AssignmentBuildingRequest assignmentBuildingRequest, Long buildingId) throws NotFoundException;
     void delete(List<Long> buildingIds);
     BuildingDTO getBuildingDetails(Long id);
+    List<BuildingSearchResponse> pageBuilding(Pageable pageable, BuildingSearchRequest buildingSearchRequest);
+    int getTotalItems();
 }

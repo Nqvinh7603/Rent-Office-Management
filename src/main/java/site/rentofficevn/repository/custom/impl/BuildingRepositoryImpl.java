@@ -1,6 +1,7 @@
 package site.rentofficevn.repository.custom.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import site.rentofficevn.builder.BuildingSearchBuilder;
@@ -17,6 +18,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -148,11 +150,21 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
                 .forEach(entityManager::persist);
     }
 
-    // set vào Assignment ->
-    // list : A,B,C,D,E
-    // tích : a,b     - listStaff
-    // h muốn set thêm c,d - listUserId
-    // c,d,a,b
-    //  != => set vào assigment
-    //  }
+    @Override
+    public List<BuildingEntity> pageBuilding(Pageable pageable, BuildingSearchBuilder builder) {
+            try {
+                StringBuilder finalQuery = new StringBuilder(
+                        "SELECT b.* from building b\n");
+                finalQuery.append(buildJoiningClause(builder))
+                        .append(SystemConstant.WHERE_ONE_EQUAL_ONE)
+                        .append(buildCommonClause(builder))
+                        .append(buildSpecialClause(builder));
+                Query query = entityManager.createNativeQuery(finalQuery.toString(), BuildingEntity.class);
+                return query.getResultList();
+            }catch(Exception e){
+                e.printStackTrace();
+                return new ArrayList<>();
+            }
+    }
+
 }

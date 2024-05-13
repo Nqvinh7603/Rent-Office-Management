@@ -9,8 +9,11 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ResourceBundle;
 
 public class ReadFileUtils extends HttpServlet {
+
+    ResourceBundle resourceBundle = ResourceBundle.getBundle("application");
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -23,7 +26,7 @@ public class ReadFileUtils extends HttpServlet {
         }
         ServletOutputStream outStream;
         outStream = response.getOutputStream();
-        FileInputStream fin = new FileInputStream("D:/estatedata" + relativeImagePath);
+        FileInputStream fin = new FileInputStream(resourceBundle.getString("dir.default") + relativeImagePath);
         BufferedInputStream bin = new BufferedInputStream(fin);
         BufferedOutputStream bout = new BufferedOutputStream(outStream);
         int ch =0;

@@ -54,11 +54,10 @@ public class BuildingDTO extends AbstractDTO<BuildingDTO> {
     }
 
     public String getImageBase64() {
-        return imageBase64;
-    }
-
-    public void setImageBase64(String imageBase64) {
-        this.imageBase64 = imageBase64;
+        if (imageBase64 != null) {
+            return imageBase64.split(",")[1];
+        }
+        return null;
     }
 
     public String getImageName() {

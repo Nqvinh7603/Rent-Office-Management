@@ -2,6 +2,7 @@ package site.rentofficevn.service.impl;
 
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +26,7 @@ import site.rentofficevn.repository.UserRepository;
 import site.rentofficevn.security.utils.SecurityUtils;
 import site.rentofficevn.service.IBuildingService;
 import site.rentofficevn.utils.UploadFileUtils;
-import org.apache.tomcat.util.codec.binary.Base64;
+import org.apache.commons.codec.binary.Base64;
 import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -60,6 +61,8 @@ public class BuildingService implements IBuildingService {
 
     @Autowired
     private UploadFileUtils uploadFileUtils;
+    @Value("${dir.default}")
+    private String dirDefault;
 
     @Override
     public List<BuildingDTO> findAll() {
@@ -214,7 +217,7 @@ public class BuildingService implements IBuildingService {
         if (null != buildingDTO.getImageBase64()) {
             if (null != buildingEntity.getImage()) {
                 if (!path.equals(buildingEntity.getImage())) {
-                    File file = new File("D:/estatedata" + buildingEntity.getImage());
+                    File file = new File(dirDefault + buildingEntity.getImage());
                     file.delete();
                 }
             }

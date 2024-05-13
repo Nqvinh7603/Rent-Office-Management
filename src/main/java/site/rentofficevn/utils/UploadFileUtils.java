@@ -1,6 +1,7 @@
 package site.rentofficevn.utils;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -9,8 +10,10 @@ import java.io.IOException;
 
 @Component
 public class UploadFileUtils {
+    @Value("${dir.default}")
+    private String dirDefault;
     public void writeOrUpdate(String path, byte[] bytes) {
-        path = "C:/real-estate" + path;
+        path = dirDefault + path;
         File file = new File(StringUtils.substringBeforeLast(path, "/"));
         if (!file.exists()) {
             file.mkdir();

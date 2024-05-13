@@ -1,5 +1,6 @@
 package site.rentofficevn.service.impl;
 
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,9 @@ import site.rentofficevn.repository.RentAreaRepository;
 import site.rentofficevn.repository.UserRepository;
 import site.rentofficevn.security.utils.SecurityUtils;
 import site.rentofficevn.service.IBuildingService;
-
+import site.rentofficevn.utils.UploadFileUtils;
+import org.apache.tomcat.util.codec.binary.Base64;
+import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -31,24 +34,31 @@ public class BuildingService implements IBuildingService {
 
     @Autowired
     BuildingRepository buildingRepository;
+
     @Autowired
     BuildingConverter buildingConverter;
+
     @Autowired
     UserRepository userRepository;
+
     @Autowired
     AssignmentBuildingRepository assignmentBuildingRepository;
+
     @Autowired
     private BuildingTypesService buildingTypesService;
+
     @Autowired
     private DistrictService districtService;
+
     @Autowired
     private RentAreaRepository rentAreaRepository;
 
-    @Autowired
-    private RentAreaService rentAreaService;
 
     @Autowired
     private RentAreaConverter rentAreaConverter;
+
+    @Autowired
+    private UploadFileUtils uploadFileUtils;
 
     @Override
     public List<BuildingDTO> findAll() {
@@ -96,6 +106,9 @@ public class BuildingService implements IBuildingService {
         try {
             List<RentAreaDTO> newRentAreas = rentAreaConverter.convertToRentArea(buildingEntity.getId(), buildingDTO);
             if (buildingDTO.getId() != null ) {
+                BuildingEntity foundBuilding = buildingRepository.findById(buildingDTO.getId())
+                        .orElseThrow(() -> new NotFoundException("Building not found!"));
+                buildingEntity.setImage(foundBuilding.getImage());
                 if( buildingDTO.getRentArea() != null) {
                     // Lấy danh sách rent areas cũ từ cơ sở dữ liệu
                     List<RentAreaEntity> oldRentAreas = rentAreaRepository.findByBuilding(buildingEntity);
@@ -126,6 +139,7 @@ public class BuildingService implements IBuildingService {
             }else {
                 rentAreaRepository.saveAll(newRentAreas.stream().map(rentAreaConverter::convertToEntity).collect(Collectors.toList()));
             }
+            saveThumbnail(buildingDTO, buildingEntity);
             // Chuyển đổi entity thành DTO và trả về
             return buildingConverter.convertToDTOCustom(buildingEntity);
         } catch (Exception e) {
@@ -239,4 +253,20 @@ public class BuildingService implements IBuildingService {
             return null;
         }
     }
+
+    private void saveThumbnail(BuildingDTO buildingDTO, BuildingEntity buildingEntity) {
+        String path = "/building/" + buildingDTO.getImageName();
+        if (null != buildingDTO.getImageBase64()) {
+            if (null != buildingEntity.getImage()) {
+                if (!path.equals(buildingEntity.getImage())) {
+                    File file = new File("D:/estatedata" + buildingEntity.getImage());
+                    file.delete();
+                }
+            }
+            byte[] bytes = Base64.decodeBase64(buildingDTO.getImageBase64().getBytes());
+            uploadFileUtils.writeOrUpdate(path, bytes);
+            buildingEntity.setImage(path);
+        }
+    }
+
 }

@@ -187,6 +187,21 @@
                         </div>
 
                         <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right">Hình tòa nhà</label>
+                            <input class="col-sm-3 no-padding-right" type="file" value="${modelBuildingEdit.image}" id="uploadImage"/>
+                            <div class="col-sm-9">
+                                <c:if test="${not empty modelBuildingEdit.image}">
+                                    <c:set var="imagePath" value="/repository${modelBuildingEdit.image}"/>
+                                    <img src="${imagePath}" id="viewImage" width="200px" height="200px" style="margin-top: 50px">
+                                </c:if>
+                                <c:if test="${empty modelBuildingEdit.image}">
+                                    <img src="/img/default_img.jpg" id="viewImage" width="200px" height="200px">
+                                </c:if>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-9">
                                 <c:if test="${modelBuildingEdit.id == null}">
                                     <button type="button" class="btn btn-primary" id="btnEditBuilding" name="">Thêm tòa nhà
@@ -207,11 +222,13 @@
 
 
 <script>
+    var imageBase64 = '';
+    var imageName = '';
     $('#btnEditBuilding').click(function (e) {
         e.preventDefault();
         var data = {};
         var formData = $('#formEdit').serializeArray();
-        var id = ${modelBuildingEdit.id} + '';
+        var id = '${modelBuildingEdit.id}' + '';
         if(id != '') {
             data["id"] = id;
         }
@@ -223,8 +240,19 @@
             } else {
                 data[item.name] = item.value;
             }
+
+            if ('' !== e.value && null != e.value) {
+                data['' + e.name + ''] = e.value;
+            }
+            if ('' !== imageBase64) {
+                data['imageBase64'] = imageBase64;
+                data['imageName'] = imageName;
+            }
         })
+        var buildingId = data['id'];
         data["types"] = types;
+        $('#loading_image').show();
+
         $.ajax({
             type: "PUT",
             url: '<c:url value="/api/building"/>',
@@ -232,6 +260,7 @@
             dataType: "json",               // kiểu dữ liệu server gửi cho client
             contentType: "application/json",//kieu du lieu tu client gui ve server
             success: function (response) {
+                $('#loading_image').hide();
                 window.location.href = '<c:url value="/admin/building-list" />'
             },
             error: function (response) {
@@ -244,6 +273,26 @@
         window.location.href = '<c:url value="/admin/building-list" />' // thay đổi URL sang trang bạn muốn chuyển đến
         window.close(); // đóng trang hiện tại
     });
+    $('#uploadImage').change(function (event) {
+        var reader = new FileReader();
+        var file = $(this)[0].files[0];
+        reader.onload = function(e){
+            imageBase64 = e.target.result;
+            imageName = file.name; // ten hinh khong dau, khoang cach. vd: a-b-c
+        };
+        reader.readAsDataURL(file);
+        openImage(this, "viewImage");
+    });
+
+    function openImage(input, imageView) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#' +imageView).attr('src', reader.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
 </script>
 
 </body>

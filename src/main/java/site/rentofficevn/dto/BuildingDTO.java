@@ -41,6 +41,33 @@ public class BuildingDTO extends AbstractDTO<BuildingDTO> {
     private String avatar;
     private Integer managerPhone;
     private String managerName;
+    private String image;    // field map entity
+    private String imageBase64; // xử lí ảnh
+    private String imageName;   // name image
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getImageBase64() {
+        return imageBase64;
+    }
+
+    public void setImageBase64(String imageBase64) {
+        this.imageBase64 = imageBase64;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
 
     private List<BuildingTypesResponse> buildingTypes;
     private List<DistrictResponse> districts;

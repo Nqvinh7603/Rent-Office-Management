@@ -2,10 +2,13 @@ package site.rentofficevn.api.admin;
 
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import site.rentofficevn.dto.BuildingDTO;
 import site.rentofficevn.dto.request.AssignmentBuildingRequest;
+import site.rentofficevn.dto.request.BuildingSearchRequest;
+import site.rentofficevn.dto.response.BuildingSearchResponse;
 import site.rentofficevn.dto.response.StaffResponseDTO;
 import site.rentofficevn.exception.MyException;
 import site.rentofficevn.service.impl.BuildingService;
@@ -47,6 +50,12 @@ public class BuildingAPI {
     @GetMapping("/{id}/staff")
     public List<StaffResponseDTO> loadStaffByBuilding(@PathVariable("id") Long id) {
         return userService.finAllStaffByBuilding(id);
+    }
+
+    // page
+    @PostMapping("/page")
+    public List<BuildingSearchResponse> pageBuilding(Pageable pageable, BuildingSearchRequest buildingSearch) {
+        return buildingService.pageBuilding(pageable, buildingSearch);
     }
 
 }

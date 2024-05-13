@@ -37,6 +37,8 @@ public class BuildingEntity extends BaseEntity {
     private BigDecimal brokerageFee;
     @Column(name = "type")
     private String types;
+    @Column(name = "image")
+    private String image;
 
     @OneToMany(mappedBy = "building")
     private List<RentAreaEntity> rentAreas;
@@ -59,6 +61,14 @@ public class BuildingEntity extends BaseEntity {
 
     public void setRentAreas(List<RentAreaEntity> rentAreas) {
         this.rentAreas = rentAreas;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getName() {

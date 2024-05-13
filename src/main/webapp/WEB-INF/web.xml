@@ -25,4 +25,13 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
+    <servlet>
+        <servlet-name>DisplayImage</servlet-name>
+        <servlet-class>site.rentofficevn.utils.ReadFileUtils</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DisplayImage</servlet-name>
+        <url-pattern>/repository/*</url-pattern>
+    </servlet-mapping>
+
 </web-app>

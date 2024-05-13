@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import site.rentofficevn.builder.BuildingSearchBuilder;
 import site.rentofficevn.converter.BuildingConverter;
 import site.rentofficevn.converter.RentAreaConverter;
+import site.rentofficevn.dto.AssignmentDTO;
 import site.rentofficevn.dto.BuildingDTO;
 import site.rentofficevn.dto.RentAreaDTO;
 import site.rentofficevn.dto.request.AssignmentBuildingRequest;
@@ -101,47 +102,15 @@ public class BuildingService implements IBuildingService {
     @Override
     @Transactional
     public BuildingDTO createAndUpdateBuilding(BuildingDTO buildingDTO) {
-        // Lưu hoặc cập nhật building
-        BuildingEntity buildingEntity = buildingRepository.save(buildingConverter.convertToEntityCustom(buildingDTO));
+        BuildingEntity buildingEntity = buildingConverter.convertToEntityCustom(buildingDTO); // trả ra cho dto
         try {
-            List<RentAreaDTO> newRentAreas = rentAreaConverter.convertToRentArea(buildingEntity.getId(), buildingDTO);
-            if (buildingDTO.getId() != null ) {
+            if (buildingDTO.getId() != null) {
                 BuildingEntity foundBuilding = buildingRepository.findById(buildingDTO.getId())
                         .orElseThrow(() -> new NotFoundException("Building not found!"));
                 buildingEntity.setImage(foundBuilding.getImage());
-                if( buildingDTO.getRentArea() != null) {
-                    // Lấy danh sách rent areas cũ từ cơ sở dữ liệu
-                    List<RentAreaEntity> oldRentAreas = rentAreaRepository.findByBuilding(buildingEntity);
-                    // Xác định rent areas cần xóa và cần thêm
-                    List<RentAreaEntity> rentAreasToDelete = new ArrayList<>();
-                    List<RentAreaEntity> rentAreasToAdd = new ArrayList<>();
-                    // Tạo danh sách các giá trị rent areas cần xóa và cần thêm
-                    List<Integer> oldRentAreaValues = oldRentAreas.stream().map(RentAreaEntity::getValue).collect(Collectors.toList());
-                    List<Integer> newRentAreaValues = newRentAreas.stream().map(RentAreaDTO::getValue).collect(Collectors.toList());
-                    // Xác định rent areas cần xóa
-                    for (RentAreaEntity oldRentArea : oldRentAreas) {
-                        if (!newRentAreaValues.contains(oldRentArea.getValue())) {
-                            rentAreasToDelete.add(oldRentArea);
-                        }
-                    }
-                    // Xác định rent areas cần thêm
-                    for (RentAreaDTO newRentArea : newRentAreas) {
-                        if (!oldRentAreaValues.contains(newRentArea.getValue())) {
-                            RentAreaEntity newRentAreaEntity = rentAreaConverter.convertToEntity(newRentArea);
-                            newRentAreaEntity.setBuilding(buildingEntity);
-                            rentAreasToAdd.add(newRentAreaEntity);
-                        }
-                    }
-                    // Xóa rent areas cũ
-                    rentAreaRepository.deleteAll(rentAreasToDelete);
-                    rentAreaRepository.saveAll(rentAreasToAdd);
-                }
-            }else {
-                rentAreaRepository.saveAll(newRentAreas.stream().map(rentAreaConverter::convertToEntity).collect(Collectors.toList()));
             }
-            saveThumbnail(buildingDTO, buildingEntity);
-            // Chuyển đổi entity thành DTO và trả về
-            return buildingConverter.convertToDTOCustom(buildingEntity);
+            saveThumbnail(buildingDTO, buildingEntity);   // save thumbnail
+            return buildingConverter.convertToDTOCustom(buildingRepository.save(buildingEntity)); // sửa
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error building update in service");
@@ -151,16 +120,18 @@ public class BuildingService implements IBuildingService {
     @Override
     @Transactional
     public void delete(List<Long> buildingIds) {
-        for (Long item : buildingIds) {
-            BuildingEntity buildingDelete = buildingRepository.findById(item).get();
+        try {
+            if (!buildingIds.isEmpty()) {
+                Long count = buildingRepository.countByIdIn(buildingIds);
 
-            if (buildingDelete.getRentAreas().size() > 0) {
-                rentAreaRepository.deleteByBuilding_Id(buildingDelete.getId());
+                if (count != buildingIds.size()) {
+                    throw new NotFoundException("Building not found!");
+                }
+                // remove buildings
+                buildingRepository.deleteByIdIn(buildingIds);
             }
-            if (buildingDelete.getAssignBuildings().size() > 0) {
-                assignmentBuildingRepository.deleteByBuilding_Id(buildingDelete.getId());
-            }
-            buildingRepository.deleteById(buildingDelete.getId());
+        } catch (NotFoundException e) {
+            e.printStackTrace();
         }
     }
 
@@ -184,7 +155,6 @@ public class BuildingService implements IBuildingService {
         if (SecurityUtils.getAuthorities().contains("ROLE_STAFF")) {
             buildingSearchRequest.setStaffId(SecurityUtils.getPrincipal().getId());
         }
-
         BuildingSearchBuilder buildingSearchBuilder = convertParamToBuilder(buildingSearchRequest);
         List<BuildingEntity> buildingEntities = buildingRepository.pageBuilding(pageable, buildingSearchBuilder);
         for (BuildingEntity item : buildingEntities) {
@@ -200,30 +170,15 @@ public class BuildingService implements IBuildingService {
 
     @Override
    @Transactional
-   public void assignmentBuilding(AssignmentBuildingRequest assignmentBuildingRequest, Long buildingID) {
-       // Lấy danh sách người dùng từ assignmentBuildingRequest
-       List<Long> userIds = assignmentBuildingRequest.getStaffIds().stream().map(Long::valueOf).collect(Collectors.toList());
-       List<UserEntity> users = userRepository.findAllById(userIds);
-
-       Optional<BuildingEntity> buildingOptional = buildingRepository.findById(buildingID);
-       if (buildingOptional.isPresent()) {
-           BuildingEntity buildingEntity = buildingOptional.get();
-           List<AssignBuildingEntity> oldAssignments = assignmentBuildingRepository.findByBuilding(buildingEntity);
-           List<AssignBuildingEntity> oldAssignmentsCopy = new ArrayList<>(oldAssignments);
-           oldAssignmentsCopy.removeIf(oldAssignment -> users.stream().anyMatch(newUser -> oldAssignment.getUser().getId().equals(newUser.getId())));
-           assignmentBuildingRepository.deleteAll(oldAssignmentsCopy);
-           List<AssignBuildingEntity> newAssignments = users.stream()
-                   .filter(newUser -> oldAssignments.stream().noneMatch(oldAssignment -> oldAssignment.getUser().getId().equals(newUser.getId())))
-                   .map(user -> {
-                       AssignBuildingEntity assignment = new AssignBuildingEntity();
-                       assignment.setUser(user);
-                       assignment.setBuilding(buildingEntity);
-                       return assignment;
-                   })
-                   .collect(Collectors.toList());
-           // Lưu danh sách assignment mới vào cơ sở dữ liệu
-           assignmentBuildingRepository.saveAll(newAssignments);
-       }
+   public void assignmentBuilding(AssignmentDTO assignmentDTO) {
+        try {
+            BuildingEntity buildingEntity = buildingRepository.findById(assignmentDTO.getBuildingid()).get();
+            buildingEntity.setUserEntities(new HashSet<>(userRepository.findAllById(assignmentDTO.getStaffIds())));
+            buildingRepository.save(buildingEntity);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error assignmentBuilding service");
+        }
    }
 
 

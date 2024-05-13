@@ -23,6 +23,15 @@ public class AbstractDTO<T> implements Serializable {
     private Integer totalPage;
     private Integer totalItem;
     private String searchValue;
+    private Integer currentPage;
+
+    public Integer getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(Integer currentPage) {
+        this.currentPage = currentPage;
+    }
 
     public Long getId() {
         return id;

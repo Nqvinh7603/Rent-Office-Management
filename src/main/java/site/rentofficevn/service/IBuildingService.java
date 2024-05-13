@@ -1,6 +1,7 @@
 package site.rentofficevn.service;
 
 import javassist.NotFoundException;
+import site.rentofficevn.dto.AssignmentDTO;
 import site.rentofficevn.dto.BuildingDTO;
 import site.rentofficevn.dto.request.AssignmentBuildingRequest;
 import site.rentofficevn.dto.request.BuildingSearchRequest;
@@ -15,7 +16,7 @@ public interface IBuildingService {
     List<BuildingSearchResponse> findAll(BuildingSearchRequest buildingSearchRequest);
     BuildingDTO findBuildingById(Long id);
     BuildingDTO createAndUpdateBuilding(BuildingDTO buildingDTO) throws MyException;
-    void assignmentBuilding(AssignmentBuildingRequest assignmentBuildingRequest, Long buildingId) throws NotFoundException;
+    void assignmentBuilding(AssignmentDTO assignmentDTO) throws NotFoundException;
     void delete(List<Long> buildingIds);
     BuildingDTO getBuildingDetails(Long id);
     List<BuildingSearchResponse> pageBuilding(Pageable pageable, BuildingSearchRequest buildingSearchRequest);

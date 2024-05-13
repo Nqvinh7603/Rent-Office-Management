@@ -283,30 +283,44 @@
     </div>
 
     <script>
-        var buildingid;
 
+        var currentPageURL = window.location.href;
+
+        function redirectBackToCurrentPage() {
+            window.location.href = currentPageURL;
+        }
+
+        // Hàm xử lý khi thực hiện thao tác thêm, sửa, xóa thành công
+        function handleSuccess() {
+            redirectBackToCurrentPage();
+        }
+        var buildingid;
         function assignmentBuilding(value) {
             buildingid = value;
-            $("#dsnv").empty();
             $.ajax({
                 type: "GET",
                 url: "<c:url value='/api/building'/>" + '/' + value + '/staff',
-                dataType: "json",
-                contentType: "application/json",
+                //data: JSON.stringify(data),  // data gửi về
+                dataType: "json",              // kiểu dữ liệu gửi từ server
+                contentType: "application/json",   // gửi từ server
+
                 success: function (response) {
-                    var arrBuilding = response;
-                    arrBuilding.forEach(function (item) {
-                        var newRow = '<tr>'
-                            + '<td class=text-center>' +
-                            '<input type="checkbox" ' + item.checked + ' name="checkStaffs[]" value="' + item.id + '" />'
-                            + '</td>'
-                            + '<td>' + item.fullName + '</td>' +
-                            '</tr>';
-                        $("#dsnv").append(newRow);
+                    // data : chính là cục chứa data của tk staffListDTO
+                    var arrBuilding  = response;
+                    var row = '';
+                    $("#dsnv").empty();
+                    arrBuilding.forEach(function(item) {
+                        var row = '<tr>'
+                            +  '<td class=text-center>' +
+                            '<input type="checkbox" ' + item.checked + ' name="checkStaffs[]" value="' + item.id  + '" />'
+                            +  '</td>'
+                            +  '<td>'+ item.fullName + '</td>' +
+                            '</tr>'
+                        $("#dsnv").append(row);
                     });
                 },
                 error: function (response) {
-                    console.log('failed')
+                    console.log('faild')
                     console.log(response)
                 }
             });
@@ -324,16 +338,18 @@
             });
 
             data["staffIds"] = values;
-
+            data["buildingid"] = buildingid;
             $.ajax({
                 type: "POST",
-                url: '<c:url value="/api/building"/>' + '/' + buildingid + '/assignment',
+               /* url: '<c:url value="/api/building"/>' + '/' + buildingid + '/assignment',*/
+                url: '<c:url value="/api/building/assignment"/>',
                 data: JSON.stringify(data),
                 dataType: "json",
                 contentType: "application/json",
                 success: function (response) {
                     console.log("success");
-                    window.location.reload();
+                    //window.location.reload();
+                    handleSuccess();
                 },
                 error: function (response) {
                     alert("fail")
@@ -364,7 +380,8 @@
                 contentType: 'application/json',
                 data: JSON.stringify(data),
                 success: function (res) {
-                    window.location.href = "<c:url value='/admin/building-list?message=delete_success'/>";
+                    /*window.location.href = "<c:url value='/admin/building-list?message=delete_success'/>";*/
+                    handleSuccess();
                 },
                 error: function (res) {
                     console.log(res);
@@ -398,7 +415,6 @@
                 $("#rent[value='" + value + "']").prop('checked', true);
             });
         }
-
     </script>
 </div>
 </body>

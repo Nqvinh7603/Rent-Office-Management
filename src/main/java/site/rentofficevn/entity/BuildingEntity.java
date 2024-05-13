@@ -2,6 +2,8 @@ package site.rentofficevn.entity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -40,19 +42,27 @@ public class BuildingEntity extends BaseEntity {
     @Column(name = "image")
     private String image;
 
-    @OneToMany(mappedBy = "building")
-    private List<RentAreaEntity> rentAreas;
+    // 1 building - n rentarea  CascadeType.PERSIST,CascadeType.MERGE
+    @OneToMany(mappedBy="building", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    private List<RentAreaEntity> rentAreas = new ArrayList<>();
 
-    // 1 building - n assignmentBuiding
+    /*// 1 building - n assignmentBuiding
     @OneToMany(mappedBy = "building")
-    private List<AssignBuildingEntity> assignBuildings;
+    private List<AssignBuildingEntity> assignBuildings;*/
 
-    public List<AssignBuildingEntity> getAssignBuildings() {
-        return assignBuildings;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "assignmentbuilding",
+            joinColumns = @JoinColumn(name = "buildingid", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "staffid", nullable = false))
+    private Set<UserEntity> userEntities = new HashSet<>();
+
+    public Set<UserEntity> getUserEntities() {
+        return userEntities;
     }
 
-    public void setAssignBuildings(List<AssignBuildingEntity> assignBuildings) {
-        this.assignBuildings = assignBuildings;
+    public void setUserEntities(Set<UserEntity> userEntities) {
+        this.userEntities = userEntities;
     }
 
     public List<RentAreaEntity> getRentAreas() {

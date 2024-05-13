@@ -9,4 +9,5 @@ public interface BuildingRepository extends BuildingRepositoryCustom,JpaReposito
     void deleteByIdIn(List<Long> ids);
     @Query(value="select count(*) from building", nativeQuery = true)
     long countAllBuilding();
+    Long countByIdIn(List<Long> buildingIds);
 }

@@ -32,9 +32,20 @@ public class UserEntity extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "roleid", nullable = false))
     private List<RoleEntity> roles = new ArrayList<>();
 
-    // 1 user - n assignBuilding
+    /*// 1 user - n assignBuilding
     @OneToMany(mappedBy="user") //
-    private Set<AssignBuildingEntity> buildings;
+    private Set<AssignBuildingEntity> buildings;*/
+
+    @ManyToMany(mappedBy = "userEntities")
+    private List<BuildingEntity> buildingEntities;
+
+    public List<BuildingEntity> getBuildingEntities() {
+        return buildingEntities;
+    }
+
+    public void setBuildingEntities(List<BuildingEntity> buildingEntities) {
+        this.buildingEntities = buildingEntities;
+    }
 
     public String getUserName() {
         return userName;
@@ -84,11 +95,4 @@ public class UserEntity extends BaseEntity {
         this.email = email;
     }
 
-    public Set<AssignBuildingEntity> getBuildings() {
-        return buildings;
-    }
-
-    public void setBuildings(Set<AssignBuildingEntity> buildings) {
-        this.buildings = buildings;
-    }
 }

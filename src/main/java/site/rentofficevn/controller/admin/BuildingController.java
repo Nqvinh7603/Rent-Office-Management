@@ -15,17 +15,19 @@ import site.rentofficevn.service.impl.UserService;
 @Controller
 @RequestMapping("/admin")
 public class BuildingController {
-    @Autowired
-    BuildingService buildingService;
+
+    private final BuildingService buildingService;
+    private final UserService userService;
+    private final BuildingTypesService buildingTypesService;
+    private final DistrictService districtService;
 
     @Autowired
-    UserService userService;
-
-    @Autowired
-    private BuildingTypesService buildingTypesService;
-
-    @Autowired
-    private DistrictService districtService;
+    public BuildingController(BuildingService buildingService, UserService userService, BuildingTypesService buildingTypesService, DistrictService districtService) {
+        this.buildingService = buildingService;
+        this.userService = userService;
+        this.buildingTypesService = buildingTypesService;
+        this.districtService = districtService;
+    }
 
     @GetMapping("/building-list")
     public ModelAndView buildingList(@ModelAttribute("modelSearch")BuildingSearchRequest buildingSearchRequest) {

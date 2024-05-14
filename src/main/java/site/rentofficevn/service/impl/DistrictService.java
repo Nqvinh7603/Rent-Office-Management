@@ -6,6 +6,7 @@ import site.rentofficevn.dto.response.DistrictResponse;
 import site.rentofficevn.enums.DistrictsEnum;
 import site.rentofficevn.service.IDistrictService;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,6 +27,9 @@ public class DistrictService implements IDistrictService {
 
     @Override
     public List<DistrictResponse> getDistrictByBuilding(BuildingDTO buildingDTO) {
+        if(buildingDTO == null) {
+            return getAllDistrict();
+        }
         return Arrays.stream(DistrictsEnum.values())
                 .map(item -> {
                     DistrictResponse response = new DistrictResponse();
@@ -38,4 +42,5 @@ public class DistrictService implements IDistrictService {
                 })
                 .collect(Collectors.toList());
     }
+
 }

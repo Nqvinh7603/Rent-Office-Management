@@ -155,14 +155,23 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-sm-6">
+                                        <%--<div class="col-sm-6">
                                             <c:forEach var="item" items="${buildingTypes}">
                                                 <input type="checkbox" id="type_${item.code}" name="types"
                                                        value="${item.code}"/>
                                                 <label for="type_${item.code}"
                                                        style="font-weight: bold; margin-right: 10px; display: inline-block">${item.name}</label>
                                             </c:forEach>
+                                        </div>--%>
+                                        <div class="col-sm-6">
+                                            <form:select path="types" cssClass="form-control">
+                                                <form:option value="" label="Chọn loại tòa nhà" />
+                                                <c:forEach var="item" items="${buildingTypes}">
+                                                    <form:option value="${item.code}">${item.name}</form:option>
+                                                </c:forEach>
+                                            </form:select>
                                         </div>
+
 
                                         <div class="col-sm-12">
                                             <br>

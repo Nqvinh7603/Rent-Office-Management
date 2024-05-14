@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import site.rentofficevn.constant.SystemConstant;
 import site.rentofficevn.dto.BuildingDTO;
 import site.rentofficevn.dto.request.BuildingSearchRequest;
 import site.rentofficevn.service.impl.BuildingService;
@@ -32,10 +33,10 @@ public class BuildingController {
     @GetMapping("/building-list")
     public ModelAndView buildingList(@ModelAttribute("modelSearch")BuildingSearchRequest buildingSearchRequest) {
             ModelAndView mav = new ModelAndView("admin/building/list");
-            mav.addObject("buildings", buildingService.findAll(buildingSearchRequest));
-            mav.addObject("districts", districtService.getAllDistrict());
-            mav.addObject("staffmaps", userService.getAll());
-            mav.addObject("buildingTypes", buildingTypesService.getAll());
+            mav.addObject(SystemConstant.BUILDINGS, buildingService.findAll(buildingSearchRequest));
+            mav.addObject(SystemConstant.DISTRICT_MAP, districtService.getAllDistrict());
+            mav.addObject(SystemConstant.STAFF_MAP, userService.getAll());
+            mav.addObject(SystemConstant.BUILDING_TYPE_MAP, buildingTypesService.getAll());
             return mav;
     }
     @GetMapping("/building-edit")

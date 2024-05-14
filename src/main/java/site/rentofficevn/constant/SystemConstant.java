@@ -12,8 +12,10 @@ public class SystemConstant {
     public static final String INSERT_SUCCESS = "insert_success";
     public static final String UPDATE_SUCCESS = "update_success";
     public static final String DELETE_SUCCESS = "delete_success";
+    public static final String ASSIGN_SUCCESS = "assign_success";
     public static final String ERROR_SYSTEM = "error_system";
     public static final String ALERT = "alert";
+    public static final String MESSAGE = "message";
     public static final String MESSAGE_RESPONSE = "messageResponse";
     public static final String PASSWORD_DEFAULT = "123456";
     public static final String CHANGE_PASSWORD_FAIL = "change_password_fail";
@@ -22,4 +24,6 @@ public class SystemConstant {
     public static final String DISTRICT_MAP = "districts";
     public static final String STAFF_MAP = "staffmaps";
     public static final String BUILDING_TYPE_MAP = "buildingTypes";
+    public static final String DANGER = "danger";
+    public static final String BUILDING_ALIAS = "b.";
 }

@@ -153,10 +153,8 @@ public class BuildingService implements IBuildingService {
         BuildingDTO buildingDTO = new BuildingDTO();
         if (id != null && buildingRepository.existsById(id)) {
             buildingDTO = findBuildingById(id);
-            buildingDTO.setDistricts(districtService.getDistrictByBuilding(buildingDTO));
-        } else {
-            buildingDTO.setDistricts(districtService.getAllDistrict());
         }
+        buildingDTO.setDistricts(districtService.getDistrictByBuilding(buildingDTO));
         buildingDTO.setBuildingTypes(buildingTypesService.getAll());
         return buildingDTO;
     }

@@ -23,9 +23,9 @@ public class BuildingAPI {
     private UserService userService;
     //create and update
     @PutMapping
-    public BuildingDTO createAndUpdateBuilding(@RequestBody(required = false) BuildingDTO buildingDTO) throws MyException {
+    public ResponseEntity<BuildingDTO> createAndUpdateBuilding(@RequestBody(required = false) BuildingDTO buildingDTO) throws MyException {
         BuildingDTO newBuilding = buildingService.createAndUpdateBuilding(buildingDTO);
-        return newBuilding;
+        return ResponseEntity.ok(newBuilding);
     }
 
     @DeleteMapping
@@ -37,16 +37,15 @@ public class BuildingAPI {
     }
     // assigment building to staff
     @PostMapping("/{id}/assignment")
-    public AssignmentBuildingRequest assignmentBuilding(@RequestBody(required = false) AssignmentBuildingRequest assignmentBuilding
+    public ResponseEntity<AssignmentBuildingRequest> assignmentBuilding(@RequestBody(required = false) AssignmentBuildingRequest assignmentBuilding
             ,@PathVariable("id") Long buildingId) throws NotFoundException {
         assignmentBuilding.sanitize();
         buildingService.assignmentBuilding(assignmentBuilding, buildingId);
-        return assignmentBuilding;
+        return ResponseEntity.ok(assignmentBuilding);
     }
     // api load satff
     @GetMapping("/{id}/staff")
-    public List<StaffResponseDTO> loadStaffByBuilding(@PathVariable("id") Long id) {
-        return userService.finAllStaffByBuilding(id);
+    public ResponseEntity<List<StaffResponseDTO>> loadStaffByBuilding(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(userService.finAllStaffByBuilding(id));
     }
-
 }

@@ -26,6 +26,9 @@ public class DistrictService implements IDistrictService {
 
     @Override
     public List<DistrictResponse> getDistrictByBuilding(BuildingDTO buildingDTO) {
+        if(buildingDTO == null) {
+            return getAllDistrict();
+        }
         return Arrays.stream(DistrictsEnum.values())
                 .map(item -> {
                     DistrictResponse response = new DistrictResponse();

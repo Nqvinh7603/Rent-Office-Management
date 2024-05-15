@@ -72,7 +72,7 @@
                                                 <label><b>Quận hiện có</b></label>
                                                 <form:select path="districtCode" cssClass="form-control">
                                                     <form:option value="">--- Chọn Quận ---</form:option>
-                                                    <form:options items="${districtMap}" />
+                                                    <form:options items="${districts}" />
                                                 </form:select>
                                                 <br>
                                             </div>
@@ -163,7 +163,6 @@
                                         </div>
 
                                         <div class="col-sm-6">
-                                            <label>Loại toà nhà</label>
                                             <c:forEach var="item" items="${buildingTypes}">
                                                 <label class="checkbox-inline">
                                                     <form:checkbox path="types" value="${item.key}"/>${item.value}
@@ -195,7 +194,7 @@
                             </button>
 
                             <button type="button" class="btn btn-danger btn-bold" data-toggle="tooltip"
-                                    title="Xóa tòa nhà" id="btnDeleteBuilding" onclick="warningDelete()">
+                                    title="Xóa tòa nhà" id="btnDeleteBuilding">
                                 <i class="fa fa-trash" aria-hidden="true"></i>
                             </button>
                         </div>
@@ -217,8 +216,10 @@
                                 <th>Tên quản lí</th>
                                 <th>Số điện thoại</th>
                                 <th>Diện tích sàn</th>
+                                <th>Diện tich trống</th>
                                 <th>Giá thuê</th>
                                 <th>Phí dịch vụ</th>
+                                <th>Phí MG</th>
                                 <th>Thao tác</th>
                             </tr>
                             </thead>
@@ -247,7 +248,7 @@
                                                 title="Giao tòa nhà" id="btnBuildingAssignment" buildingId="${item.id}">
                                             <i class="fa fa-home" aria-hidden="true"></i>
                                         </button>
-                                        <a class="btn btn-xs btn-dark" data-toggle="tooltip"
+                                        <a class="btn btn-xs btn-info" data-toggle="tooltip"
                                                 title="Sửa thông tin toà nhà" value="${item.id}"
                                            href='<c:url value='/admin/building-edit-${item.id}'/>'>
                                             <i class="fa fa-edit" aria-hidden="true"></i>
@@ -335,7 +336,7 @@
                 let row ='';
                 $.each(response, function (index,item) {
                     row += '<tr>';
-                    row += '<td class = "text-center"><input type="checkbox" value=' + item.staffId + ' id ="checkbox_' + item.staffId + '" class = "check-box-element" ' + item.checked+'/></td>';
+                    row += '<td class = "text-center"><input type="checkbox" value=' + item.staffIds + ' id ="checkbox_' + item.staffIds + '" class = "check-box-element" ' + item.checked+'/></td>';
                     row += '<td class = "text-center">' +item.fullName+'</td>';
                     row += '</tr>';
                 });

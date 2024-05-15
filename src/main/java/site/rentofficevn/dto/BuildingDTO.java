@@ -42,24 +42,7 @@ public class BuildingDTO extends AbstractDTO<BuildingDTO> {
     private Integer managerPhone;
     private String managerName;
 
-    private List<BuildingTypesResponse> buildingTypes;
-    private List<DistrictResponse> districts;
 
-    public List<DistrictResponse> getDistricts() {
-        return districts;
-    }
-
-    public void setDistricts(List<DistrictResponse> districts) {
-        this.districts = districts;
-    }
-
-    public List<BuildingTypesResponse> getBuildingTypes() {
-        return buildingTypes;
-    }
-
-    public void setBuildingTypes(List<BuildingTypesResponse> buildingTypes) {
-        this.buildingTypes = buildingTypes;
-    }
 
     public String getName() {
         return name;

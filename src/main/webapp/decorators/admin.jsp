@@ -82,6 +82,69 @@
                 }
             });
         }
+		function showMessageConfirmation(callback, title, text) {
+			swal({
+				title: "Xác nhận " + title,
+				text: "Bạn có chắc chắn muốn " + text,
+				type: "warning",
+				showConfirmButton: true,
+				showCancelButton: true,
+				confirmButtonText: "Xác nhận",
+				cancelButtonText: "Hủy bỏ",
+				confirmButtonClass: "btn btn-success",
+				cancelButtonClass: "btn btn-danger"
+			}).then(function (res) {
+				if (res.value) {
+					callback();
+				}
+			});
+		}
+
+		function showConfirmationAlertBeforeAction(callback, title, text) {
+			swal({
+				title: "Xác nhận " + title,
+				text: "Bạn có chắc chắn muốn " + text,
+				type: "warning",
+				showConfirmButton: true,
+				showCancelButton: true,
+				confirmButtonText: "Xác nhận",
+				cancelButtonText: "Hủy bỏ",
+				confirmButtonClass: "btn btn-success",
+				cancelButtonClass: "btn btn-danger"
+			}).then(function (res) {
+				if (res.value) {
+					callback();
+				}
+			});
+		}
+
+		function showAlertBeforeCanceling(redirectUrl) {
+			swal({
+				title: "Xác nhận hủy",
+				text: "Bạn có chắc chắn muốn hủy chỉnh sửa?",
+				type: "warning",
+				showConfirmButton: true,
+				showCancelButton: true,
+				confirmButtonText: "Xác nhận",
+				cancelButtonText: "Hủy bỏ",
+				confirmButtonClass: "btn btn-success",
+				cancelButtonClass: "btn btn-danger"
+			}).then(function (res) {
+				if (res.value){
+					if ("" !== redirectUrl) {
+						window.location.href = redirectUrl;
+					}
+				}
+			});
+		}
+
+		function showNotification(status, message) {
+			swal({
+				type: status,
+				title: status === 'success' ? 'Thành công' : 'Thất bại',
+				text: message,
+			});
+		}
 	</script>
 </body>
 </html>

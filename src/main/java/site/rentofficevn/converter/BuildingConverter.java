@@ -163,31 +163,27 @@ public class BuildingConverter {
         return buildingEntity;
     }
     public BuildingSearchBuilder convertParamToBuilder(BuildingSearchRequest buildingSearchRequest) {
-        try {
-            BuildingSearchBuilder result = new BuildingSearchBuilder.Builder()
-                    .setName(buildingSearchRequest.getName())
-                    .setFloorArea(buildingSearchRequest.getFloorArea())
-                    .setDistrict(buildingSearchRequest.getDistrictCode())
-                    .setWard(buildingSearchRequest.getWard())
-                    .setStreet(buildingSearchRequest.getStreet())
-                    .setNumberOfBasement(buildingSearchRequest.getNumberOfBasement())
-                    .setDirection(buildingSearchRequest.getDirection())
-                    .setLevel(buildingSearchRequest.getLevel())
-                    .setRentAreaFrom(buildingSearchRequest.getRentAreaFrom())
-                    .setRentAreaTo(buildingSearchRequest.getRentAreaTo())
-                    .setRentPriceFrom(buildingSearchRequest.getRentPriceFrom())
-                    .setRentPriceTo(buildingSearchRequest.getRentPriceTo())
-                    .setManagerName(buildingSearchRequest.getManagerName())
-                    .setManagerPhone(buildingSearchRequest.getManagerPhone())
-                    .setStaffID(buildingSearchRequest.getStaffId())
-                    .setTypes(buildingSearchRequest.getTypes())
-                    .build();
-            return result;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        BuildingSearchBuilder result = new BuildingSearchBuilder.Builder()
+                .setName(buildingSearchRequest.getName())
+                .setFloorArea(buildingSearchRequest.getFloorArea())
+                .setDistrict(buildingSearchRequest.getDistrictCode())
+                .setWard(buildingSearchRequest.getWard())
+                .setStreet(buildingSearchRequest.getStreet())
+                .setNumberOfBasement(buildingSearchRequest.getNumberOfBasement())
+                .setDirection(buildingSearchRequest.getDirection())
+                .setLevel(buildingSearchRequest.getLevel())
+                .setRentAreaFrom(buildingSearchRequest.getRentAreaFrom())
+                .setRentAreaTo(buildingSearchRequest.getRentAreaTo())
+                .setRentPriceFrom(buildingSearchRequest.getRentPriceFrom())
+                .setRentPriceTo(buildingSearchRequest.getRentPriceTo())
+                .setManagerName(buildingSearchRequest.getManagerName())
+                .setManagerPhone(buildingSearchRequest.getManagerPhone())
+                .setStaffID(buildingSearchRequest.getStaffId())
+                .setTypes(buildingSearchRequest.getTypes())
+                .build();
+        return result;
     }
+
 
     public BuildingSearchResponse toSearchResponse(BuildingEntity buildingEntity){
         BuildingSearchResponse result = modelMapper.map(buildingEntity, BuildingSearchResponse.class);

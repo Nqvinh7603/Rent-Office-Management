@@ -62,7 +62,6 @@ public class BuildingService implements IBuildingService {
     public BuildingDTO findById(Long id) {
         BuildingEntity buildingEntity = Optional.of(buildingRepository.findById(id)).get()
                 .orElseThrow(() -> new NotFoundException("Buliding not found!"));
-
         return buildingConverter.toDTO(buildingEntity);
     }
 

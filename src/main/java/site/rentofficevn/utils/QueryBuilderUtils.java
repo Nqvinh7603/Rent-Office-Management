@@ -2,7 +2,7 @@ package site.rentofficevn.utils;
 import java.util.*;
 public class QueryBuilderUtils {
     public static String withLike(String column, String value){
-        return (!ValidateUtils.isValid(value)) ? "" : String.format("%nAND lower(%s) LIKE lower(%s) LIKE %s", column,"'%" + value.toLowerCase() + "%'");
+        return (!ValidateUtils.isValid(value)) ? "" : String.format("%nAND lower(%s) LIKE %s", column,"'%" + value.toLowerCase() + "%'");
     }
     public static String withOperator(String column, Object value, String operator){
         if(!ValidateUtils.isValid(value))  {

@@ -1,29 +1,61 @@
 package site.rentofficevn.builder;
 
+import javax.persistence.Column;
 import java.util.List;
 
 public class BuildingSearchBuilder {
+    @Column(name = "name")
     private String name;
-    private Integer floorArea;  // diện tích sàn
-    private String district;   // quận
+
+    @Column(name = "floorarea")
+    private Integer floorArea;
+
+    @Column(name = "district")
+    private String districtCode;
+    
+    @Column(name = "ward")// quận
     private String ward;
+    
+    @Column(name = "street")
     private String street;
-    private Integer numberOfBasement; // Số tầng hầm
-    private String direction;      // hướng
-    private String level;          //  hạng
-    private Integer rentAreaFrom;  // diện tích thuê từ
-    private Integer rentAreaTo;    // diện tích thuê đến
-    private Integer rentPriceFrom; // giá thuê từ
-    private Integer rentPriceTo;   // giá thuê đến
+
+    @Column(name = "numberofbasement")
+    private Integer numberOfBasement;
+
+    @Column(name="direction")
+    private String direction;
+
+    @Column(name="level")
+    private String level;
+    
+    @Column(name = "value")
+    private Integer rentAreaFrom;
+    
+    @Column(name = "value")
+    private Integer rentAreaTo;  
+    
+    @Column(name = "rentprice")
+    private Integer rentPriceFrom;
+    
+    @Column(name = "rentprice")
+    private Integer rentPriceTo; 
+    
+    @Column(name = "managername")
     private String managerName;
+    
+    @Column(name = "managerphone")
     private String managerPhone;
-    private Long staffID;       // chọn nhân viên phụ trách
-    private List<String> types;    // chọn loại tòa nhà mong muốn
+    
+    @Column(name = "staffid")
+    private Long staffID;
+
+    @Column(name = "type")
+    private List<String> types;
 
     private BuildingSearchBuilder(Builder builder) {
         this.name = builder.name;
         this.floorArea = builder.floorArea;
-        this.district = builder.district;
+        this.districtCode = builder.district;
         this.ward = builder.ward;
         this.street = builder.street;
         this.numberOfBasement = builder.numberOfBasement;
@@ -55,12 +87,12 @@ public class BuildingSearchBuilder {
         this.floorArea = floorArea;
     }
 
-    public String getDistrict() {
-        return district;
+    public String getDistrictCode() {
+        return districtCode;
     }
 
-    public void setDistrict(String district) {
-        this.district = district;
+    public void setDistrictCode(String district) {
+        this.districtCode = district;
     }
 
     public String getWard() {

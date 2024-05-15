@@ -36,7 +36,7 @@ public class RentAreaConverter {
     public List<RentAreaDTO> convertRentAreaDto(Long buildingIdAfter, BuildingDTO buildingDTO) {
         List<RentAreaDTO> result = new ArrayList<>();
 
-        BuildingDTO buildingDTORentArea = buildingConverter.convertToDTOCustom(buildingRepository.findById(buildingDTO.getId()).get());
+        BuildingDTO buildingDTORentArea = buildingConverter.toDTO(buildingRepository.findById(buildingDTO.getId()).get());
         if (buildingDTORentArea.getRentArea().equals(buildingDTO.getRentArea())) {
             return new ArrayList<>();
         }

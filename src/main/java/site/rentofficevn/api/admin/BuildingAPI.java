@@ -6,10 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import site.rentofficevn.dto.BuildingDTO;
 import site.rentofficevn.dto.request.AssignmentBuildingRequest;
-import site.rentofficevn.dto.response.StaffResponseDTO;
+import site.rentofficevn.dto.response.AssignmentStaffResponse;
 import site.rentofficevn.exception.MyException;
 import site.rentofficevn.service.impl.BuildingService;
-import site.rentofficevn.service.impl.UserService;
 
 import java.util.*;
 @RestController
@@ -19,33 +18,28 @@ public class BuildingAPI {
     @Autowired
     BuildingService buildingService;
 
-    @Autowired
-    private UserService userService;
     //create and update
-    @PutMapping
-    public ResponseEntity<BuildingDTO> createAndUpdateBuilding(@RequestBody(required = false) BuildingDTO buildingDTO) throws MyException {
-        BuildingDTO newBuilding = buildingService.createAndUpdateBuilding(buildingDTO);
-        return ResponseEntity.ok(newBuilding);
+    @PostMapping
+    public ResponseEntity<BuildingDTO> save(@RequestBody BuildingDTO buildingDTO) throws MyException {
+
+        return ResponseEntity.ok(buildingService.save(buildingDTO));
     }
 
     @DeleteMapping
     public ResponseEntity<Void> deleteBuildings(@RequestBody List<Long> ids) { // @RequestBody
-        if (ids.size() != 0) {
-            buildingService.delete(ids);
-        }
+        buildingService.delete(ids);
         return ResponseEntity.noContent().build();
     }
     // assigment building to staff
-    @PostMapping("/{id}/assignment")
-    public ResponseEntity<AssignmentBuildingRequest> assignmentBuilding(@RequestBody(required = false) AssignmentBuildingRequest assignmentBuilding
+    @PostMapping("/assignment-building")
+    public ResponseEntity<Void> assignmentBuilding(@RequestBody AssignmentBuildingRequest assignmentBuilding
             ,@PathVariable("id") Long buildingId) throws NotFoundException {
-        assignmentBuilding.sanitize();
-        buildingService.assignmentBuilding(assignmentBuilding, buildingId);
-        return ResponseEntity.ok(assignmentBuilding);
+        buildingService.assignmentBuildingToStaffs(assignmentBuilding);
+        return ResponseEntity.noContent().build();
     }
     // api load satff
-    @GetMapping("/{id}/staff")
-    public ResponseEntity<List<StaffResponseDTO>> loadStaffByBuilding(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(userService.finAllStaffByBuilding(id));
+    @GetMapping("/{buildingId}/staffs")
+    public ResponseEntity<List<AssignmentStaffResponse>> loadStaffByBuilding(@PathVariable Long id) {
+        return ResponseEntity.ok(buildingService.loadStaffByBuildingId(id));
     }
 }

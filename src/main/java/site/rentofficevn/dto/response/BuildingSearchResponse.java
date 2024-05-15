@@ -12,6 +12,15 @@ public class BuildingSearchResponse extends AbstractDTO{
     private Integer rentPrice;     // giá thuê
     private String serviceFee;      // phí dịch vụ
     private String brokerageFee;    // phí môi giới
+    private String rentAreaDescription;
+
+    public String getRentAreaDescription() {
+        return rentAreaDescription;
+    }
+
+    public void setRentAreaDescription(String rentAreaDescription) {
+        this.rentAreaDescription = rentAreaDescription;
+    }
 
     public String getName() {
         return name;

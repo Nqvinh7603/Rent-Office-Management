@@ -8,5 +8,4 @@ import java.util.List;
 
 public interface BuildingRepositoryCustom {
     List<BuildingEntity> findBuilding(BuildingSearchBuilder buildingSearchBuilder);
-    void assignmentBuilding(List<UserEntity> userEntities, BuildingEntity buildingEntity);
 }

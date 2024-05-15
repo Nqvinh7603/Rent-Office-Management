@@ -7,8 +7,8 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "assignmentbuilding")
-public class AssignBuildingEntity extends BaseEntity {
-
+public class AssignmentBuildingEntity extends BaseEntity {
+    
     @ManyToOne
     @JoinColumn(name="buildingid", nullable=false)
     private BuildingEntity building;

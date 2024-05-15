@@ -34,7 +34,7 @@ public class UserEntity extends BaseEntity {
 
     // 1 user - n assignBuilding
     @OneToMany(mappedBy="user") //
-    private Set<AssignBuildingEntity> buildings;
+    private List<AssignmentBuildingEntity> buildings;
 
     public String getUserName() {
         return userName;
@@ -84,11 +84,11 @@ public class UserEntity extends BaseEntity {
         this.email = email;
     }
 
-    public Set<AssignBuildingEntity> getBuildings() {
+    public List<AssignmentBuildingEntity> getBuildings() {
         return buildings;
     }
 
-    public void setBuildings(Set<AssignBuildingEntity> buildings) {
+    public void setBuildings(List<AssignmentBuildingEntity> buildings) {
         this.buildings = buildings;
     }
 }

@@ -26,4 +26,16 @@ public class SystemConstant {
     public static final String BUILDING_TYPE_MAP = "buildingTypes";
     public static final String DANGER = "danger";
     public static final String BUILDING_ALIAS = "b.";
+    public static final String EQUAL_OPERATOR = " = ";
+    public static final String STAFF_SEARCH_PARAM = "staffID";
+    public static final String BUILDING_TYPE_SEARCH_PARAM = "types";
+    public static final String RENT_AREA_FROM_SEARCH_PARAM = "rentAreaFrom";
+    public static final String RENT_AREA_TO_SEARCH_PARAM = "rentAreaTo";
+    public static final String RENT_PRICE_FROM_SEARCH_PARAM = "rentPriceFrom";
+    public static final String RENT_PRICE_TO_SEARCH_PARAM = "rentPriceTo";
+    public static final String GREATER_THAN_OPERATOR = " >= ";
+    public static final String LESS_THAN_OPERATOR = " <= ";
+    public static final String BUILDING_ID = "buildingId";
+    public static final String BUILDING = "building";
+    public static final int ACTIVE_STATUS = 1;
 }

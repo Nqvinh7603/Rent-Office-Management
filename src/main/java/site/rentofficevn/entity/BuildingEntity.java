@@ -3,7 +3,6 @@ package site.rentofficevn.entity;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "building")
@@ -43,13 +42,13 @@ public class BuildingEntity extends BaseEntity {
 
     // 1 building - n assignmentBuiding
     @OneToMany(mappedBy = "building")
-    private List<AssignBuildingEntity> assignBuildings;
+    private List<AssignmentBuildingEntity> assignBuildings;
 
-    public List<AssignBuildingEntity> getAssignBuildings() {
+    public List<AssignmentBuildingEntity> getAssignBuildings() {
         return assignBuildings;
     }
 
-    public void setAssignBuildings(List<AssignBuildingEntity> assignBuildings) {
+    public void setAssignBuildings(List<AssignmentBuildingEntity> assignBuildings) {
         this.assignBuildings = assignBuildings;
     }
 

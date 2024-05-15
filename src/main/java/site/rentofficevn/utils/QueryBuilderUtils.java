@@ -8,7 +8,7 @@ public class QueryBuilderUtils {
         if(!ValidateUtils.isValid(value))  {
             return "";
         }
-        return (value instanceof  String) ? String.format("%nAND %s %s %s", column, operator, value) : String.format("%nAND %s %s %s", column, operator,value);
+        return (value instanceof  String) ? String.format("%nAND %s %s '%s'", column, operator, value) : String.format("%nAND %s %s %s", column, operator,value);
     }
     public static String withBetween(String column, Object from, Object to) {
         if (null == from || null == to) {
@@ -21,7 +21,7 @@ public class QueryBuilderUtils {
                 if (from instanceof Integer) {
                     to = Integer.MAX_VALUE;
                 } else if (from instanceof Double) {
-                    to = Long.MAX_VALUE;
+                    to = Double.MAX_VALUE;
                 }
             }
             return String.format("%nAND %s BETWEEN %s AND %s", column, from, to);

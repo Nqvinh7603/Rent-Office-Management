@@ -1,14 +1,18 @@
 package site.rentofficevn.converter;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import site.rentofficevn.builder.BuildingSearchBuilder;
 import site.rentofficevn.dto.BuildingDTO;
+import site.rentofficevn.dto.request.BuildingSearchRequest;
 import site.rentofficevn.dto.response.BuildingSearchResponse;
 import site.rentofficevn.entity.BuildingEntity;
 import site.rentofficevn.entity.RentAreaEntity;
 import site.rentofficevn.enums.DistrictsEnum;
 import site.rentofficevn.repository.RentAreaRepository;
+import site.rentofficevn.utils.StringUtils;
 import site.rentofficevn.utils.ValidateUtils;
 
 import java.util.*;
@@ -20,10 +24,7 @@ public class BuildingConverter {
     @Autowired
     private ModelMapper modelMapper;
 
-    @Autowired
-    private RentAreaRepository rentAreaRepository;
-
-    public BuildingSearchResponse convertFromEntitytoBuildingSearchResponse(BuildingEntity buildingEntity) {
+    /*ublic BuildingSearchResponse convertFromEntitytoBuildingSearchResponse(BuildingEntity buildingEntity) {
 
         BuildingSearchResponse buildingSearchResponse = modelMapper.map(buildingEntity, BuildingSearchResponse.class);
 
@@ -108,4 +109,109 @@ public class BuildingConverter {
         return result;
     }
 
+    public BuildingSearchBuilder convertParamToBuilder(BuildingSearchRequest buildingSearchRequest) {
+        try {
+            BuildingSearchBuilder result = new BuildingSearchBuilder.Builder()
+                    .setName(buildingSearchRequest.getName())
+                    .setFloorArea(buildingSearchRequest.getFloorArea())
+                    .setDistrict(buildingSearchRequest.getDistrictCode())
+                    .setWard(buildingSearchRequest.getWard())
+                    .setStreet(buildingSearchRequest.getStreet())
+                    .setNumberOfBasement(buildingSearchRequest.getNumberOfBasement())
+                    .setDirection(buildingSearchRequest.getDirection())
+                    .setLevel(buildingSearchRequest.getLevel())
+                    .setRentAreaFrom(buildingSearchRequest.getRentAreaFrom())
+                    .setRentAreaTo(buildingSearchRequest.getRentAreaTo())
+                    .setRentPriceFrom(buildingSearchRequest.getRentPriceFrom())
+                    .setRentPriceTo(buildingSearchRequest.getRentPriceTo())
+                    .setManagerName(buildingSearchRequest.getManagerName())
+                    .setManagerPhone(buildingSearchRequest.getManagerPhone())
+                    .setStaffID(buildingSearchRequest.getStaffId())
+                    .setTypes(buildingSearchRequest.getTypes())
+                    .build();
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+*/
+    public BuildingDTO toDTO(BuildingEntity buildingEntity){
+        BuildingDTO buildingDTO = modelMapper.map(buildingEntity, BuildingDTO.class);
+
+        String buildingTypes = buildingEntity.getTypes();
+
+        if(!StringUtils.isNullOrEmpty(buildingTypes)){
+            List<String> convertedBuildingType = Arrays.asList(buildingTypes.split(","));
+            buildingDTO.setTypes(convertedBuildingType);
+        }
+
+        String rentAreaString = buildingEntity.getRentAreas().stream()
+                .map(rentArea -> String.valueOf(rentArea.getValue()))
+                .collect(Collectors.joining(","));
+        buildingDTO.setRentArea(rentAreaString);
+        return buildingDTO;
+    }
+
+    public BuildingEntity toEntity(BuildingDTO buildingDTO) {
+        BuildingEntity buildingEntity = modelMapper.map(buildingDTO, BuildingEntity.class);
+        List<String> buildingTypes = buildingDTO.getTypes();
+        if (!buildingTypes.isEmpty()) {
+            String convertedType = String.join(",", buildingTypes);
+            buildingEntity.setTypes(convertedType);
+        }
+        return buildingEntity;
+    }
+    public BuildingSearchBuilder convertParamToBuilder(BuildingSearchRequest buildingSearchRequest) {
+        try {
+            BuildingSearchBuilder result = new BuildingSearchBuilder.Builder()
+                    .setName(buildingSearchRequest.getName())
+                    .setFloorArea(buildingSearchRequest.getFloorArea())
+                    .setDistrict(buildingSearchRequest.getDistrictCode())
+                    .setWard(buildingSearchRequest.getWard())
+                    .setStreet(buildingSearchRequest.getStreet())
+                    .setNumberOfBasement(buildingSearchRequest.getNumberOfBasement())
+                    .setDirection(buildingSearchRequest.getDirection())
+                    .setLevel(buildingSearchRequest.getLevel())
+                    .setRentAreaFrom(buildingSearchRequest.getRentAreaFrom())
+                    .setRentAreaTo(buildingSearchRequest.getRentAreaTo())
+                    .setRentPriceFrom(buildingSearchRequest.getRentPriceFrom())
+                    .setRentPriceTo(buildingSearchRequest.getRentPriceTo())
+                    .setManagerName(buildingSearchRequest.getManagerName())
+                    .setManagerPhone(buildingSearchRequest.getManagerPhone())
+                    .setStaffID(buildingSearchRequest.getStaffId())
+                    .setTypes(buildingSearchRequest.getTypes())
+                    .build();
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public BuildingSearchResponse toSearchResponse(BuildingEntity buildingEntity){
+        BuildingSearchResponse result = modelMapper.map(buildingEntity, BuildingSearchResponse.class);
+
+        result.setCreatedDate(buildingEntity.getCreatedDate());
+
+        List<String> address = new ArrayList<>();
+
+        address.add(buildingEntity.getStreet());
+        address.add(buildingEntity.getWard());
+
+        String districtCode = buildingEntity.getDistrict();
+        if(Arrays.toString(DistrictsEnum.values()).contains(districtCode)){
+            address.add(DistrictsEnum.valueOf(districtCode).getDistrictValue());
+        }
+        result.setAddress(address.stream()
+                .filter(str -> !StringUtils.isNullOrEmpty(str))
+                .collect(Collectors.joining(",")));
+
+        String rentAreaString = buildingEntity.getRentAreas().stream()
+                .map(rentArea -> String.valueOf(rentArea.getValue()))
+                .collect(Collectors.joining(","));
+
+        result.setRentAreaDescription("Diện tích còn trống: " + rentAreaString);
+        return result;
+    }
 }

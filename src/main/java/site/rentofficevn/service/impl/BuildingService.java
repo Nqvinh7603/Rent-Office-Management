@@ -91,6 +91,7 @@ public class BuildingService implements IBuildingService {
     }
 
     @Override
+    @Transactional
     public BuildingDTO save(BuildingDTO buildingDTO) {
         BuildingEntity buildingEntity = buildingConverter.toEntity(buildingDTO);
         processRentArea(buildingEntity, buildingDTO);
@@ -182,7 +183,8 @@ public class BuildingService implements IBuildingService {
                 .collect(Collectors.toList());
     }
 
-    @Override
+   /* @Override
+    @Transactional
     public void assignmentBuildingToStaffs(AssignmentBuildingRequest assignmentBuildingRequest) {
         Long buildingId = assignmentBuildingRequest.getBuildingId();
 
@@ -220,6 +222,47 @@ public class BuildingService implements IBuildingService {
             }
             assignmentBuildingRepository.deleteAll(deletedAssignments);
             assignmentBuildingRepository.saveAll(savedAssignments);
-        }
-    }
+        }*/
+   @Override
+   @Transactional
+   public void assignmentBuildingToStaffs(AssignmentBuildingRequest assignmentBuildingRequest) {
+       Long buildingId = assignmentBuildingRequest.getBuildingId();
+       List<Long> staffIdRequest = assignmentBuildingRequest.getStaffIds();
+
+       // Kiểm tra xem building có tồn tại không
+       BuildingEntity foundBuilding = buildingRepository.findById(buildingId)
+               .orElseThrow(() -> new NotFoundException("Building not found!"));
+
+       // Lấy danh sách user dựa trên các staffIds được cung cấp
+       List<UserEntity> staffEntities = userRepository.findByIdIn(staffIdRequest);
+
+       // Tạo một bản đồ để dễ dàng truy xuất user dựa trên id
+       Map<Long, UserEntity> idToUser = staffEntities.stream()
+               .collect(Collectors.toMap(UserEntity::getId, user -> user));
+
+       // Lấy danh sách assignment hiện tại
+       List<AssignmentBuildingEntity> currentAssignments = foundBuilding.getAssignBuildings();
+
+       // Xóa các assignment không còn trong danh sách staffIds được cung cấp
+       List<AssignmentBuildingEntity> deletedAssignments = currentAssignments.stream()
+               .filter(assignment -> !staffIdRequest.contains(assignment.getUser().getId()))
+               .collect(Collectors.toList());
+
+       assignmentBuildingRepository.deleteAll(deletedAssignments);
+
+       // Tạo các assignment mới cho những user được chọn
+       List<AssignmentBuildingEntity> savedAssignments = staffEntities.stream()
+               .filter(user -> !idToUser.containsKey(user.getId())) // Loại bỏ user không hợp lệ
+               .map(user -> {
+                   AssignmentBuildingEntity assignmentBuildingEntity = new AssignmentBuildingEntity();
+                   assignmentBuildingEntity.setBuilding(foundBuilding);
+                   assignmentBuildingEntity.setUser(user);
+                   return assignmentBuildingEntity;
+               })
+               .collect(Collectors.toList());
+
+       assignmentBuildingRepository.saveAll(savedAssignments);
+   }
+
+
 }

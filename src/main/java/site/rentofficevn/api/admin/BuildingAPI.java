@@ -12,7 +12,7 @@ import site.rentofficevn.service.impl.BuildingService;
 import java.util.*;
 
 
-@RestController(value="buildingAPIOfAdmin")
+@RestController
 @RequestMapping("/api/building")
 public class BuildingAPI {
 
@@ -21,8 +21,7 @@ public class BuildingAPI {
 
     //create and update
     @PostMapping
-    public ResponseEntity<BuildingDTO> save(@RequestBody BuildingDTO buildingDTO) throws MyException {
-
+    public ResponseEntity<BuildingDTO> save(@RequestBody BuildingDTO buildingDTO) {
         return ResponseEntity.ok(buildingService.save(buildingDTO));
     }
 

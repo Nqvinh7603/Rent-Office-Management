@@ -1,8 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/common/taglib.jsp" %>
 <c:url var="buildingAPI" value="/api/building"/>
-<c:url var="buildingEditURL" value="/admin/building-add"/>
-<c:url var="buildingEditURL" value="/admin/building-edit-{id}"/>
+<c:url var="buildingEditURL" value="/admin/building-edit"/>
 <html>
 <head>
     <c:if test="${empty buildingId}">
@@ -41,8 +40,10 @@
                     </div>
                 </c:if>
                 <div class="col-xs-12">
-                    <form:form modelAttribute="building" cssClass="form-horizontal" id="formEdit" method="get">
-                        <input type="hidden" id="buildingId" name="buildingId" value="${building.id}"/>
+                    <form:form modelAttribute="building" cssClass="form-horizontal" id="formEdit" >
+                        <div class="form-group">
+                        <form:hidden path="id" id="buildingId" cssClass="form-control"/>
+                        </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label no-padding-right" for="name"> Tên tòa nhà </label>
                             <div class="col-sm-9">
@@ -281,35 +282,38 @@
         e.preventDefault();
         let title;
         let message;
+        let data = {};
+        let buildingTypes = [];
+        const formData = $("#formEdit").serializeArray();
+        $.each(formData, function (index, v) {
+            if ('types' === v.name) {
+                buildingTypes.push(v.value);
+            } else {
+                data["" + v.name + ""] = v.value;
+            }
+        });
+        $('#loading_image').show();
+        data['types'] = buildingTypes;
+
+        let id= $('#buildingId').val();
+
+        if ('' === id) {
+            title = 'Thêm';
+            message = 'Thêm tòa nhà mới?';
+        } else {
+            title = 'Cập nhật';
+            message = 'Cập nhật tòa nhà này?';
+        }
         showMessageConfirmation(function () {
-            let data = {};
-            let buildingTypes = [];
-            const formData = $("#formEdit").serializeArray();
-            $.each(formData, function (index, v) {
-                if ('types' === v.name) {
-                    buildingTypes.push(v.value);
-                } else {
-                    data["" + v.name + ""] = v.value;
-                }
-            });
-            $('#loading_image').show();
-            data['types'] = buildingTypes;
-
-            let id = $('#buildingId').val();
-
             if ('' === id) {
-                title = 'Thêm';
-                message = 'Thêm tòa nhà mới?';
                 addBuilding(data);
             } else {
-                title = 'Cập nhật';
-                message = 'Cập nhật tòa nhà này?';
-                updateBuilding(data, id);
+                updateBuilding(data,id);
             }
         }, title, message)
     });
 
-    function addBuilding(data) {
+    function addBuilding(data){
         $.ajax({
             url: '${buildingAPI}',
             type: 'POST',
@@ -318,8 +322,7 @@
             contentType: 'application/json',
             success: function (response) {
                 $('#loading_image').hide();
-               // window.location.href = "${buildingEditURL}-" + response.id + "?message=insert_success";
-                window.location.href = "/admin/building-list";
+                window.location.href = "${buildingEditURL}-" + response.id + "?message=insert_success";
             },
             error: function () {
                 $('#loading_image').hide();
@@ -328,7 +331,7 @@
         });
     }
 
-    function updateBuilding(data) {
+    function updateBuilding(data){
         $.ajax({
             url: '${buildingAPI}',
             type: 'PUT',
@@ -337,8 +340,7 @@
             contentType: 'application/json',
             success: function (response) {
                 $('#loading_image').hide();
-                //window.location.href = "${buildingEditURL}-" + response.id + "?message=update_success";
-                window.location.href = "/admin/building-list";
+                window.location.href = "${buildingEditURL}-" + response.id + "?message=update_success";
             },
             error: function () {
                 showNotification('error', 'Đã xảy ra lỗi hệ thống, vui lòng thử lại sau.');
@@ -347,7 +349,7 @@
     }
 
     $("#btnCancel").click(function () {
-        let id = $('#buildingId').val();
+        let id= $('#buildingId').val();
 
         if ('' !== id) {
             showAlertBeforeCanceling("/admin/building-list");

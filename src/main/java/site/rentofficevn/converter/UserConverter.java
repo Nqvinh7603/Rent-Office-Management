@@ -50,5 +50,4 @@ public class UserConverter {
         staffResponse.setChecked(checked ? "checked" : "");
         return staffResponse;
     }
-
 }

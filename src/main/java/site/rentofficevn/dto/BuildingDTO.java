@@ -42,6 +42,8 @@ public class BuildingDTO extends AbstractDTO<BuildingDTO> {
     private Integer brokerageFee;
     private Integer rentAreaDescription;
 
+
+
     public Integer getRentAreaDescription() {
         return rentAreaDescription;
     }

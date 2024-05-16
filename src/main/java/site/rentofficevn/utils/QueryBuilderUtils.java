@@ -43,20 +43,20 @@ public class QueryBuilderUtils {
         }
         return String.format("%nAND %s IN (%s)", column, joinValues);
     }
+
     public static <T> String withOrAndLike(String column, List<T> values) {
-        List<Object> convertedValues = new ArrayList<>();
-        String joinValues;
-        if(values.get(0) instanceof String){
-            for(Object item : values){
-                StringBuilder convertedItem = new StringBuilder();
-                convertedItem.append(" LIKE lower('%").append(item.toString()).append("%')");
-                convertedValues.add(convertedItem.toString());
+        List<String> convertedValues = new ArrayList<>();
+        for (T item : values) {
+            if (item instanceof String) {
+                String convertedItem = String.format("lower(%s) LIKE '%%%s%%'", column, item.toString().toLowerCase());
+                convertedValues.add(convertedItem);
             }
-            joinValues = String.join(" OR ",(List<String>) (Object) convertedValues);
-        }else{
-            String listString = values.toString();
-            joinValues = listString.substring(1, listString.length() - 1);
         }
-        return String.format("%nAND (%s)", column, joinValues);
+        if (!convertedValues.isEmpty()) {
+            String joinedConditions = String.join(" OR ", convertedValues);
+            return String.format(" AND (%s)", joinedConditions);
+        } else {
+            return "";
+        }
     }
 }

@@ -108,7 +108,7 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
         if(fieldSearch.equals(SystemConstant.BUILDING_TYPE_SEARCH_PARAM) && field.getType().isAssignableFrom(List.class) && fieldValue != null){
             List<String> buildingTypes = (List<String>) fieldValue;
             if(!buildingTypes.isEmpty()){
-                whereQuery.append(QueryBuilderUtils.withIn(columnNameWithAlias, buildingTypes));
+                whereQuery.append(QueryBuilderUtils.withOrAndLike(columnNameWithAlias, buildingTypes));
             }
         }
     }

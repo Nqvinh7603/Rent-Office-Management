@@ -148,7 +148,7 @@
                                                 <form:select path="staffId" class="form-control">
                                                     <option selected value="">Chọn nhân viên quản lí</option>
                                                     <c:forEach var="item" items="${staffmaps}">
-                                                        <form:option value="${item.id}">${item.fullName}</form:option>
+                                                        <form:option value="${item.key}">${item.value}</form:option>
                                                     </c:forEach>
                                                 </form:select>
                                                 <br>
@@ -347,7 +347,7 @@
             });
 
             data["staffIds"] = values;
-            data["buildingid"] = buildingid;
+            data["buildingIds"] = buildingid;
             $.ajax({
                 type: "POST",
                /* url: '<c:url value="/api/building"/>' + '/' + buildingid + '/assignment',*/

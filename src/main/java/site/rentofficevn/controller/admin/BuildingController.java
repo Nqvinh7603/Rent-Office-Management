@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import site.rentofficevn.constant.SystemConstant;
 import site.rentofficevn.dto.request.BuildingSearchRequest;
 import site.rentofficevn.dto.response.BuildingSearchResponse;
 import site.rentofficevn.service.impl.BuildingService;
@@ -44,10 +45,10 @@ public class BuildingController {
             buildingSearchRequest.setListResult(pageBuilding);
             buildingSearchRequest.setTotalItems(buildingService.getTotalItems()); // set tổng số item trong
 
-            mav.addObject("buildings", buildingSearchRequest);
-            mav.addObject("staffmaps", userService.getStaffMaps());
-            mav.addObject("districts", districtService.getAllDistrict());
-            mav.addObject("buildingTypes", buildingTypesService.getAll());
+            mav.addObject(SystemConstant.BUILDINGS, buildingSearchRequest);
+            mav.addObject(SystemConstant.STAFF_MAP, userService.getStaffMaps());
+            mav.addObject(SystemConstant.DISTRICT_MAP, districtService.getAllDistrict());
+            mav.addObject(SystemConstant.BUILDING_TYPE_MAP, buildingTypesService.getAll());
             return mav;
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,7 +58,7 @@ public class BuildingController {
     @GetMapping("/building-edit")
     public ModelAndView buildingEdit(@RequestParam(name = "buildingid", required = false) Long id) {
         ModelAndView mav = new ModelAndView("admin/building/edit");
-        mav.addObject("modelBuildingEdit", buildingService.getBuildingDetails(id));
+        mav.addObject(SystemConstant.MODEL_BUILDING_EDIT, buildingService.getBuildingDetails(id));
         return mav;
     }
 }

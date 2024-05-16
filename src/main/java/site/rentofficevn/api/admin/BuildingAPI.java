@@ -11,6 +11,9 @@ import site.rentofficevn.exception.MyException;
 import site.rentofficevn.service.impl.BuildingService;
 
 import java.util.*;
+
+import static javax.xml.bind.DatatypeConverter.parseLong;
+
 @RestController
 @RequestMapping("/api/building")
 public class BuildingAPI {
@@ -32,14 +35,13 @@ public class BuildingAPI {
     }
     // assigment building to staff
     @PostMapping("/assignment-building")
-    public ResponseEntity<Void> assignmentBuilding(@RequestBody AssignmentBuildingRequest assignmentBuilding
-            ,@PathVariable("id") Long buildingId) throws NotFoundException {
+    public ResponseEntity<Void> assignmentBuilding(@RequestBody AssignmentBuildingRequest assignmentBuilding) throws NotFoundException {
         buildingService.assignmentBuildingToStaffs(assignmentBuilding);
         return ResponseEntity.noContent().build();
     }
     // api load satff
     @GetMapping("/{buildingId}/staffs")
-    public ResponseEntity<List<AssignmentStaffResponse>> loadStaffByBuilding(@PathVariable Long id) {
-        return ResponseEntity.ok(buildingService.loadStaffByBuildingId(id));
+    public ResponseEntity<List<AssignmentStaffResponse>> loadStaffByBuilding(@PathVariable Long buildingId) {
+        return ResponseEntity.ok(buildingService.loadStaffByBuildingId(buildingId));
     }
 }

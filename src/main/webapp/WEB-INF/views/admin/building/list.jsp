@@ -244,11 +244,11 @@
                                     <td>${item.serviceFee}</td>
                                     <td>${item.brokerageFee}</td>
                                     <td>
-                                        <button cclass="btn btn-xs btn-info" data-toggle="tooltip"
+                                        <button class="btn btn-xs btn-info" data-toggle="tooltip"
                                                 title="Giao tòa nhà" id="btnBuildingAssignment" buildingId="${item.id}">
                                             <i class="fa fa-home" aria-hidden="true"></i>
                                         </button>
-                                        <a class="btn btn-xs btn-info" data-toggle="tooltip"
+                                        <a class="btn btn-xs btn-dark" data-toggle="tooltip"
                                                 title="Sửa thông tin toà nhà" value="${item.id}"
                                            href='<c:url value='/admin/building-edit-${item.id}'/>'>
                                             <i class="fa fa-edit" aria-hidden="true"></i>

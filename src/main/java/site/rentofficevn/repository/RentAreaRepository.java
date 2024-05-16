@@ -7,6 +7,5 @@ import site.rentofficevn.entity.RentAreaEntity;
 import java.util.List;
 
 public interface RentAreaRepository extends JpaRepository<RentAreaEntity, Long> {
-    List<RentAreaEntity> findByBuilding(BuildingEntity buildingEntity);
     List<RentAreaEntity> findByBuildingId(Long id);
 }

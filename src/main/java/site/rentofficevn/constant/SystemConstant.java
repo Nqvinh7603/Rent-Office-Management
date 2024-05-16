@@ -19,7 +19,7 @@ public class SystemConstant {
     public static final String MESSAGE_RESPONSE = "messageResponse";
     public static final String PASSWORD_DEFAULT = "123456";
     public static final String CHANGE_PASSWORD_FAIL = "change_password_fail";
-    public static final String WHERE_ONE_EQUAL_ONE = " WHERE 1 = 1 ";
+    public static final String WHERE_ONE_EQUAL_ONE = " WHERE 1 = 1";
     public static final String BUILDINGS = "buildings";
     public static final String DISTRICT_MAP = "districts";
     public static final String STAFF_MAP = "staffmaps";

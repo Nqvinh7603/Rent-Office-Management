@@ -1,6 +1,8 @@
 package site.rentofficevn.dto.response;
 
-public class AssignmentStaffResponse {
+import site.rentofficevn.dto.AbstractDTO;
+
+public class AssignmentStaffResponse extends AbstractDTO {
     private Long staffId;
     private String fullName;
     private String checked = "";

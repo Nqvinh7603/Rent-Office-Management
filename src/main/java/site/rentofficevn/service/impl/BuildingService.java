@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.rentofficevn.constant.SystemConstant;
 import site.rentofficevn.converter.BuildingConverter;
-import site.rentofficevn.converter.RentAreaConverter;
 import site.rentofficevn.converter.UserConverter;
 import site.rentofficevn.dto.BuildingDTO;
 import site.rentofficevn.dto.request.AssignmentBuildingRequest;
@@ -42,7 +41,7 @@ public class BuildingService implements IBuildingService {
     private final UserConverter userConverter;
 
     @Autowired
-    public BuildingService(BuildingRepository buildingRepository, BuildingConverter buildingConverter, UserRepository userRepository, RentAreaRepository rentAreaRepository, AssignmentBuildingRepository assignmentBuildingRepository, UserConverter userConverter, RentAreaService rentAreaService, RentAreaConverter rentAreaConverter) {
+    public BuildingService(BuildingRepository buildingRepository, BuildingConverter buildingConverter, UserRepository userRepository, RentAreaRepository rentAreaRepository, AssignmentBuildingRepository assignmentBuildingRepository, UserConverter userConverter) {
         this.buildingRepository = buildingRepository;
         this.buildingConverter = buildingConverter;
         this.userRepository = userRepository;

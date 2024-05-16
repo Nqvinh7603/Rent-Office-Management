@@ -19,7 +19,7 @@ public class BuildingSearchRequest extends AbstractDTO {
     private Integer rentPriceFrom;    // giá thuê từ
     private Integer rentPriceTo;      // giá thuê đến
     private Long staffId;          // nhân viên phụ trách
-    private List<String> types = new ArrayList<>();
+    private List<String> types;
     private String managerName;
     private String managerPhone;
 
@@ -150,4 +150,5 @@ public class BuildingSearchRequest extends AbstractDTO {
     public void setTypes(List<String> types) {
         this.types = types;
     }
+
 }

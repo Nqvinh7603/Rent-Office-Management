@@ -52,18 +52,18 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
     }
 
     private void buildQuery(BuildingSearchBuilder buildingSearchBuilder, StringBuilder whereQuery, StringBuilder joinQuery) {
-        Field[] fields = BuildingSearchBuilder.class.getDeclaredFields();
-        List<String> specialSearchParams = getSpecialSearchParams();
+        try {
+            Field[] fields = BuildingSearchBuilder.class.getDeclaredFields();
+            List<String> specialSearchParams = getSpecialSearchParams();
 
-        for(Field field : fields){
-            try {
+            for (Field field : fields) {
                 field.setAccessible(true);
                 buildQueryForNormalCase(field, whereQuery, specialSearchParams, buildingSearchBuilder);
                 buildQueryForSpecialClass(field, whereQuery, joinQuery, buildingSearchBuilder);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
             }
-        }
+        } catch (IllegalAccessException e) {
+        e.printStackTrace();
+    }
 
     }
     private List<String> getSpecialSearchParams(){
@@ -108,10 +108,11 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
         if(fieldSearch.equals(SystemConstant.BUILDING_TYPE_SEARCH_PARAM) && field.getType().isAssignableFrom(List.class) && fieldValue != null){
             List<String> buildingTypes = (List<String>) fieldValue;
             if(!buildingTypes.isEmpty()){
-                whereQuery.append(QueryBuilderUtils.withOrAndLike(columnNameWithAlias, buildingTypes));
+                whereQuery.append(QueryBuilderUtils.withIn(columnNameWithAlias, buildingTypes));
             }
         }
     }
+
 
     private void bulidQueryForRentPrice(String fieldSearch, Object fieldValue, String columnNameWithAlias, StringBuilder whereQuery) {
         if ((SystemConstant.RENT_PRICE_FROM_SEARCH_PARAM.equals(fieldSearch) || SystemConstant.RENT_PRICE_TO_SEARCH_PARAM.equals(fieldSearch)) && ValidateUtils.isValid(fieldValue)) {

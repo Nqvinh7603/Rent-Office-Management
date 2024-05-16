@@ -8,6 +8,5 @@ import site.rentofficevn.entity.UserEntity;
 import java.util.List;
 
 public interface AssignmentBuildingRepository extends JpaRepository<AssignmentBuildingEntity, Long> {
-    AssignmentBuildingEntity findByBuildingAndUser(BuildingEntity building, UserEntity user);
     List<AssignmentBuildingEntity> findByBuildingId(Long buildingId);
 }

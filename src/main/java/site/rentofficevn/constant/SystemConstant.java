@@ -27,7 +27,7 @@ public class SystemConstant {
     public static final String DANGER = "danger";
     public static final String BUILDING_ALIAS = "b.";
     public static final String EQUAL_OPERATOR = " = ";
-    public static final String STAFF_SEARCH_PARAM = "staffID";
+    public static final String STAFF_SEARCH_PARAM = "staffId";
     public static final String BUILDING_TYPE_SEARCH_PARAM = "types";
     public static final String RENT_AREA_FROM_SEARCH_PARAM = "rentAreaFrom";
     public static final String RENT_AREA_TO_SEARCH_PARAM = "rentAreaTo";

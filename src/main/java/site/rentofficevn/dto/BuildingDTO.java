@@ -1,8 +1,5 @@
 package site.rentofficevn.dto;
 
-import site.rentofficevn.dto.response.BuildingTypesResponse;
-import site.rentofficevn.dto.response.DistrictResponse;
-
 import java.util.List;
 
 public class BuildingDTO extends AbstractDTO<BuildingDTO> {

@@ -1,6 +1,5 @@
 package site.rentofficevn.converter;
 
-import org.apache.commons.lang.time.DateUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,6 +11,7 @@ import site.rentofficevn.entity.BuildingEntity;
 import site.rentofficevn.entity.RentAreaEntity;
 import site.rentofficevn.enums.DistrictsEnum;
 import site.rentofficevn.repository.RentAreaRepository;
+import site.rentofficevn.utils.DateUtils;
 import site.rentofficevn.utils.StringUtils;
 import site.rentofficevn.utils.ValidateUtils;
 
@@ -76,7 +76,7 @@ public class BuildingConverter {
     public BuildingSearchResponse toSearchResponse(BuildingEntity buildingEntity){
         BuildingSearchResponse result = modelMapper.map(buildingEntity, BuildingSearchResponse.class);
 
-        result.setCreatedDate(buildingEntity.getCreatedDate());
+        result.setCreatedDate(DateUtils.convertDateToString(buildingEntity.getCreatedDate()));
 
         List<String> address = new ArrayList<>();
 

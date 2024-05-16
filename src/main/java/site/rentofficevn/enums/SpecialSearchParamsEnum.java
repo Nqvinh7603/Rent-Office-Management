@@ -1,7 +1,7 @@
 package site.rentofficevn.enums;
 
 public enum SpecialSearchParamsEnum {
-    STAFF_ID("staffId"),
+    STAFF_ID("staffID"),
     RENT_PRICE_FROM("rentPriceFrom"),
     RENT_PRICE_TO("rentPriceTo"),
     RENT_AREA_FROM("rentAreaFrom"),

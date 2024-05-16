@@ -58,6 +58,7 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
 
             for (Field field : fields) {
                 field.setAccessible(true);
+
                 buildQueryForNormalCase(field, whereQuery, specialSearchParams, buildingSearchBuilder);
                 buildQueryForSpecialClass(field, whereQuery, joinQuery, buildingSearchBuilder);
             }

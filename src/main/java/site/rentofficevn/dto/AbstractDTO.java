@@ -10,7 +10,7 @@ public class AbstractDTO<T> implements Serializable {
     private static final long serialVersionUID = 7213600440729202783L;
 
     private Long id;
-    private Date createdDate;
+    private String createdDate;
     private String createdBy;
     private Date modifiedDate;
     private String modifiedBy;
@@ -32,11 +32,19 @@ public class AbstractDTO<T> implements Serializable {
         this.id = id;
     }
 
-    public Date getCreatedDate() {
+   /* public Date getCreatedDate() {
         return createdDate;
     }
 
     public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }*/
+
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(String createdDate) {
         this.createdDate = createdDate;
     }
 

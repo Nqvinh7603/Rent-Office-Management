@@ -1,4 +1,5 @@
-<<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/common/taglib.jsp" %>
 <c:url var="buildingListURL" value="/admin/building-list"/>
 <html>
@@ -7,14 +8,10 @@
 </head>
 <body>
 <div class="main-content">
+    <form:form modelAttribute="modelSearch" action="${buildingListURL}" id="listForm"
+               method="GET">
     <div class="main-content-inner">
         <div class="breadcrumbs" id="breadcrumbs">
-            <script type="text/javascript">
-                try {
-                    ace.settings.check('breadcrumbs', 'fixed')
-                } catch (e) {
-                }
-            </script>
             <ul class="breadcrumb">
                 <li>
                     <i class="ace-icon fa fa-home home-icon"></i>
@@ -37,153 +34,142 @@
                     </div>
                     <div class="widget-body">
                         <div class="widget-main">
-                            <form:form modelAttribute="modelSearch" action="${buildingListURL}" id="listForm"
-                                       method="GET">
-                                <div class="row">
-                                    <div class="col-xs-12">
-                                        <!-- PAGE CONTENT BEGINS -->
-                                        <div class="col-sm-6">
-                                            <div>
-                                                <label><b>Tên tòa nhà</b></label>
-                                                <form:input path="name" cssClass="form-control"/><br>
-                                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <!-- PAGE CONTENT BEGINS -->
+                                    <div class="col-sm-6">
+                                        <div>
+                                            <label><b>Tên tòa nhà</b></label>
+                                            <form:input path="name" cssClass="form-control"/><br>
                                         </div>
+                                    </div>
 
-                                        <div class="col-sm-6">
-                                            <div>
-                                                <label><b>Diện tích sàn</b></label>
-                                                <form:input path="floorArea" cssClass="form-control"/><br>
-                                            </div>
+                                    <div class="col-sm-6">
+                                        <div>
+                                            <label><b>Diện tích sàn</b></label>
+                                            <form:input path="floorArea" cssClass="form-control"/><br>
                                         </div>
+                                    </div>
 
-                                        <div class="col-sm-2">
-                                            <div>
-                                                <label><b>Quận hiện có</b></label>
-                                                <form:select path="districtCode" cssClass="form-control">
-                                                    <option selected value="">Chọn Quận</option>
-                                                    <c:forEach var="item" items="${districts}">
-                                                        <form:option value="${item.code}">${item.name}</form:option>
-                                                    </c:forEach>
-                                                </form:select>
-                                                <br>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-5">
-                                            <div>
-                                                <label><b>Phường</b></label>
-                                                <form:input path="ward" cssClass="form-control"/><br>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-5">
-                                            <div>
-                                                <label><b>Đường</b></label>
-                                                <form:input path="street" cssClass="form-control"/><br>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-4">
-                                            <div>
-                                                <label><b>Số tầng hầm</b></label>
-                                                <form:input path="numberOfBasement" cssClass="form-control"/><br>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-4">
-                                            <div>
-                                                <label><b>Hướng</b></label>
-                                                <form:input path="direction" cssClass="form-control"/><br>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-4">
-                                            <div>
-                                                <label><b>Hạng</b></label>
-                                                <form:input path="level" cssClass="form-control"/><br>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-3">
-                                            <div>
-                                                <label><b>Diện tích từ</b></label>
-                                                <form:input path="rentAreaFrom" cssClass="form-control"/><br>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <div>
-                                                <label><b>Diện tích đến</b></label>
-                                                <form:input path="rentAreaTo" cssClass="form-control"/><br>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <div>
-                                                <label><b>Giá thuê từ</b></label>
-                                                <form:input path="rentPriceFrom" cssClass="form-control"/><br>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <div>
-                                                <label><b>Giá thuê đến</b></label>
-                                                <form:input path="rentPriceTo" cssClass="form-control"/><br>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-4">
-                                            <div>
-                                                <label><b>Tên quản lí</b></label>
-                                                <form:input path="managerName" cssClass="form-control"/><br>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-4">
-                                            <div>
-                                                <label><b>Điện thoại quản lý</b></label>
-                                                <form:input path="managerPhone" cssClass="form-control"/><br>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <div>
-                                                <label><b>Chọn nhân viên quản lý</b></label>
-                                                <form:select path="staffId" class="form-control">
-                                                    <option selected value="">Chọn nhân viên quản lí</option>
-                                                    <c:forEach var="item" items="${staffmaps}">
-                                                        <form:option value="${item.key}">${item.value}</form:option>
-                                                    </c:forEach>
-                                                </form:select>
-                                                <br>
-                                            </div>
-                                        </div>
-
-                                        <%--<div class="col-sm-6">
-                                            <c:forEach var="item" items="${buildingTypes}">
-                                                <input type="checkbox" id="type_${item.code}" name="types"
-                                                       value="${item.code}"/>
-                                                <label for="type_${item.code}"
-                                                       style="font-weight: bold; margin-right: 10px; display: inline-block">${item.name}</label>
-                                            </c:forEach>
-                                        </div>--%>
-                                        <div class="col-sm-6">
-                                            <form:select path="types" cssClass="form-control">
-                                                <form:option value="" label="Chọn loại tòa nhà" />
-                                                <c:forEach var="item" items="${buildingTypes}">
+                                    <div class="col-sm-2">
+                                        <div>
+                                            <label><b>Quận hiện có</b></label>
+                                            <form:select path="districtCode" cssClass="form-control">
+                                                <option selected value="">Chọn Quận</option>
+                                                <c:forEach var="item" items="${districts}">
                                                     <form:option value="${item.code}">${item.name}</form:option>
                                                 </c:forEach>
                                             </form:select>
-                                        </div>
-
-
-                                        <div class="col-sm-12">
                                             <br>
-                                            <button type="button" id="btnSearch" class="btn btn-sm btn-success">
-                                                Tìm kiếm
-                                                <i class="ace-icon fa fa-arrow-right icon-on-right bigger-110"></i>
-                                            </button>
                                         </div>
-                                        <!-- PAGE CONTENT ENDS -->
-                                    </div><!-- /.col -->
-                                </div>
-                            </form:form>
+                                    </div>
+
+                                    <div class="col-sm-5">
+                                        <div>
+                                            <label><b>Phường</b></label>
+                                            <form:input path="ward" cssClass="form-control"/><br>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-5">
+                                        <div>
+                                            <label><b>Đường</b></label>
+                                            <form:input path="street" cssClass="form-control"/><br>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <div>
+                                            <label><b>Số tầng hầm</b></label>
+                                            <form:input path="numberOfBasement" cssClass="form-control"/><br>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <div>
+                                            <label><b>Hướng</b></label>
+                                            <form:input path="direction" cssClass="form-control"/><br>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <div>
+                                            <label><b>Hạng</b></label>
+                                            <form:input path="level" cssClass="form-control"/><br>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <div>
+                                            <label><b>Diện tích từ</b></label>
+                                            <form:input path="rentAreaFrom" cssClass="form-control"/><br>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div>
+                                            <label><b>Diện tích đến</b></label>
+                                            <form:input path="rentAreaTo" cssClass="form-control"/><br>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div>
+                                            <label><b>Giá thuê từ</b></label>
+                                            <form:input path="rentPriceFrom" cssClass="form-control"/><br>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div>
+                                            <label><b>Giá thuê đến</b></label>
+                                            <form:input path="rentPriceTo" cssClass="form-control"/><br>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <div>
+                                            <label><b>Tên quản lí</b></label>
+                                            <form:input path="managerName" cssClass="form-control"/><br>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <div>
+                                            <label><b>Điện thoại quản lý</b></label>
+                                            <form:input path="managerPhone" cssClass="form-control"/><br>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div>
+                                            <label><b>Chọn nhân viên quản lý</b></label>
+                                            <form:select path="staffId" class="form-control">
+                                                <option selected value="">Chọn nhân viên quản lí</option>
+                                                <c:forEach var="item" items="${staffmaps}">
+                                                    <form:option value="${item.key}">${item.value}</form:option>
+                                                </c:forEach>
+                                            </form:select>
+                                            <br>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <form:select path="types" cssClass="form-control">
+                                            <form:option value="" label="Chọn loại tòa nhà"/>
+                                            <c:forEach var="item" items="${buildingTypes}">
+                                                <form:option value="${item.code}">${item.name}</form:option>
+                                            </c:forEach>
+                                        </form:select>
+                                    </div>
+
+
+                                    <div class="col-sm-12">
+                                        <br>
+                                        <button type="button" id="btnSearch" class="btn btn-sm btn-success">
+                                            Tìm kiếm
+                                            <i class="ace-icon fa fa-arrow-right icon-on-right bigger-110"></i>
+                                        </button>
+                                    </div>
+                                    <!-- PAGE CONTENT ENDS -->
+                                </div><!-- /.col -->
+                            </div>
                         </div>
                     </div>
 
@@ -206,7 +192,7 @@
                     </div>
                 </div>
                 <br/>
-                <%--${modelSearch.maxPageItems}--%>
+                    <%--${modelSearch.maxPageItems}--%>
                 <div class="row">
                     <div class="col-xs-12">
                         <div class="table-responsive">
@@ -252,6 +238,7 @@
                 </div>
             </div>
         </div>
+        </form:form>
     </div><!-- /.main-content -->
 
     <div class="modal fade" id="assignmentBuildingModal" role="dialog">
@@ -293,7 +280,7 @@
 
     <script>
 
-        var currentPageURL = window.location.href;
+        /*var currentPageURL = window.location.href;
 
         function redirectBackToCurrentPage() {
             window.location.href = currentPageURL;
@@ -303,7 +290,9 @@
         function handleSuccess() {
             redirectBackToCurrentPage();
         }
+
         var buildingid;
+
         function assignmentBuilding(value) {
             buildingid = value;
             $.ajax({
@@ -315,15 +304,15 @@
 
                 success: function (response) {
                     // data : chính là cục chứa data của tk staffListDTO
-                    var arrBuilding  = response;
+                    var arrBuilding = response;
                     var row = '';
                     $("#dsnv").empty();
-                    arrBuilding.forEach(function(item) {
+                    arrBuilding.forEach(function (item) {
                         var row = '<tr>'
-                            +  '<td class=text-center>' +
-                            '<input type="checkbox" ' + item.checked + ' name="checkStaffs[]" value="' + item.id  + '" />'
-                            +  '</td>'
-                            +  '<td>'+ item.fullName + '</td>' +
+                            + '<td class=text-center>' +
+                            '<input type="checkbox" ' + item.checked + ' name="checkStaffs[]" value="' + item.id + '" />'
+                            + '</td>'
+                            + '<td>' + item.fullName + '</td>' +
                             '</tr>'
                         $("#dsnv").append(row);
                     });
@@ -350,7 +339,7 @@
             data["buildingIds"] = buildingid;
             $.ajax({
                 type: "POST",
-               /* url: '<c:url value="/api/building"/>' + '/' + buildingid + '/assignment',*/
+                /!* url: '<c:url value="/api/building"/>' + '/' + buildingid + '/assignment',*!/
                 url: '<c:url value="/api/building/assignment"/>',
                 data: JSON.stringify(data),
                 dataType: "json",
@@ -389,7 +378,8 @@
                 contentType: 'application/json',
                 data: JSON.stringify(data),
                 success: function (res) {
-                    /*window.location.href = "<c:url value='/admin/building-list?message=delete_success'/>";*/
+                    /!*window.location.href = "
+                    <c:url value='/admin/building-list?message=delete_success'/>";*!/
                     handleSuccess();
                 },
                 error: function (res) {
@@ -423,7 +413,205 @@
             $.each(valueType, function (index, value) {
                 $("#rent[value='" + value + "']").prop('checked', true);
             });
-        }
+        }*/
+        $(document).ready(function () {
+            const checkboxAll = $('#checkAll');
+            const buildingItemsCheckbox = $('#buildingList input[type=checkbox][name="buildingIds"]');
+
+            buildingItemsCheckbox.change(function () {
+                const numberOfChecked = $('#buildingList input[type=checkbox][name="buildingIds"]:checked').length;
+                const isCheckedAll = buildingItemsCheckbox.length === numberOfChecked;
+                checkboxAll.prop('checked', isCheckedAll);
+
+                if (numberOfChecked >= 1) {
+                    $('#btnDeleteBuilding').prop('disabled', false);
+                } else {
+                    $('#btnDeleteBuilding').prop('disabled', true);
+                }
+            });
+
+            $(document).on("click", "#buildingList button#btnBuildingAssignment", function (e) {
+                e.preventDefault();
+                openModalAssignmentBuilding();
+                let buildingId = $(this).attr('buildingId');
+                $('#buildingId').val(buildingId);
+                loadStaff(buildingId);
+            });
+
+            function openModalAssignmentBuilding() {
+                $('#assignmentBuildingModal').modal();
+            }
+
+            function loadStaff(buildingId) {
+                $.ajax({
+                    type: "GET",
+                    url: "${buildingListURL}/" + buildingId + "/staffs",
+                    dataType: "json",
+                    success: function (response) {
+                        console.log('success');
+                        let row = '';
+                        $.each(response, function (index, item) {
+                            row += '<tr>';
+                            row += '<td class="text-center"><input type="checkbox" value=' + item.staffIds + ' id="checkbox_' + item.staffIds + '" class="check-box-element"' + (item.checked ? 'checked' : '') + '/></td>';
+                            row += '<td class="text-center">' + item.fullName + '</td>';
+                            row += '</tr>';
+                        });
+                        $('#staffList tbody').html(row);
+                    },
+                    error: function (response) {
+                        showNotification('error', 'Đã xảy ra lỗi hệ thống, vui lòng thử lại sau.');
+                    }
+                });
+            }
+
+            $('#btnAssignBuilding').click(function (e) {
+                e.preventDefault();
+                let data = {};
+                data['buildingId'] = $('#buildingId').val();
+                data['staffIds'] = $('#staffList').find('tbody input[type=checkbox]:checked').map(function () {
+                    return $(this).val();
+                }).get();
+                let dataLength = data['staffIds'].length;
+                showConfirmationAlertBeforeAction(function () {
+                    assignStaff(data);
+                }, "Giao", "Giao " + (dataLength > 1 ? "các " : "") + "nhân viên đã chọn quản lý tòa nhà này?");
+            });
+
+            function assignStaff(data) {
+                $.ajax({
+                    type: "POST",
+                    url: "${buildingAPI}/assignment-building",
+                    data: JSON.stringify(data),
+                    dataType: "json",
+                    contentType: 'application/json',
+                    success: function () {
+                        showNotification('success', 'Giao tòa nhà cho nhân viên quản lý thành công!');
+                    },
+                    error: function () {
+                        showNotification('error', 'Đã xảy ra lỗi hệ thống, vui lòng thử lại sau.');
+                    }
+                });
+            }
+
+            $('#btnDeleteBuilding').click(function (e) {
+                e.preventDefault();
+                let buildingIds = $('#buildingList').find('tbody input[type=checkbox]:checked').map(function () {
+                    return $(this).val();
+                }).get();
+                showConfirmationAlertBeforeAction(function () {
+                    deleteBuilding(buildingIds);
+                }, "Xóa", "Xóa " + (buildingIds.length > 1 ? "các " : "") + "tòa nhà đã chọn?");
+            });
+
+            function deleteBuilding(data) {
+                $.ajax({
+                    type: "DELETE",
+                    url: "${buildingAPI}",
+                    data: JSON.stringify(data),
+                    dataType: "json",
+                    contentType: 'application/json',
+                    success: function () {
+                        window.location.href = "<c:url value='/admin/building-list?message=delete_success'/>";
+                    },
+                    error: function () {
+                        showNotification('error', 'Đã xảy ra lỗi hệ thống, vui lòng thử lại sau.');
+                    }
+                });
+            }
+
+            $('#btnSearch').click(function (e) {
+                e.preventDefault();
+                $('#listForm').submit();
+            });
+
+            var currentPageURL = window.location.href;
+
+            function redirectBackToCurrentPage() {
+                window.location.href = currentPageURL;
+            }
+
+            // Hàm xử lý khi thực hiện thao tác thêm, sửa, xóa thành công
+            function handleSuccess() {
+                redirectBackToCurrentPage();
+            }
+
+            var buildingid;
+
+            function assignmentBuilding(value) {
+                buildingid = value;
+                $.ajax({
+                    type: "GET",
+                    url: "<c:url value='/api/building'/>" + '/' + value + '/staff',
+                    dataType: "json",
+                    contentType: "application/json",
+                    success: function (response) {
+                        var arrBuilding = response;
+                        var row = '';
+                        $("#dsnv").empty();
+                        arrBuilding.forEach(function (item) {
+                            var row = '<tr>' +
+                                '<td class=text-center>' +
+                                '<input type="checkbox" ' + (item.checked ? 'checked' : '') + ' name="checkStaffs[]" value="' + item.id + '" />' +
+                                '</td>' +
+                                '<td>' + item.fullName + '</td>' +
+                                '</tr>';
+                            $("#dsnv").append(row);
+                        });
+                    },
+                    error: function (response) {
+                        console.log('faild');
+                        console.log(response);
+                    }
+                });
+                openModalAssignmentBuilding();
+            }
+
+            $("#assignment").click(function (e) {
+                e.preventDefault();
+                var values = [];
+                var data = {};
+                var checkData = $('input[name="checkStaffs[]"]:checked');
+
+                $.each(checkData, function () {
+                    values.push($(this).val());
+                });
+
+                data["staffIds"] = values;
+                data["buildingIds"] = buildingid;
+                $.ajax({
+                    type: "POST",
+                    url: '<c:url value="/api/building/assignment"/>',
+                    data: JSON.stringify(data),
+                    dataType: "json",
+                    contentType: "application/json",
+                    success: function (response) {
+                        console.log("success");
+                        handleSuccess();
+                    },
+                    error: function (response) {
+                        alert("fail");
+                        console.log(response);
+                    }
+                });
+            });
+
+            function warningDelete() {
+                showAlertBeforeDelete(function () {
+                    var dataArray = $('tbody input[type=checkbox]:checked').map(function () {
+                        return $(this).val();
+                    }).get();
+                    deleteBuilding(dataArray);
+                });
+                e.preventDefault();
+            }
+
+            $('#btnSearch').click(function (e) {
+                e.preventDefault();
+                $("#listForm").submit();
+            });
+
+
+
     </script>
 </div>
 </body>

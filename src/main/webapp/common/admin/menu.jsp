@@ -48,7 +48,7 @@
                         Danh sách tòa nhà
                     </a>
 
-                    <a href='<c:url value='/admin/building-edit'/>'>
+                    <a href='<c:url value='/admin/building-add'/>'>
                         <i class="menu-icon fa fa-caret-right"></i>
                         Chỉnh sửa tòa nhà
                     </a>

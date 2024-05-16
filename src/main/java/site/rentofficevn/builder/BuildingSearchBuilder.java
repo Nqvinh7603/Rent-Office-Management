@@ -47,7 +47,7 @@ public class BuildingSearchBuilder {
     private String managerPhone;
     
     @Column(name = "staffid")
-    private Long staffID;
+    private Long staffId;
 
     @Column(name = "type")
     private List<String> types;
@@ -67,7 +67,7 @@ public class BuildingSearchBuilder {
         this.rentPriceTo = builder.rentPriceTo;
         this.managerName = builder.managerName;
         this.managerPhone = builder.managerPhone;
-        this.staffID = builder.staffID;
+        this.staffId = builder.staffID;
         this.types = builder.types;
     }
 
@@ -184,11 +184,11 @@ public class BuildingSearchBuilder {
     }
 
     public Long getStaffID() {
-        return staffID;
+        return staffId;
     }
 
     public void setStaffID(Long staffID) {
-        this.staffID = staffID;
+        this.staffId = staffID;
     }
 
     public List<String> getTypes() {

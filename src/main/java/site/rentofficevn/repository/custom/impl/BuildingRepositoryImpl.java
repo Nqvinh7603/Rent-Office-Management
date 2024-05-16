@@ -99,7 +99,7 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
     }
 
     private void buildQueryForStaffs(String fieldSearch, Object fieldValue,Column column, StringBuilder whereQuery, StringBuilder joinQuery) {
-        if(fieldSearch.equals(SystemConstant.STAFF_SEARCH_PARAM) && ValidateUtils.isValid(fieldValue)){
+        if(SystemConstant.STAFF_SEARCH_PARAM.equals(fieldSearch) && ValidateUtils.isValid(fieldValue)){
             joinQuery.append(" INNER JOIN assignmentbuilding as ab ON ab.buildingid = b.id\n");
             whereQuery.append(QueryBuilderUtils.withOperator("ab." + column.name(), fieldValue, SystemConstant.EQUAL_OPERATOR));
         }

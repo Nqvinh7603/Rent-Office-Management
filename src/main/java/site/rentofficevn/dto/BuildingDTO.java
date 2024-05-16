@@ -38,8 +38,33 @@ public class BuildingDTO extends AbstractDTO<BuildingDTO> {
     private String avatar;
     private Integer managerPhone;
     private String managerName;
+    private  Integer waterFee;
+    private Integer brokerageFee;
+    private Integer rentAreaDescription;
 
+    public Integer getRentAreaDescription() {
+        return rentAreaDescription;
+    }
 
+    public void setRentAreaDescription(Integer rentAreaDescription) {
+        this.rentAreaDescription = rentAreaDescription;
+    }
+
+    public Integer getBrokerageFee() {
+        return brokerageFee;
+    }
+
+    public void setBrokerageFee(Integer brokerageFee) {
+        this.brokerageFee = brokerageFee;
+    }
+
+    public Integer getWaterFee() {
+        return waterFee;
+    }
+
+    public void setWaterFee(Integer waterFee) {
+        this.waterFee = waterFee;
+    }
 
     public String getName() {
         return name;

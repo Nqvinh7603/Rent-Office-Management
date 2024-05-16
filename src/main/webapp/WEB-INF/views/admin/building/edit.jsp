@@ -1,34 +1,48 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/common/taglib.jsp" %>
-<c:url var="buildingEditURL" value="/api/building"/>
+<c:url var="buildingAPI" value="/api/building"/>
+<c:url var="buildingEditURL" value="/admin/building-add"/>
+<c:url var="buildingEditURL" value="/admin/building-edit-{id}"/>
 <html>
 <head>
-    <title>Chỉnh sửa tòa nhà</title>
+    <c:if test="${empty buildingId}">
+        <title>Thêm toà nhà</title>
+    </c:if>
+    <c:if test="${not empty buildingId}">
+        <title>Chỉnh sửa toà nhà</title>
+    </c:if>
 </head>
 <body>
 <div class="main-content">
     <div class="main-content-inner">
-        <div class="breadcrumbs" id="breadcrumbs">
-            <script type="text/javascript">
-                try {
-                    ace.settings.check('breadcrumbs', 'fixed')
-                } catch (e) {
-                }
-            </script>
-
+        <div class="breadcrumbs ace-save-state" id="breadcrumbs">
             <ul class="breadcrumb">
                 <li>
                     <i class="ace-icon fa fa-home home-icon"></i>
-                    <a href="#">Home</a>
+                    <a href='<c:url value="/admin/home" />'>Home</a>
                 </li>
-                <li class="active">Building Edit</li>
+                <c:if test="${empty buildingId}">
+                    <li class="active">Thêm toà nhà</li>
+                </c:if>
+                <c:if test="${not empty buildingId}">
+                    <li class="active">Chỉnh sửa toà nhà</li>
+                </c:if>
             </ul><!-- /.breadcrumb -->
         </div>
 
         <div class="page-content">
             <div class="row">
+                <c:if test="${null != messageResponse}">
+                    <div class="alert alert-block alert-${alert}">
+                        <button type="button" class="close" data-dismiss="alert">
+                            <em class="ace-icon fa fa-times"></em>
+                        </button>
+                            ${messageResponse}
+                    </div>
+                </c:if>
                 <div class="col-xs-12">
-                    <form:form modelAttribute="modelBuildingEdit" cssClass="form-horizontal" id="formEdit" method="get">
+                    <form:form modelAttribute="building" cssClass="form-horizontal" id="formEdit" method="get">
+                        <input type="hidden" id="buildingId" name="buildingId" value="${building.id}"/>
                         <div class="form-group">
                             <label class="col-sm-2 control-label no-padding-right" for="name"> Tên tòa nhà </label>
                             <div class="col-sm-9">
@@ -39,12 +53,10 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label no-padding-right"> Quận </label>
                             <div class="col-sm-9">
-                                <select class="form-control" name="district">
-                                    <option>Chọn quận</option>
-                                    <c:forEach items="${modelBuildingEdit.districts}" var="item">
-                                        <option ${item.selected} value="${item.code}">${item.name}</option>
-                                    </c:forEach>
-                                </select>
+                                <form:select path="district" cssClass="chosen-select">
+                                    <form:option value="">--- Chọn Quận ---</form:option>
+                                    <form:options items="${districts}"/>
+                                </form:select>
                             </div>
                         </div>
 
@@ -74,16 +86,14 @@
                             <label class="col-sm-2 control-label no-padding-right"> Số tầng
                                 hầm </label>
                             <div class="col-sm-9">
-                                <input type="number" class="form-control" name="numberOfBasement"
-                                       value="${modelBuildingEdit.numberOfBasement}"/>
+                                <form:input path="numberOfBasement" cssClass="form-control"/>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label no-padding-right"> Diện tích sàn </label>
                             <div class="col-sm-9">
-                                <input type="number" class="form-control" name="floorArea"
-                                       value="${modelBuildingEdit.floorArea}"/>
+                                <form:input path="floorArea" cssClass="form-control"/>
                             </div>
                         </div>
 
@@ -112,14 +122,14 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label no-padding-right"> Mô tả diện tích </label>
                             <div class="col-sm-9">
-                                <form:input path="rentPriceDescription" cssClass="form-control"/>
+                                <form:input path="rentAreaDescription" cssClass="form-control"/>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label no-padding-right"> Gía thuê </label>
                             <div class="col-sm-9">
-                                <form:input path="rentPrice" cssClass="form-control"/>
+                                <input type="number" name="rentPrice" id="rentPrice" class="form-control"/>
                             </div>
                         </div>
 
@@ -138,6 +148,20 @@
                         </div>
 
                         <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right"> Phí ô tô </label>
+                            <div class="col-sm-9">
+                                <form:input path="carFee" cssClass="form-control"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right"> Phí ô tô </label>
+                            <div class="col-sm-9">
+                                <form:input path="motoFee" cssClass="form-control"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <label class="col-sm-2 control-label no-padding-right"> Phí ngoài giờ </label>
                             <div class="col-sm-9">
                                 <form:input path="overtimeFee" cssClass="form-control"/>
@@ -151,23 +175,31 @@
                             </div>
                         </div>
 
-
                         <div class="form-group">
-                            <label class="col-sm-2 control-label no-padding-right"> Loại tòa nhà </label>
+                            <label class="col-sm-2 control-label no-padding-right"> Tiền nước </label>
                             <div class="col-sm-9">
-                                <c:forEach items="${modelBuildingEdit.buildingTypes}" var="item">
-                                    <div class="form-check" style="display:inline-block; margin-right: 20px; vertical-align: bottom;">
-                                        <form:checkbox path="types" value="${item.code}" cssClass="form-check-input"/>
-                                        <label class="form-check-label">${item.name}</label>
-                                    </div>
-                                </c:forEach>
+                                <form:input path="waterFee" cssClass="form-control"/>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-2 control-label no-padding-right"> Ghi chú </label>
+                            <label class="col-sm-2 control-label no-padding-right"> Đặt cọc </label>
                             <div class="col-sm-9">
-                                <form:input path="note" cssClass="form-control"/>
+                                <form:input path="deposit" cssClass="form-control"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right"> Thanh toán </label>
+                            <div class="col-sm-9">
+                                <form:input path="payment" cssClass="form-control"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right"> Thời gian trang trí </label>
+                            <div class="col-sm-9">
+                                <form:input path="decorationTime" cssClass="form-control"/>
                             </div>
                         </div>
 
@@ -181,68 +213,145 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label no-padding-right"> Số điện thoại quản lý </label>
                             <div class="col-sm-9">
-                                <input type="number" class="form-control" name="managerPhone"
-                                       value="${modelBuildingEdit.managerPhone}"/>
+                                <form:input path="managerPhone" cssClass="form-control"/>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right"> Phí môi giới </label>
+                            <div class="col-sm-9">
+                                <form:input path="brokerageFee" cssClass="form-control"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right"> Loại tòa nhà </label>
+                            <div class="col-sm-9">
+                                <c:forEach var="item" items="${buildingTypes}">
+                                    <label class="checkbox-inline">
+                                        <form:checkbox path="types" value="${item.key}"/>${item.value}
+                                    </label>
+                                </c:forEach>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right"> Ghi chú </label>
+                            <div class="col-sm-9">
+                                <form:input path="note" cssClass="form-control"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right"> Link sản phẩm </label>
+                            <div class="col-sm-9">
+                                <form:input path="linkOfBuilding" cssClass="form-control"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right"> Bản đồ </label>
+                            <div class="col-sm-9">
+                                <form:input path="map" cssClass="form-control"/>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-9">
-                                <c:if test="${modelBuildingEdit.id == null}">
-                                    <button type="button" class="btn btn-primary" id="btnEditBuilding" name="">Thêm tòa nhà
-                                    </button>
+                                <c:if test="${not empty building.id}">
+                                    <input id="btnSave" type="button" class="btn btn-primary" value="Cập nhật"/>
                                 </c:if>
-                                <c:if test="${modelBuildingEdit.id != null}" >
-                                    <button type="button" class="btn btn-primary" id="btnEditBuilding">Cập nhật tòa nhà</button>
+                                <c:if test="${empty building.id}">
+                                    <input id="btnSave" type="button" class="btn btn-primary" value="Thêm"/>
                                 </c:if>
-                                <button type="button" class="btn btn-danger" id="close" name="">Close</button>
+                                <input id="btnCancel" type="button" class="btn btn-warning" value="Huỷ"/>
+                                <img src="/img/loading.gif" style="display: none; height: 100px" id="loading_image">
                             </div>
                         </div>
                     </form:form>
                 </div>
-            </div><!-- /.row -->
-        </div> <!--page-content -->
-    </div>
-</div><!-- /.main-content -->
-
-
+            </div>
+        </div>
+    </div><!-- /.row -->
+</div> <!--page-content -->
+<!-- /.main-content -->
 <script>
-    $('#btnEditBuilding').click(function (e) {
+    $("#btnSave").click(function (e) {
         e.preventDefault();
-        var data = {};
-        var formData = $('#formEdit').serializeArray();
-        var id = ${modelBuildingEdit.id} + '';
-        if(id != '') {
-            data["id"] = id;
-        }
-        var types = [];
+        let title;
+        let message;
+        showMessageConfirmation(function () {
+            let data = {};
+            let buildingTypes = [];
+            const formData = $("#formEdit").serializeArray();
+            $.each(formData, function (index, v) {
+                if ('types' === v.name) {
+                    buildingTypes.push(v.value);
+                } else {
+                    data["" + v.name + ""] = v.value;
+                }
+            });
+            $('#loading_image').show();
+            data['types'] = buildingTypes;
 
-        formData.forEach(function(item) {
-            if (item.name == "types") {
-                types.push(item.value);
+            let id = $('#buildingId').val();
+
+            if ('' === id) {
+                title = 'Thêm';
+                message = 'Thêm tòa nhà mới?';
+                addBuilding(data);
             } else {
-                data[item.name] = item.value;
+                title = 'Cập nhật';
+                message = 'Cập nhật tòa nhà này?';
+                updateBuilding(data, id);
             }
-        })
-        data["types"] = types;
+        }, title, message)
+    });
+
+    function addBuilding(data) {
         $.ajax({
-            type: "PUT",
-            url: '<c:url value="/api/building"/>',
+            url: '${buildingAPI}',
+            type: 'POST',
             data: JSON.stringify(data),
-            dataType: "json",               // kiểu dữ liệu server gửi cho client
-            contentType: "application/json",//kieu du lieu tu client gui ve server
+            dataType: 'json',
+            contentType: 'application/json',
             success: function (response) {
-                window.location.href = '<c:url value="/admin/building-list" />'
+                $('#loading_image').hide();
+               // window.location.href = "${buildingEditURL}-" + response.id + "?message=insert_success";
+                window.location.href = "/admin/building-list";
             },
-            error: function (response) {
-                alert("error : failed")
-                console.log(response)
+            error: function () {
+                $('#loading_image').hide();
+                showNotification('error', 'Đã xảy ra lỗi hệ thống, vui lòng thử lại sau.');
             }
         });
-    })
-    $("#close").click(function () {
-        window.location.href = '<c:url value="/admin/building-list" />' // thay đổi URL sang trang bạn muốn chuyển đến
-        window.close(); // đóng trang hiện tại
+    }
+
+    function updateBuilding(data) {
+        $.ajax({
+            url: '${buildingAPI}',
+            type: 'PUT',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (response) {
+                $('#loading_image').hide();
+                //window.location.href = "${buildingEditURL}-" + response.id + "?message=update_success";
+                window.location.href = "/admin/building-list";
+            },
+            error: function () {
+                showNotification('error', 'Đã xảy ra lỗi hệ thống, vui lòng thử lại sau.');
+            }
+        });
+    }
+
+    $("#btnCancel").click(function () {
+        let id = $('#buildingId').val();
+
+        if ('' !== id) {
+            showAlertBeforeCanceling("/admin/building-list");
+        }
     });
 </script>
 

@@ -1,4 +1,7 @@
 package site.rentofficevn.dto.request;
+
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import java.util.*;
 
 public class AssignmentBuildingRequest {

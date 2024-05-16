@@ -1,7 +1,9 @@
 package site.rentofficevn.dto.response;
 
 import site.rentofficevn.dto.AbstractDTO;
+import site.rentofficevn.dto.UserDTO;
 
+import java.util.*;
 public class AssignmentStaffResponse extends AbstractDTO {
     private Long staffId;
     private String fullName;
@@ -14,6 +16,7 @@ public class AssignmentStaffResponse extends AbstractDTO {
     public void setStaffId(Long staffId) {
         this.staffId = staffId;
     }
+
 
     public String getFullName() {
         return fullName;

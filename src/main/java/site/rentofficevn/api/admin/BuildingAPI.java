@@ -1,6 +1,5 @@
 package site.rentofficevn.api.admin;
 
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,9 +11,8 @@ import site.rentofficevn.service.impl.BuildingService;
 
 import java.util.*;
 
-import static javax.xml.bind.DatatypeConverter.parseLong;
 
-@RestController
+@RestController(value="buildingAPIOfAdmin")
 @RequestMapping("/api/building")
 public class BuildingAPI {
 
@@ -35,7 +33,7 @@ public class BuildingAPI {
     }
     // assigment building to staff
     @PostMapping("/assignment-building")
-    public ResponseEntity<Void> assignmentBuilding(@RequestBody AssignmentBuildingRequest assignmentBuilding) throws NotFoundException {
+    public ResponseEntity<Void> assignmentBuilding(@RequestBody AssignmentBuildingRequest assignmentBuilding){
         buildingService.assignmentBuildingToStaffs(assignmentBuilding);
         return ResponseEntity.noContent().build();
     }

@@ -25,7 +25,7 @@ public class BuildingDTO extends AbstractDTO<BuildingDTO> {
     private Integer rentAreaFrom;
     private Integer rentAreaTo;
     private Integer staffId;
-    private Integer electricityFee;
+    private String electricityFee;
     private String deposit;
     private String payment;
     private String rentTime;
@@ -38,35 +38,10 @@ public class BuildingDTO extends AbstractDTO<BuildingDTO> {
     private String avatar;
     private Integer managerPhone;
     private String managerName;
-    private  Integer waterFee;
-    private Integer brokerageFee;
+    private  String waterFee;
+    private String brokerageFee;
     private Integer rentAreaDescription;
 
-
-
-    public Integer getRentAreaDescription() {
-        return rentAreaDescription;
-    }
-
-    public void setRentAreaDescription(Integer rentAreaDescription) {
-        this.rentAreaDescription = rentAreaDescription;
-    }
-
-    public Integer getBrokerageFee() {
-        return brokerageFee;
-    }
-
-    public void setBrokerageFee(Integer brokerageFee) {
-        this.brokerageFee = brokerageFee;
-    }
-
-    public Integer getWaterFee() {
-        return waterFee;
-    }
-
-    public void setWaterFee(Integer waterFee) {
-        this.waterFee = waterFee;
-    }
 
     public String getName() {
         return name;
@@ -236,11 +211,11 @@ public class BuildingDTO extends AbstractDTO<BuildingDTO> {
         this.staffId = staffId;
     }
 
-    public Integer getElectricityFee() {
+    public String getElectricityFee() {
         return electricityFee;
     }
 
-    public void setElectricityFee(Integer electricityFee) {
+    public void setElectricityFee(String electricityFee) {
         this.electricityFee = electricityFee;
     }
 
@@ -338,5 +313,29 @@ public class BuildingDTO extends AbstractDTO<BuildingDTO> {
 
     public void setManagerName(String managerName) {
         this.managerName = managerName;
+    }
+
+    public String getWaterFee() {
+        return waterFee;
+    }
+
+    public void setWaterFee(String waterFee) {
+        this.waterFee = waterFee;
+    }
+
+    public String getBrokerageFee() {
+        return brokerageFee;
+    }
+
+    public void setBrokerageFee(String brokerageFee) {
+        this.brokerageFee = brokerageFee;
+    }
+
+    public Integer getRentAreaDescription() {
+        return rentAreaDescription;
+    }
+
+    public void setRentAreaDescription(Integer rentAreaDescription) {
+        this.rentAreaDescription = rentAreaDescription;
     }
 }

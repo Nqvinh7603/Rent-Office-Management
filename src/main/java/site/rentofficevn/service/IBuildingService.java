@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface IBuildingService {
-    List<BuildingSearchResponse> findAll(BuildingSearchRequest buildingSearchRequest);
+    List<BuildingSearchResponse> findByCondition(BuildingSearchRequest buildingSearchRequest);
     BuildingDTO findById(Long id);
     void delete(List<Long> buildingIds);
     Map<String, String> getDistrictMap();

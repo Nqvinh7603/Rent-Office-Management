@@ -3,13 +3,12 @@ package site.rentofficevn.dto.response;
 import site.rentofficevn.dto.AbstractDTO;
 import site.rentofficevn.dto.UserDTO;
 
-import java.util.*;
-public class AssignmentStaffResponse extends AbstractDTO {
-    private Long staffId;
-    private String fullName;
+public class AssignmentStaffResponse extends UserDTO {
+    /*private Long staffId;
+    private String fullName;*/
     private String checked = "";
 
-    public Long getStaffId() {
+   /* public Long getStaffId() {
         return staffId;
     }
 
@@ -24,7 +23,7 @@ public class AssignmentStaffResponse extends AbstractDTO {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
-    }
+    }*/
 
     public String getChecked() {
         return checked;

@@ -45,7 +45,7 @@ public class UserConverter {
 
     public AssignmentStaffResponse toAssignmentStaffResponse(UserEntity userEntity, boolean checked) {
         AssignmentStaffResponse staffResponse = new AssignmentStaffResponse();
-        staffResponse.setStaffId(userEntity.getId());
+        staffResponse.setId(userEntity.getId());
         staffResponse.setFullName(userEntity.getFullName());
         staffResponse.setChecked(checked ? "checked" : "");
         return staffResponse;

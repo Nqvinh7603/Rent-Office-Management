@@ -14,7 +14,7 @@ public class AssignmentBuildingEntity extends BaseEntity {
     private BuildingEntity building;
 
     @ManyToOne
-    @JoinColumn(name="staffid", nullable=false)
+    @JoinColumn(name="staffid", nullable=true)
     private UserEntity user;
 
     public UserEntity getUser() {

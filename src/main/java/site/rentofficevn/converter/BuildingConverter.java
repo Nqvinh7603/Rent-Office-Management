@@ -8,12 +8,9 @@ import site.rentofficevn.dto.BuildingDTO;
 import site.rentofficevn.dto.request.BuildingSearchRequest;
 import site.rentofficevn.dto.response.BuildingSearchResponse;
 import site.rentofficevn.entity.BuildingEntity;
-import site.rentofficevn.entity.RentAreaEntity;
 import site.rentofficevn.enums.DistrictsEnum;
-import site.rentofficevn.repository.RentAreaRepository;
 import site.rentofficevn.utils.DateUtils;
 import site.rentofficevn.utils.StringUtils;
-import site.rentofficevn.utils.ValidateUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;

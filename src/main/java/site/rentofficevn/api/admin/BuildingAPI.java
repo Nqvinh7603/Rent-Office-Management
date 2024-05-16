@@ -20,13 +20,17 @@ public class BuildingAPI {
     BuildingService buildingService;
 
     //create and update
+   /* @PostMapping
+    public ResponseEntity<BuildingDTO> saveBuilding(@RequestBody BuildingDTO buildingDTO) {
+        return ResponseEntity.ok(buildingService.save(buildingDTO));
+    }*/
     @PostMapping
-    public ResponseEntity<BuildingDTO> save(@RequestBody BuildingDTO buildingDTO) {
+    public ResponseEntity<BuildingDTO> saveBuilding(@RequestBody BuildingDTO buildingDTO) throws IllegalArgumentException {
         return ResponseEntity.ok(buildingService.save(buildingDTO));
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteBuildings(@RequestBody List<Long> ids) { // @RequestBody
+    public ResponseEntity<Void> deleteBuilding(@RequestBody List<Long> ids) { // @RequestBody
         buildingService.delete(ids);
         return ResponseEntity.noContent().build();
     }

@@ -52,7 +52,7 @@ public class BuildingService implements IBuildingService {
 
 
     @Override
-    public List<BuildingSearchResponse> findAll(BuildingSearchRequest buildingSearchRequest) {
+    public List<BuildingSearchResponse> findByCondition(BuildingSearchRequest buildingSearchRequest) {
         List<BuildingEntity> foundBuildings = buildingRepository.findBuilding(buildingConverter.convertParamToBuilder(buildingSearchRequest));
         return foundBuildings.stream().map(buildingConverter::toSearchResponse).collect(Collectors.toList());
     }
@@ -62,6 +62,16 @@ public class BuildingService implements IBuildingService {
         BuildingEntity buildingEntity = Optional.of(buildingRepository.findById(id)).get()
                 .orElseThrow(() -> new NotFoundException("Buliding not found!"));
         return buildingConverter.toDTO(buildingEntity);
+    }
+
+    @Override
+    public Map<String, String> getDistrictMap() {
+        return Arrays.stream(DistrictsEnum.values()).collect(Collectors.toMap(Enum::toString, DistrictsEnum::getDistrictValue));
+    }
+
+    @Override
+    public Map<String, String> getBuildingTypeMap() {
+        return Arrays.stream(BuildingTypesEnum.values()).collect(Collectors.toMap(Enum::toString, BuildingTypesEnum::getBuildingTypeValue));
     }
 
     @Override
@@ -78,21 +88,11 @@ public class BuildingService implements IBuildingService {
             }
         }
     }
-
-
-    @Override
-    public Map<String, String> getDistrictMap() {
-        return Arrays.stream(DistrictsEnum.values()).collect(Collectors.toMap(Enum::toString, DistrictsEnum::getDistrictValue));
-    }
-
-    @Override
-    public Map<String, String> getBuildingTypeMap() {
-        return Arrays.stream(BuildingTypesEnum.values()).collect(Collectors.toMap(Enum::toString, BuildingTypesEnum::getBuildingTypeValue));
-    }
+    
 
     @Override
     @Transactional
-    public BuildingDTO save(BuildingDTO buildingDTO) {
+    public BuildingDTO save(BuildingDTO buildingDTO)  throws IllegalArgumentException{
         BuildingEntity buildingEntity = buildingConverter.toEntity(buildingDTO);
         processRentArea(buildingEntity, buildingDTO);
         BuildingEntity savedBuilding = buildingRepository.save(buildingEntity);
@@ -183,8 +183,7 @@ public class BuildingService implements IBuildingService {
                 .collect(Collectors.toList());
     }
 
-   /* @Override
-    @Transactional
+    @Override
     public void assignmentBuildingToStaffs(AssignmentBuildingRequest assignmentBuildingRequest) {
         Long buildingId = assignmentBuildingRequest.getBuildingId();
 
@@ -192,28 +191,28 @@ public class BuildingService implements IBuildingService {
 
         BuildingEntity foundBuilding = Optional.of(buildingRepository.findById(buildingId)).get()
                 .orElseThrow(() -> new NotFoundException("Building not found!"));
-        Map<Long,UserEntity> idToUser = userRepository.findByIdIn(staffIdRequest).stream()
-                .collect(Collectors.toMap(UserEntity::getId, user -> user));
-
+        Map<Long, UserEntity> idToUser = userRepository.findByIdIn(staffIdRequest).stream()
+                .collect(Collectors.toMap(UserEntity::getId, v -> v));
         List<AssignmentBuildingEntity> currentAssignments = foundBuilding.getAssignBuildings();
-        if(staffIdRequest.isEmpty()){
+
+        if (staffIdRequest.isEmpty()) {
             assignmentBuildingRepository.deleteAll(currentAssignments);
-        }else{
+        } else {
             List<AssignmentBuildingEntity> deletedAssignments = new ArrayList<>();
             List<AssignmentBuildingEntity> savedAssignments = new ArrayList<>();
             List<Long> ignoredIds = new ArrayList<>();
 
-            for(AssignmentBuildingEntity assignmentBuilding : currentAssignments){
+            for (AssignmentBuildingEntity assignmentBuilding : currentAssignments) {
                 Long staffId = assignmentBuilding.getUser().getId();
-                if(staffIdRequest.contains(staffId)){
-                    ignoredIds.add(staffId);}
-                else{
+                if (staffIdRequest.contains(staffId)) {
+                    ignoredIds.add(staffId);
+                } else {
                     deletedAssignments.add(assignmentBuilding);
                 }
             }
 
-            for(Long staffId : staffIdRequest){
-                if(!ignoredIds.contains(staffId)){
+            for (Long staffId : staffIdRequest) {
+                if (!ignoredIds.contains(staffId)) {
                     AssignmentBuildingEntity assignmentBuildingEntity = new AssignmentBuildingEntity();
                     assignmentBuildingEntity.setBuilding(foundBuilding);
                     assignmentBuildingEntity.setUser(idToUser.get(staffId));
@@ -222,47 +221,6 @@ public class BuildingService implements IBuildingService {
             }
             assignmentBuildingRepository.deleteAll(deletedAssignments);
             assignmentBuildingRepository.saveAll(savedAssignments);
-        }*/
-   @Override
-   @Transactional
-   public void assignmentBuildingToStaffs(AssignmentBuildingRequest assignmentBuildingRequest) {
-       Long buildingId = assignmentBuildingRequest.getBuildingId();
-       List<Long> staffIdRequest = assignmentBuildingRequest.getStaffIds();
-
-       // Kiểm tra xem building có tồn tại không
-       BuildingEntity foundBuilding = buildingRepository.findById(buildingId)
-               .orElseThrow(() -> new NotFoundException("Building not found!"));
-
-       // Lấy danh sách user dựa trên các staffIds được cung cấp
-       List<UserEntity> staffEntities = userRepository.findByIdIn(staffIdRequest);
-
-       // Tạo một bản đồ để dễ dàng truy xuất user dựa trên id
-       Map<Long, UserEntity> idToUser = staffEntities.stream()
-               .collect(Collectors.toMap(UserEntity::getId, user -> user));
-
-       // Lấy danh sách assignment hiện tại
-       List<AssignmentBuildingEntity> currentAssignments = foundBuilding.getAssignBuildings();
-
-       // Xóa các assignment không còn trong danh sách staffIds được cung cấp
-       List<AssignmentBuildingEntity> deletedAssignments = currentAssignments.stream()
-               .filter(assignment -> !staffIdRequest.contains(assignment.getUser().getId()))
-               .collect(Collectors.toList());
-
-       assignmentBuildingRepository.deleteAll(deletedAssignments);
-
-       // Tạo các assignment mới cho những user được chọn
-       List<AssignmentBuildingEntity> savedAssignments = staffEntities.stream()
-               .filter(user -> !idToUser.containsKey(user.getId())) // Loại bỏ user không hợp lệ
-               .map(user -> {
-                   AssignmentBuildingEntity assignmentBuildingEntity = new AssignmentBuildingEntity();
-                   assignmentBuildingEntity.setBuilding(foundBuilding);
-                   assignmentBuildingEntity.setUser(user);
-                   return assignmentBuildingEntity;
-               })
-               .collect(Collectors.toList());
-
-       assignmentBuildingRepository.saveAll(savedAssignments);
-   }
-
-
+        }
+    }
 }

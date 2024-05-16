@@ -35,7 +35,7 @@ public class BuildingController {
     public ModelAndView buildingList(@ModelAttribute("modelSearch")BuildingSearchRequest buildingSearchRequest, HttpServletRequest request) {
             ModelAndView mav = new ModelAndView("admin/building/list");
 
-            mav.addObject(SystemConstant.BUILDINGS, buildingService.findAll(buildingSearchRequest));
+            mav.addObject(SystemConstant.BUILDINGS, buildingService.findByCondition(buildingSearchRequest));
             mav.addObject(SystemConstant.DISTRICT_MAP, buildingService.getDistrictMap());
             mav.addObject(SystemConstant.STAFF_MAP, userService.getStaffMap());
             mav.addObject(SystemConstant.BUILDING_TYPE_MAP, buildingService.getBuildingTypeMap());

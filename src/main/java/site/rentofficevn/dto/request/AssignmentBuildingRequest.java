@@ -1,10 +1,11 @@
 package site.rentofficevn.dto.request;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import site.rentofficevn.dto.AbstractDTO;
 
 import java.util.*;
 
-public class AssignmentBuildingRequest {
+public class AssignmentBuildingRequest extends AbstractDTO{
 
     private Long buildingId;
     private List<Long> staffIds = new ArrayList<>();
@@ -13,7 +14,7 @@ public class AssignmentBuildingRequest {
         return buildingId;
     }
 
-    public void setBuildingId(Long buildingId) {
+    public void setBuildingId(Long  buildingId) {
         this.buildingId = buildingId;
     }
 

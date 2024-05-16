@@ -1,64 +1,95 @@
 package site.rentofficevn.controller.admin;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import site.rentofficevn.constant.SystemConstant;
+import site.rentofficevn.dto.BuildingDTO;
 import site.rentofficevn.dto.request.BuildingSearchRequest;
 import site.rentofficevn.dto.response.BuildingSearchResponse;
 import site.rentofficevn.service.impl.BuildingService;
-import site.rentofficevn.service.impl.BuildingTypesService;
-import site.rentofficevn.service.impl.DistrictService;
 import site.rentofficevn.service.impl.UserService;
 import site.rentofficevn.utils.DisplayTagUtils;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import site.rentofficevn.utils.MessageUtils;
+import site.rentofficevn.utils.StringUtils;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/admin")
 public class BuildingController {
-    @Autowired
-    BuildingService buildingService;
+
+    private final BuildingService buildingService;
+    private final UserService userService;
+    private final MessageUtils messageUtils;
 
     @Autowired
-    UserService userService;
-
-    @Autowired
-    private BuildingTypesService buildingTypesService;
-
-    @Autowired
-    private DistrictService districtService;
+    public BuildingController(BuildingService buildingService, UserService userService,MessageUtils messageUtils) {
+        this.buildingService = buildingService;
+        this.userService = userService;
+        this.messageUtils = messageUtils;
+    }
 
     @GetMapping("/building-list")
-    public ModelAndView buildingList(HttpServletRequest request, @ModelAttribute("modelSearch")BuildingSearchRequest buildingSearchRequest) {
-        try {
-            ModelAndView mav = new ModelAndView("admin/building/list");
+    public ModelAndView listBuilding(@ModelAttribute("modelSearch")BuildingSearchRequest buildingSearchRequest, HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView("admin/building/list");
 
-            DisplayTagUtils.of(request, buildingSearchRequest);
-            Pageable pageable = PageRequest.of(buildingSearchRequest.getPage() - 1, buildingSearchRequest.getMaxPageItems());
-            List<BuildingSearchResponse> pageBuilding = buildingService.pageBuilding(pageable, buildingSearchRequest);
+        buildingSearchRequest.setTableId("buildingList");
+        DisplayTagUtils.of(request, buildingSearchRequest);
 
-            buildingSearchRequest.setListResult(pageBuilding);
-            buildingSearchRequest.setTotalItems(buildingService.getTotalItems()); // set tổng số item trong
+        List< BuildingSearchResponse> foundBuildings = buildingService.findByCondition(buildingSearchRequest,
+                PageRequest.of(buildingSearchRequest.getPage() - 1, buildingSearchRequest.getMaxPageItems()));
 
-            mav.addObject(SystemConstant.BUILDINGS, buildingSearchRequest);
-            mav.addObject(SystemConstant.STAFF_MAP, userService.getStaffMaps());
-            mav.addObject(SystemConstant.DISTRICT_MAP, districtService.getAllDistrict());
-            mav.addObject(SystemConstant.BUILDING_TYPE_MAP, buildingTypesService.getAll());
-            return mav;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-    @GetMapping("/building-edit")
-    public ModelAndView buildingEdit(@RequestParam(name = "buildingid", required = false) Long id) {
-        ModelAndView mav = new ModelAndView("admin/building/edit");
-        mav.addObject(SystemConstant.MODEL_BUILDING_EDIT, buildingService.getBuildingDetails(id));
+
+        buildingSearchRequest.setListResult(foundBuildings);
+        buildingSearchRequest.setTotalItems(buildingService.countByCondition(buildingSearchRequest));
+        buildingSearchRequest.setTotalItems((int) Math.ceil((double) buildingSearchRequest.getTotalItems() / buildingSearchRequest.getMaxPageItems()));
+
+        mav.addObject(SystemConstant.BUILDINGS, foundBuildings);
+        mav.addObject(SystemConstant.DISTRICT_MAP, buildingService.getDistrictMap());
+        mav.addObject(SystemConstant.STAFF_MAP, userService.getStaffMap());
+        mav.addObject(SystemConstant.BUILDING_TYPE_MAP, buildingService.getBuildingTypeMap());
+
+        initMessageResponse(mav, request);
         return mav;
+    }
+
+    @GetMapping("/building-add")
+    public ModelAndView createBuilding(){
+        ModelAndView mav = new ModelAndView("admin/building/edit");
+        BuildingDTO buildingDTO = new BuildingDTO();
+
+        mav.addObject(SystemConstant.BUILDING, buildingDTO);
+        mav.addObject(SystemConstant.DISTRICT_MAP, buildingService.getDistrictMap());
+        mav.addObject(SystemConstant.BUILDING_TYPE_MAP, buildingService.getBuildingTypeMap());
+
+        return mav;
+    }
+    @GetMapping("/building-edit-{id}")
+    public ModelAndView updateBuilding(@PathVariable(value="id",required = false) Long buildingId, HttpServletRequest request){
+        ModelAndView mav = new ModelAndView("admin/building/edit");
+        BuildingDTO buildingDTO = buildingService.findById(buildingId);
+        buildingDTO.setId(buildingId);
+
+        mav.addObject(SystemConstant.BUILDING, buildingDTO);
+        mav.addObject(SystemConstant.BUILDING_ID, buildingId);
+        mav.addObject(SystemConstant.DISTRICT_MAP, buildingService.getDistrictMap());
+        mav.addObject(SystemConstant.BUILDING_TYPE_MAP, buildingService.getBuildingTypeMap());
+
+        initMessageResponse(mav, request);
+        return mav;
+    }
+
+    private void initMessageResponse(ModelAndView mav, HttpServletRequest request) {
+        String message = request.getParameter(SystemConstant.MESSAGE);
+        if(!StringUtils.isNullOrEmpty(message)){
+            Map<String, String> messageMap = messageUtils.getMessage(message);
+            mav.addObject(SystemConstant.ALERT, messageMap.get(SystemConstant.ALERT));
+            mav.addObject(SystemConstant.MESSAGE_RESPONSE, messageMap.get(SystemConstant.MESSAGE));
+        }
     }
 }

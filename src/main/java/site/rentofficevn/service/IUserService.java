@@ -24,4 +24,5 @@ public interface IUserService {
     Map<Long,String> getStaffMaps();
     List<UserDTO> getAll();
     List<StaffResponseDTO> finAllStaffByBuilding(Long id);
+    Map<Long,String> getStaffMap();
 }

@@ -44,6 +44,37 @@ public class BuildingDTO extends AbstractDTO<BuildingDTO> {
     private String image;    // field map entity
     private String imageBase64; // xử lí ảnh
     private String imageName;   // name image
+    private String rentAreaDescription;
+    private String waterFee;
+    private String brokerageFee;
+
+    public String getBrokerageFee() {
+        return brokerageFee;
+    }
+
+    public void setBrokerageFee(String brokerageFee) {
+        this.brokerageFee = brokerageFee;
+    }
+
+    public String getWaterFee() {
+        return waterFee;
+    }
+
+    public void setWaterFee(String waterFee) {
+        this.waterFee = waterFee;
+    }
+
+    public void setImageBase64(String imageBase64) {
+        this.imageBase64 = imageBase64;
+    }
+
+    public String getRentAreaDescription() {
+        return rentAreaDescription;
+    }
+
+    public void setRentAreaDescription(String rentAreaDescription) {
+        this.rentAreaDescription = rentAreaDescription;
+    }
 
     public String getImage() {
         return image;

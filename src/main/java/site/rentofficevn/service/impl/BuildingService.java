@@ -1,32 +1,32 @@
 package site.rentofficevn.service.impl;
 
-import javassist.NotFoundException;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import site.rentofficevn.builder.BuildingSearchBuilder;
+import site.rentofficevn.constant.SystemConstant;
 import site.rentofficevn.converter.BuildingConverter;
-import site.rentofficevn.converter.RentAreaConverter;
-import site.rentofficevn.dto.AssignmentDTO;
+import site.rentofficevn.converter.UserConverter;
 import site.rentofficevn.dto.BuildingDTO;
-import site.rentofficevn.dto.RentAreaDTO;
 import site.rentofficevn.dto.request.AssignmentBuildingRequest;
 import site.rentofficevn.dto.request.BuildingSearchRequest;
+import site.rentofficevn.dto.response.AssignmentStaffResponse;
 import site.rentofficevn.dto.response.BuildingSearchResponse;
-import site.rentofficevn.entity.AssignBuildingEntity;
+import org.apache.commons.codec.binary.Base64;
 import site.rentofficevn.entity.BuildingEntity;
 import site.rentofficevn.entity.RentAreaEntity;
 import site.rentofficevn.entity.UserEntity;
-import site.rentofficevn.repository.AssignmentBuildingRepository;
+import site.rentofficevn.enums.BuildingTypesEnum;
+import site.rentofficevn.enums.DistrictsEnum;
 import site.rentofficevn.repository.BuildingRepository;
-import site.rentofficevn.repository.RentAreaRepository;
 import site.rentofficevn.repository.UserRepository;
-import site.rentofficevn.security.utils.SecurityUtils;
 import site.rentofficevn.service.IBuildingService;
+import site.rentofficevn.utils.StringUtils;
 import site.rentofficevn.utils.UploadFileUtils;
-import org.apache.commons.codec.binary.Base64;
+
 import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -34,182 +34,75 @@ import java.util.stream.Collectors;
 @Service
 public class BuildingService implements IBuildingService {
 
-    @Autowired
-    BuildingRepository buildingRepository;
+    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(BuildingService.class);
+    private final BuildingRepository buildingRepository;
+    private final BuildingConverter buildingConverter;
+    private final UserRepository userRepository;
+    private final UserConverter userConverter;
+    private final UploadFileUtils uploadFileUtils;
 
-    @Autowired
-    BuildingConverter buildingConverter;
-
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    AssignmentBuildingRepository assignmentBuildingRepository;
-
-    @Autowired
-    private BuildingTypesService buildingTypesService;
-
-    @Autowired
-    private DistrictService districtService;
-
-    @Autowired
-    private RentAreaRepository rentAreaRepository;
-
-
-    @Autowired
-    private RentAreaConverter rentAreaConverter;
-
-    @Autowired
-    private UploadFileUtils uploadFileUtils;
     @Value("${dir.default}")
     private String dirDefault;
+    @Autowired
+    public BuildingService( UploadFileUtils uploadFileUtils, UserConverter userConverter, UserRepository userRepository, BuildingConverter buildingConverter, BuildingRepository buildingRepository) {
+        this.uploadFileUtils = uploadFileUtils;
+        this.userConverter = userConverter;
+        this.userRepository = userRepository;
+        this.buildingConverter = buildingConverter;
+        this.buildingRepository = buildingRepository;
+    }
 
+    
     @Override
-    public List<BuildingDTO> findAll() {
-        List<BuildingDTO> results = new ArrayList<>();
-        List<BuildingEntity> buildingEntities = buildingRepository.findAll();
-        for (BuildingEntity item : buildingEntities) {
-            BuildingDTO buildingDTO = buildingConverter.convertToDto(item);
-            results.add(buildingDTO);
-        }
-        return results;
+    public List<BuildingSearchResponse> findByCondition(BuildingSearchRequest buildingSearchRequest, PageRequest pageRequest) {
+        List<BuildingEntity> foundBuildings = buildingRepository.findBuilding(buildingConverter.convertParamToBuilder(buildingSearchRequest), pageRequest);
+        return foundBuildings.stream().map(buildingConverter::toSearchResponse).collect(Collectors.toList());
     }
 
     @Override
-    public List<BuildingSearchResponse> findAll(BuildingSearchRequest buildingSearchRequest) {
-        List<BuildingSearchResponse> results = new ArrayList<>();
-        BuildingSearchBuilder buildingSearchBuilder = convertParamToBuilder(buildingSearchRequest);
-
-        try {
-            List<BuildingEntity> buildingEntities = buildingRepository.findBuilding(buildingSearchBuilder);
-            return buildingEntities.stream()
-                    .map(entity -> buildingConverter.convertFromEntitytoBuildingSearchResponse(entity))
-                    .collect(Collectors.toList());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Collections.emptyList();
-        }
-
+    public BuildingDTO findById(Long id) {
+        BuildingEntity buildingEntity = Optional.of(buildingRepository.findById(id)).get()
+                .orElseThrow(() -> new NotFoundException("Buliding not found!"));
+        return buildingConverter.toDTO(buildingEntity);
     }
 
     @Override
-    public BuildingDTO findBuildingById(Long id) {
-        if (id != null) {
-            BuildingEntity buildingEntity = buildingRepository.findById(id).get();
-            BuildingDTO buildingDTO = buildingConverter.convertToDTOCustom(buildingEntity);
-            return buildingDTO;
-        }
-        return null;
+    public Map<String, String> getDistrictMap() {
+        return Arrays.stream(DistrictsEnum.values()).collect(Collectors.toMap(Enum::toString, DistrictsEnum::getDistrictValue));
     }
 
     @Override
-    @Transactional
-    public BuildingDTO createAndUpdateBuilding(BuildingDTO buildingDTO) {
-        BuildingEntity buildingEntity = buildingConverter.convertToEntityCustom(buildingDTO); // trả ra cho dto
-        try {
-            if (buildingDTO.getId() != null) {
-                BuildingEntity foundBuilding = buildingRepository.findById(buildingDTO.getId())
-                        .orElseThrow(() -> new NotFoundException("Building not found!"));
-                buildingEntity.setImage(foundBuilding.getImage());
-            }
-            saveThumbnail(buildingDTO, buildingEntity);   // save thumbnail
-            return buildingConverter.convertToDTOCustom(buildingRepository.save(buildingEntity)); // sửa
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Error building update in service");
-        }
-        return null;
+    public Map<String, String> getBuildingTypeMap() {
+        return Arrays.stream(BuildingTypesEnum.values()).collect(Collectors.toMap(Enum::toString, BuildingTypesEnum::getBuildingTypeValue));
     }
+
     @Override
     @Transactional
     public void delete(List<Long> buildingIds) {
-        try {
-            if (!buildingIds.isEmpty()) {
-                Long count = buildingRepository.countByIdIn(buildingIds);
-
-                if (count != buildingIds.size()) {
-                    throw new NotFoundException("Building not found!");
-                }
-                // remove buildings
-                buildingRepository.deleteByIdIn(buildingIds);
-            }
-        } catch (NotFoundException e) {
-            e.printStackTrace();
-        }
+       if(!buildingIds.isEmpty()){
+           Long count = buildingRepository.countByIdIn(buildingIds);
+           if(count != buildingIds.size()){
+               throw new NotFoundException("Some buildings not found!");
+           }
+           buildingRepository.deleteByIdIn(buildingIds);
+       }
     }
+
 
     @Override
-    public BuildingDTO getBuildingDetails(Long id) {
-        BuildingDTO buildingDTO = new BuildingDTO();
-        if (id != null && buildingRepository.existsById(id)) {
-            buildingDTO = findBuildingById(id);
+    @Transactional
+    public BuildingDTO save(BuildingDTO buildingDTO)  throws IllegalArgumentException{
+        Long buildingId = buildingDTO.getId();
+        BuildingEntity buildingEntity = buildingConverter.toEntity(buildingDTO);
+        if(buildingId != null){
+            BuildingEntity foundBuilding = Optional.of(buildingRepository.findById(buildingId)).get()
+                    .orElseThrow(() -> new NotFoundException("Building not found!"));
+            buildingEntity.setImage(foundBuilding.getImage());
+            buildingEntity.setUserEntities(foundBuilding.getUserEntities());
         }
-        buildingDTO.setDistricts(districtService.getDistrictByBuilding(buildingDTO));
-        buildingDTO.setBuildingTypes(buildingTypesService.getAll());
-        return buildingDTO;
+        saveThumbnail(buildingDTO, buildingEntity);
+        return buildingConverter.toDTO(buildingRepository.save(buildingEntity));
     }
-
-    @Override
-    public List<BuildingSearchResponse> pageBuilding(Pageable pageable, BuildingSearchRequest buildingSearchRequest) {
-        List<BuildingSearchResponse> result = new ArrayList<>();
-        // Nếu staff thì chỉ xem đc building mình quản lí
-        if (SecurityUtils.getAuthorities().contains("ROLE_STAFF")) {
-            buildingSearchRequest.setStaffId(SecurityUtils.getPrincipal().getId());
-        }
-        BuildingSearchBuilder buildingSearchBuilder = convertParamToBuilder(buildingSearchRequest);
-        List<BuildingEntity> buildingEntities = buildingRepository.pageBuilding(pageable, buildingSearchBuilder);
-        for (BuildingEntity item : buildingEntities) {
-            result.add(buildingConverter.convertFromEntitytoBuildingSearchResponse(item));
-        }
-        return result;
-    }
-
-    @Override
-    public int getTotalItems() {
-        return (int) buildingRepository.countAllBuilding();
-    }
-
-    @Override
-   @Transactional
-   public void assignmentBuilding(AssignmentDTO assignmentDTO) {
-        try {
-            BuildingEntity buildingEntity = buildingRepository.findById(assignmentDTO.getBuildingid()).get();
-            buildingEntity.setUserEntities(new HashSet<>(userRepository.findAllById(assignmentDTO.getStaffIds())));
-            buildingRepository.save(buildingEntity);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Error assignmentBuilding service");
-        }
-   }
-
-
-    private BuildingSearchBuilder convertParamToBuilder(BuildingSearchRequest buildingSearchRequest) {
-        try {
-            BuildingSearchBuilder result = new BuildingSearchBuilder.Builder()
-                    .setName(buildingSearchRequest.getName())
-                    .setFloorArea(buildingSearchRequest.getFloorArea())
-                    .setDistrict(buildingSearchRequest.getDistrictCode())
-                    .setWard(buildingSearchRequest.getWard())
-                    .setStreet(buildingSearchRequest.getStreet())
-                    .setNumberOfBasement(buildingSearchRequest.getNumberOfBasement())
-                    .setDirection(buildingSearchRequest.getDirection())
-                    .setLevel(buildingSearchRequest.getLevel())
-                    .setRentAreaFrom(buildingSearchRequest.getRentAreaFrom())
-                    .setRentAreaTo(buildingSearchRequest.getRentAreaTo())
-                    .setRentPriceFrom(buildingSearchRequest.getRentPriceFrom())
-                    .setRentPriceTo(buildingSearchRequest.getRentPriceTo())
-                    .setManagerName(buildingSearchRequest.getManagerName())
-                    .setManagerPhone(buildingSearchRequest.getManagerPhone())
-                    .setStaffID(buildingSearchRequest.getStaffId())
-                    .setTypes(buildingSearchRequest.getTypes())
-                    .build();
-            return result;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     private void saveThumbnail(BuildingDTO buildingDTO, BuildingEntity buildingEntity) {
         String path = "/building/" + buildingDTO.getImageName();
         if (null != buildingDTO.getImageBase64()) {
@@ -225,4 +118,40 @@ public class BuildingService implements IBuildingService {
         }
     }
 
+    @Override
+    public List<AssignmentStaffResponse> loadStaffByBuildingId(Long buildingId) {
+        List<UserEntity> allStaffs = userRepository.findByStatusAndRoles_Code(SystemConstant.ACTIVE_STATUS, "STAFF");
+
+        return allStaffs.stream().map(staff ->
+                {
+                    AssignmentStaffResponse assignmentStaffResponse = userConverter.toAssignmentStaffResponse(staff);
+                    for (BuildingEntity building : staff.getBuildingEntities()) {
+                        if (building.getId().equals(buildingId)) {
+                            assignmentStaffResponse.setChecked("checked");
+                            break;
+                        }
+                    }
+                    return assignmentStaffResponse;
+                }
+        ).collect(Collectors.toList());
+    }
+
+    @Override
+    public void assignmentBuildingToStaffs(AssignmentBuildingRequest assignmentBuildingRequest) {
+        Long buildingId = assignmentBuildingRequest.getBuildingId();
+
+        List<Long> staffIdRequest = assignmentBuildingRequest.getStaffIds();
+
+        BuildingEntity foundBuilding = Optional.of(buildingRepository.findById(buildingId)).get()
+                .orElseThrow(() -> new NotFoundException("Building not found!"));
+        List<UserEntity> foundUsers = userRepository.findByIdIn(staffIdRequest);
+        foundBuilding.setUserEntities(foundUsers);
+
+        }
+
+    @Override
+    public int countByCondition(BuildingSearchRequest buildingSearchRequest) {
+        return buildingRepository.countByCondition(buildingConverter.convertParamToBuilder(buildingSearchRequest));
+    }
 }
+

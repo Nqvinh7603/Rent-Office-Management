@@ -38,5 +38,4 @@ public class SystemConstant {
     public static final String BUILDING_ID = "buildingId";
     public static final String BUILDING = "building";
     public static final int ACTIVE_STATUS = 1;
-    public static final String MODEL_BUILDING_EDIT = "modelBuildingEdit";
 }

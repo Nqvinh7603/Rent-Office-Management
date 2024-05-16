@@ -177,4 +177,10 @@ public class UserService implements IUserService {
     public List<StaffResponseDTO> finAllStaffByBuilding(Long id) {
         return userConverter.convertToDtoResponse(userRepository.getAllStaffByBuilding(id));
     }
+    @Override
+    public Map<Long, String> getStaffMap() {
+        List<UserEntity> staffs = userRepository.findByStatusAndRoles_Code(1, "STAFF");
+
+        return staffs.stream().collect(Collectors.toMap(UserEntity::getId, UserEntity::getFullName));
+    }
 }

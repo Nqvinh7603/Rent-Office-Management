@@ -1,6 +1,7 @@
 package site.rentofficevn.converter;
 
 import site.rentofficevn.dto.UserDTO;
+import site.rentofficevn.dto.response.AssignmentStaffResponse;
 import site.rentofficevn.dto.response.StaffResponseDTO;
 import site.rentofficevn.entity.UserEntity;
 import org.modelmapper.ModelMapper;
@@ -40,6 +41,13 @@ public class UserConverter {
                     return listStaff;
                 })
                 .collect(Collectors.toList());
+    }
+    public AssignmentStaffResponse toAssignmentStaffResponse(UserEntity userEntity) {
+        AssignmentStaffResponse staffResponse = new AssignmentStaffResponse();
+        staffResponse.setId(userEntity.getId());
+        staffResponse.setFullName(userEntity.getFullName());
+        staffResponse.setChecked("");
+        return staffResponse;
     }
 
 }

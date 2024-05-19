@@ -78,10 +78,6 @@ public class BuildingEntity extends BaseEntity {
     @OneToMany(mappedBy="building", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     private List<RentAreaEntity> rentAreas = new ArrayList<>();
 
-    /*// 1 building - n assignmentBuiding
-    @OneToMany(mappedBy = "building")
-    private List<AssignBuildingEntity> assignBuildings;*/
-
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "assignmentbuilding",

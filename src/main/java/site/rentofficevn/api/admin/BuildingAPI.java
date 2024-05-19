@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import site.rentofficevn.dto.BuildingDTO;
 import site.rentofficevn.dto.request.AssignmentBuildingRequest;
 import site.rentofficevn.dto.response.AssignmentStaffResponse;
-import site.rentofficevn.exception.MyException;
 import site.rentofficevn.service.impl.BuildingService;
 
 import java.util.*;
@@ -19,18 +18,13 @@ public class BuildingAPI {
     @Autowired
     BuildingService buildingService;
 
-    //create and update
-   /* @PostMapping
-    public ResponseEntity<BuildingDTO> saveBuilding(@RequestBody BuildingDTO buildingDTO) {
-        return ResponseEntity.ok(buildingService.save(buildingDTO));
-    }*/
     @PostMapping
     public ResponseEntity<BuildingDTO> saveBuilding(@RequestBody BuildingDTO buildingDTO) throws IllegalArgumentException {
         return ResponseEntity.ok(buildingService.save(buildingDTO));
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteBuilding(@RequestBody List<Long> ids) { // @RequestBody
+    public ResponseEntity<Void> deleteBuilding(@RequestBody List<Long> ids) {
         buildingService.delete(ids);
         return ResponseEntity.noContent().build();
     }

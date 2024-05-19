@@ -1,19 +1,12 @@
 package site.rentofficevn.repository.custom.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import site.rentofficevn.builder.BuildingSearchBuilder;
 import site.rentofficevn.constant.SystemConstant;
-import site.rentofficevn.entity.AssignBuildingEntity;
 import site.rentofficevn.entity.BuildingEntity;
-import site.rentofficevn.entity.UserEntity;
 import site.rentofficevn.enums.SpecialSearchParamsEnum;
-import site.rentofficevn.repository.AssignmentBuildingRepository;
-import site.rentofficevn.repository.UserRepository;
 import site.rentofficevn.repository.custom.BuildingRepositoryCustom;
-import site.rentofficevn.utils.CheckInputSearchUtils;
 import site.rentofficevn.utils.QueryBuilderUtils;
 
 import javax.persistence.Column;
@@ -21,7 +14,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,7 +43,7 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
                     .append(whereQuery)
                     .append(" GROUP BY b.id");
             LOGGER.info("Query: " + finalQuery);
-            Query query = entityManager.createNativeQuery(finalQuery.toString(), BuildingEntity.class).setFirstResult(pageable.getPageNumber() + pageable.getPageSize())
+            Query query = entityManager.createNativeQuery(finalQuery.toString(), BuildingEntity.class).setFirstResult(pageable.getPageNumber() * pageable.getPageSize())
                     .setMaxResults(pageable.getPageSize());
             return query.getResultList();
         }catch(Exception e){
@@ -72,7 +64,7 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
                 .append(SystemConstant.WHERE_ONE_EQUAL_ONE)
                 .append(whereQuery);
         Query query = entityManager.createNativeQuery(finalQuery.toString());
-        return query.getResultList() != null ? Integer.parseInt(query.getSingleResult().toString()) : 0;
+        return query.getSingleResult() != null ? Integer.parseInt(query.getSingleResult().toString()) : 0;
     }
 
     private void buildQuery(BuildingSearchBuilder buildingSearchBuilder, StringBuilder whereQuery, StringBuilder joinQuery) {

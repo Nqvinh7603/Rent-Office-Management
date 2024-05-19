@@ -219,7 +219,7 @@
                         <div class="form-group">
                             <label class="col-xs-3 no-padding-right">Loại toà nhà </label>
                             <div class="col-xs-9">
-                                <c:forEach var="item" items="${buildingTypeMap}">
+                                <c:forEach var="item" items="${buildingTypes}">
                                     <label class="checkbox-inline">
                                         <form:checkbox path="types" value="${item.key}"/>${item.value}
                                     </label>
@@ -330,7 +330,8 @@
             contentType: 'application/json',
             success: function (response) {
                 $('#loading_image').hide();
-                window.location.href = "${buildingEditURL}-" + response.id + "?message=insert_success";
+                //window.location.href = "${buildingEditURL}-" + response.id + "?message=insert_success";
+                window.location.href = "admin/building-list";
             },
             error: function () {
                 $('#loading_image').hide();
@@ -342,13 +343,14 @@
     function updateBuilding(data){
         $.ajax({
             url: '${buildingAPI}',
-            type: 'PUT',
+            type: 'POST',
             data: JSON.stringify(data),
             dataType: 'json',
             contentType: 'application/json',
             success: function (response) {
                 $('#loading_image').hide();
-                window.location.href = "${buildingEditURL}-" + response.id + "?message=update_success";
+               // window.location.href = "${buildingEditURL}-" + response.id + "?message=update_success";
+                window.location.href = "admin/building-list";
             },
             error: function () {
                 showNotification('error', 'Đã xảy ra lỗi hệ thống, vui lòng thử lại sau.');

@@ -16,7 +16,7 @@ public class ReadFileUtils extends HttpServlet {
     ResourceBundle resourceBundle = ResourceBundle.getBundle("application");
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
         String imageUrl = request.getRequestURI();
         int repIndex = imageUrl.indexOf("/repository");
         String relativeImagePath = null;

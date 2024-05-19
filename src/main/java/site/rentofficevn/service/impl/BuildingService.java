@@ -41,8 +41,9 @@ public class BuildingService implements IBuildingService {
     private final UserConverter userConverter;
     private final UploadFileUtils uploadFileUtils;
 
-    @Value("${dir.default}")
+    @Value("D:/estatedata")
     private String dirDefault;
+
     @Autowired
     public BuildingService( UploadFileUtils uploadFileUtils, UserConverter userConverter, UserRepository userRepository, BuildingConverter buildingConverter, BuildingRepository buildingRepository) {
         this.uploadFileUtils = uploadFileUtils;
@@ -126,7 +127,7 @@ public class BuildingService implements IBuildingService {
                 {
                     AssignmentStaffResponse assignmentStaffResponse = userConverter.toAssignmentStaffResponse(staff);
                     for (BuildingEntity building : staff.getBuildingEntities()) {
-                        if (building.getId().equals(buildingId)) {
+                        if (buildingId.equals(building.getId())){
                             assignmentStaffResponse.setChecked("checked");
                             break;
                         }
@@ -137,6 +138,7 @@ public class BuildingService implements IBuildingService {
     }
 
     @Override
+    @Transactional
     public void assignmentBuildingToStaffs(AssignmentBuildingRequest assignmentBuildingRequest) {
         Long buildingId = assignmentBuildingRequest.getBuildingId();
 
@@ -146,7 +148,7 @@ public class BuildingService implements IBuildingService {
                 .orElseThrow(() -> new NotFoundException("Building not found!"));
         List<UserEntity> foundUsers = userRepository.findByIdIn(staffIdRequest);
         foundBuilding.setUserEntities(foundUsers);
-
+        buildingRepository.save(foundBuilding);
         }
 
     @Override

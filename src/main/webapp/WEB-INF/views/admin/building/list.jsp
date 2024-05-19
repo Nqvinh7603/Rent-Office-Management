@@ -155,7 +155,7 @@
                             <a class="btn btn-white btn-info btn-bold"
                                data-toggle="tooltip"
                                title="Thêm toà nhà"
-                               href='<c:url value="/admin/building-add"/>'>
+                               href='<c:url value="/admin/building-edit"/>'>
                                 <span><em class="fa fa-plus-circle bigger-110 purple"></em></span>
                             </a>
                             <button id="btnDeleteBuilding" type="button" disabled class="btn btn-white btn-primary btn-bold" data-toggle="tooltip" title="Xóa toà nhà">
@@ -168,8 +168,12 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <div class="table-responsive">
-                            <display:table name="modelSearch.listResult" cellspacing="0" cellpadding="0"
-                                           requestURI="${buildingListURL}" partialList="true" sort="external"
+                            <%--pagesize="${modelSearch.maxPageItems}"--%>
+                            <display:table name="modelSearch.listResult"
+                                           cellspacing="0"
+                                           cellpadding="0"
+                                           requestURI="${buildingListURL}"
+                                           partialList="true" sort="external"
                                            size="${modelSearch.totalItems}" defaultsort="2" defaultorder="ascending"
                                            id="buildingList" pagesize="${modelSearch.maxPageItems}"
                                            export="false"

@@ -58,7 +58,7 @@ public class BuildingController {
         return mav;
     }
 
-    @GetMapping("/building-add")
+    @GetMapping("/building-edit")
     public ModelAndView createBuilding(){
         ModelAndView mav = new ModelAndView("admin/building/edit");
         BuildingDTO buildingDTO = new BuildingDTO();

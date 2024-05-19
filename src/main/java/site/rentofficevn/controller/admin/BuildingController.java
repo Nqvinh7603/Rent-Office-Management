@@ -47,7 +47,7 @@ public class BuildingController {
 
         buildingSearchRequest.setListResult(foundBuildings);
         buildingSearchRequest.setTotalItems(buildingService.countByCondition(buildingSearchRequest));
-        buildingSearchRequest.setTotalItems((int) Math.ceil((double) buildingSearchRequest.getTotalItems() / buildingSearchRequest.getMaxPageItems()));
+        buildingSearchRequest.setTotalPage((int) Math.ceil((double) buildingSearchRequest.getTotalItems() / buildingSearchRequest.getMaxPageItems()));
 
         mav.addObject(SystemConstant.BUILDINGS, foundBuildings);
         mav.addObject(SystemConstant.DISTRICT_MAP, buildingService.getDistrictMap());

@@ -152,14 +152,14 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <div class="pull-right">
-                            <a class="btn btn-white btn-info btn-bold"
+                            <a class="btn btn-corner btn-bold"
                                data-toggle="tooltip"
                                title="Thêm toà nhà"
                                href='<c:url value="/admin/building-edit"/>'>
-                                <span><em class="fa fa-plus-circle bigger-110 purple"></em></span>
+                                <span><em class="fa fa-plus-circle bigger-110"></em></span>
                             </a>
-                            <button id="btnDeleteBuilding" type="button" disabled class="btn btn-white btn-primary btn-bold" data-toggle="tooltip" title="Xóa toà nhà">
-                                <span><em class="fa fa-trash-o bigger-110 pink"></em></span>
+                            <button id="btnDeleteBuilding" type="button" disabled class="btn btn-danger btn-bold" data-toggle="tooltip" title="Xóa toà nhà">
+                                <span><em class="fa fa-trash"></em></span>
                             </button>
                         </div>
                     </div>
@@ -203,10 +203,10 @@
                                        data-toggle="tooltip"
                                        title="Sửa tòa nhà"
                                        href='<c:url value='/admin/building-edit-${buildingList.id}'/>'>
-                                        <span><em class="ace-icon fa fa-pencil bigger-120"></em></span>
+                                        <span><em class="ace-icon fa fa-pencil "></em></span>
                                     </a>
 
-                                    <button class="btn btn-xs btn-info" data-toggle="tooltip"
+                                    <button class="btn btn-xs" data-toggle="tooltip"
                                             title="Giao tòa nhà" id="btnBuildingAssignment" buildingId="${buildingList.id}">
                                         <i class="fa fa-user" aria-hidden="true"></i>
                                     </button>

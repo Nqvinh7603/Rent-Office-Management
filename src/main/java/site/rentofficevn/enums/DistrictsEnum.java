@@ -1,5 +1,7 @@
 package site.rentofficevn.enums;
 
+import java.util.Arrays;
+
 public enum DistrictsEnum {
 
     QUAN_1("Quận 1"),
@@ -29,5 +31,9 @@ public enum DistrictsEnum {
 
     public String getDistrictValue() {
         return districtValue;
+    }
+
+    public static boolean contains(String districtCode) {
+        return Arrays.stream(values()).anyMatch(district -> district.name().equals(districtCode));
     }
 }

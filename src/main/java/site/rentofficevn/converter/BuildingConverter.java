@@ -95,8 +95,12 @@ public class BuildingConverter {
         address.add(buildingEntity.getWard());
 
         String districtCode = buildingEntity.getDistrict();
-        if(Arrays.toString(DistrictsEnum.values()).contains(districtCode)){
-            address.add(DistrictsEnum.valueOf(districtCode).getDistrictValue());
+        try {
+            if(Arrays.toString(DistrictsEnum.values()).contains(districtCode)){
+                address.add(DistrictsEnum.valueOf(districtCode).getDistrictValue());
+            }
+        } catch (IllegalArgumentException e) {
+
         }
         result.setAddress(address.stream()
                 .filter(str -> !StringUtils.isNullOrEmpty(str))
@@ -109,4 +113,5 @@ public class BuildingConverter {
         result.setRentAreaDescription("Diện tích còn trống: " + rentAreaString);
         return result;
     }
+
 }

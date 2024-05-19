@@ -61,7 +61,7 @@ public class BuildingEntity extends BaseEntity {
     @Column(name="payment")
     private String payment;
     @Column(name="decorationtime")
-    private String decorateTime;
+    private String decorationTime;
     @Column(name="note")
     private String note;
     @Column(name="linkofbuilding")
@@ -297,12 +297,12 @@ public class BuildingEntity extends BaseEntity {
         this.payment = payment;
     }
 
-    public String getDecorateTime() {
-        return decorateTime;
+    public String getDecorationTime() {
+        return decorationTime;
     }
 
-    public void setDecorateTime(String decorateTime) {
-        this.decorateTime = decorateTime;
+    public void setDecorationTime(String decorationTime) {
+        this.decorationTime = decorationTime;
     }
 
     public String getNote() {

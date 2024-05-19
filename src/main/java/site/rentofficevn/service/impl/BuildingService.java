@@ -54,11 +54,22 @@ public class BuildingService implements IBuildingService {
     }
 
     
-    @Override
+    /*@Override
     public List<BuildingSearchResponse> findByCondition(BuildingSearchRequest buildingSearchRequest, PageRequest pageRequest) {
         List<BuildingEntity> foundBuildings = buildingRepository.findBuilding(buildingConverter.convertParamToBuilder(buildingSearchRequest), pageRequest);
         return foundBuildings.stream().map(buildingConverter::toSearchResponse).collect(Collectors.toList());
+    }*/
+
+    @Override
+    public List<BuildingSearchResponse> findByCondition(BuildingSearchRequest buildingSearchRequest, PageRequest pageRequest) {
+        try {
+            List<BuildingEntity> foundBuildings = buildingRepository.findBuilding(buildingConverter.convertParamToBuilder(buildingSearchRequest), pageRequest);
+            return foundBuildings.stream().map(buildingConverter::toSearchResponse).collect(Collectors.toList());
+        } catch (IllegalArgumentException ex) {
+            return Collections.emptyList(); // hoặc return Collections.singletonList("Error message");
+        }
     }
+
 
     @Override
     public BuildingDTO findById(Long id) {
@@ -98,6 +109,7 @@ public class BuildingService implements IBuildingService {
         if(buildingId != null){
             BuildingEntity foundBuilding = Optional.of(buildingRepository.findById(buildingId)).get()
                     .orElseThrow(() -> new NotFoundException("Building not found!"));
+            buildingEntity.setCreatedDate(new Date());
             buildingEntity.setImage(foundBuilding.getImage());
             buildingEntity.setUserEntities(foundBuilding.getUserEntities());
         }

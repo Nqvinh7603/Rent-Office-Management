@@ -330,8 +330,8 @@
             contentType: 'application/json',
             success: function (response) {
                 $('#loading_image').hide();
-                //window.location.href = "${buildingEditURL}-" + response.id + "?message=insert_success";
-                window.location.href = "admin/building-list";
+                window.location.href = "${buildingEditURL}-" + response.id + "?message=insert_success";
+                window.location.href = "/admin/building-list";
             },
             error: function () {
                 $('#loading_image').hide();
@@ -349,8 +349,8 @@
             contentType: 'application/json',
             success: function (response) {
                 $('#loading_image').hide();
-               // window.location.href = "${buildingEditURL}-" + response.id + "?message=update_success";
-                window.location.href = "admin/building-list";
+                window.location.href = "${buildingEditURL}-" + response.id + "?message=update_success";
+                window.location.href = "/admin/building-list";
             },
             error: function () {
                 showNotification('error', 'Đã xảy ra lỗi hệ thống, vui lòng thử lại sau.');

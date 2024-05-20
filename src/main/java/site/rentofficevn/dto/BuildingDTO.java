@@ -3,6 +3,7 @@ package site.rentofficevn.dto;
 import site.rentofficevn.dto.response.BuildingTypesResponse;
 import site.rentofficevn.dto.response.DistrictResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BuildingDTO extends AbstractDTO<BuildingDTO> {
@@ -22,7 +23,7 @@ public class BuildingDTO extends AbstractDTO<BuildingDTO> {
     private String carFee;
     private String motoFee;
     private String overtimeFee;
-    private List<String> types;
+    private List<String> types = new ArrayList();
     private Integer rentPriceFrom;
     private Integer rentPriceTo;
     private Integer rentAreaFrom;

@@ -248,7 +248,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-3 no-padding-right">Hình đại diện</label>
+                            <label class="col-sm-3 no-padding-right">Hình tòa nhà</label>
                             <input class="col-sm-3 no-padding-right" type="file" id="uploadImage"/>
                             <div class="col-sm-9">
                                 <c:if test="${not empty building.image}">

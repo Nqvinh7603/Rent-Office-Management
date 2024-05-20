@@ -7,7 +7,6 @@ import site.rentofficevn.repository.custom.UserRepositoryCustom;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.util.Collections;
 import java.util.List;
 @Repository
 public class UserRepositoryImpl implements UserRepositoryCustom {

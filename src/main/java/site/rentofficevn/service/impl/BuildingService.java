@@ -80,7 +80,9 @@ public class BuildingService implements IBuildingService {
 
     @Override
     public Map<String, String> getDistrictMap() {
-        return Arrays.stream(DistrictsEnum.values()).collect(Collectors.toMap(Enum::toString, DistrictsEnum::getDistrictValue));
+        /*return Arrays.stream(DistrictsEnum.values()).collect(Collectors.toMap(Enum::toString, DistrictsEnum::getDistrictValue));*/
+        return Arrays.stream(DistrictsEnum.values())
+                .collect(Collectors.toMap(Enum::toString, DistrictsEnum::getDistrictValue, (a, b) -> b, LinkedHashMap::new));
     }
 
     @Override

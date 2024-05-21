@@ -3,9 +3,7 @@ package site.rentofficevn.entity;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "building")
@@ -30,6 +28,8 @@ public class BuildingEntity extends BaseEntity {
     private Integer rentPrice;
     @Column(name = "rentpricedescription")
     private String rentPriceDescription;
+    @Column(name = "rentareadescription")
+    private String rentAreaDescription;
     @Column(name = "managername")
     private String managerName;
     @Column(name = "managerphone")
@@ -60,6 +60,8 @@ public class BuildingEntity extends BaseEntity {
     private String deposit;
     @Column(name="payment")
     private String payment;
+    @Column(name="renttime")
+    private String rentTime;
     @Column(name="decorationtime")
     private String decorationTime;
     @Column(name="note")
@@ -335,5 +337,21 @@ public class BuildingEntity extends BaseEntity {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public String getRentTime() {
+        return rentTime;
+    }
+
+    public void setRentTime(String rentTime) {
+        this.rentTime = rentTime;
+    }
+
+    public String getRentAreaDescription() {
+        return rentAreaDescription;
+    }
+
+    public void setRentAreaDescription(String rentAreaDescription) {
+        this.rentAreaDescription = rentAreaDescription;
     }
 }

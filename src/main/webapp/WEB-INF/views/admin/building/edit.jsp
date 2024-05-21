@@ -119,7 +119,7 @@
                         <div class="form-group">
                             <label class="col-xs-3 no-padding-right" for="rentPrice">Giá thuê</label>
                             <div class="col-xs-9">
-                                <input type="number" name="rentPrice" id="rentPrice" class="form-control" />
+                                <form:input path="rentPrice" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group">

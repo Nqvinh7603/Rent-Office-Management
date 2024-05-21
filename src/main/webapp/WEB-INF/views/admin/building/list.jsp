@@ -169,7 +169,7 @@
                     <div class="col-xs-12">
                         <div class="table-responsive">
                             <%--pagesize="${modelSearch.maxPageItems}"--%>
-                            <%--<display:table name="modelSearch.listResult"
+                            <display:table name="modelSearch.listResult"
                                            cellspacing="0"
                                            cellpadding="0"
                                            requestURI="${buildingListURL}"
@@ -178,10 +178,7 @@
                                            id="buildingList" pagesize="${modelSearch.maxPageItems}"
                                            export="false"
                                            class="table table-fcv-ace table-striped table-bordered table-hover dataTable no-footer"
-                                           style="margin: 3em 0 1.5em;">--%>
-                                <display:table id="buildingList"  requestURI="${buildingListURL}" name="modelSearch.listResult" cellspacing="0"
-                                               cellpadding="0"  class="table table-fcv-ace table-striped table-bordered table-hover dataTable no-footer" style="margin: 3em 0 1.5em;"
-                                >
+                                           style="margin: 3em 0 1.5em;">
                                 <display:column title="<fieldset class='form-group'>
 												        <input type='checkbox' id='checkAll' class='check-box-element'>
 												        </fieldset>" class="center select-cell"

@@ -17,14 +17,12 @@ import site.rentofficevn.dto.response.AssignmentStaffResponse;
 import site.rentofficevn.dto.response.BuildingSearchResponse;
 import org.apache.commons.codec.binary.Base64;
 import site.rentofficevn.entity.BuildingEntity;
-import site.rentofficevn.entity.RentAreaEntity;
 import site.rentofficevn.entity.UserEntity;
 import site.rentofficevn.enums.BuildingTypesEnum;
 import site.rentofficevn.enums.DistrictsEnum;
 import site.rentofficevn.repository.BuildingRepository;
 import site.rentofficevn.repository.UserRepository;
 import site.rentofficevn.service.IBuildingService;
-import site.rentofficevn.utils.StringUtils;
 import site.rentofficevn.utils.UploadFileUtils;
 
 import java.io.File;
@@ -53,20 +51,13 @@ public class BuildingService implements IBuildingService {
         this.buildingRepository = buildingRepository;
     }
 
-    
-    /*@Override
-    public List<BuildingSearchResponse> findByCondition(BuildingSearchRequest buildingSearchRequest, PageRequest pageRequest) {
-        List<BuildingEntity> foundBuildings = buildingRepository.findBuilding(buildingConverter.convertParamToBuilder(buildingSearchRequest), pageRequest);
-        return foundBuildings.stream().map(buildingConverter::toSearchResponse).collect(Collectors.toList());
-    }*/
-
     @Override
     public List<BuildingSearchResponse> findByCondition(BuildingSearchRequest buildingSearchRequest, PageRequest pageRequest) {
         try {
             List<BuildingEntity> foundBuildings = buildingRepository.findBuilding(buildingConverter.convertParamToBuilder(buildingSearchRequest), pageRequest);
             return foundBuildings.stream().map(buildingConverter::toSearchResponse).collect(Collectors.toList());
         } catch (IllegalArgumentException ex) {
-            return Collections.emptyList(); // hoặc return Collections.singletonList("Error message");
+            return Collections.emptyList();
         }
     }
 
@@ -80,7 +71,6 @@ public class BuildingService implements IBuildingService {
 
     @Override
     public Map<String, String> getDistrictMap() {
-        /*return Arrays.stream(DistrictsEnum.values()).collect(Collectors.toMap(Enum::toString, DistrictsEnum::getDistrictValue));*/
         return Arrays.stream(DistrictsEnum.values())
                 .collect(Collectors.toMap(Enum::toString, DistrictsEnum::getDistrictValue, (a, b) -> b, LinkedHashMap::new));
     }
@@ -111,7 +101,10 @@ public class BuildingService implements IBuildingService {
         if(buildingId != null){
             BuildingEntity foundBuilding = Optional.of(buildingRepository.findById(buildingId)).get()
                     .orElseThrow(() -> new NotFoundException("Building not found!"));
-            buildingEntity.setCreatedDate(new Date());
+            buildingEntity.setCreatedDate(foundBuilding.getCreatedDate());
+            buildingEntity.setCreatedBy(foundBuilding.getCreatedBy());
+            buildingEntity.setModifiedDate(new Date());
+            buildingEntity.setModifiedBy(foundBuilding.getModifiedBy());
             buildingEntity.setImage(foundBuilding.getImage());
             buildingEntity.setUserEntities(foundBuilding.getUserEntities());
         }

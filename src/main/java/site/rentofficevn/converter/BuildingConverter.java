@@ -41,10 +41,10 @@ public class BuildingConverter {
 
     public BuildingEntity toEntity(BuildingDTO buildingDTO) {
         BuildingEntity buildingEntity = modelMapper.map(buildingDTO, BuildingEntity.class);
+
         String rentArea = buildingDTO.getRentArea();
         if(!StringUtils.isNullOrEmpty(rentArea)){
             List<String> convertedRentArea = Arrays.asList(rentArea.split(","));
-
             List<RentAreaEntity> rentAreaEntities = convertedRentArea.stream().map((String value) -> {
                 RentAreaEntity rentAreaEntity = new RentAreaEntity();
                 rentAreaEntity.setValue(Integer.parseInt(value));
@@ -55,9 +55,9 @@ public class BuildingConverter {
             buildingEntity.setRentAreas(rentAreaEntities);
         }
 
-        List<String> buildinTypes = buildingDTO.getTypes();
-        if( !buildinTypes.isEmpty()){
-            buildingEntity.setTypes(String.join(",", buildinTypes));
+        List<String> buildingTypes = buildingDTO.getTypes();
+        if( !buildingTypes.isEmpty()){
+            buildingEntity.setTypes(String.join(",", buildingTypes));
         }
         return buildingEntity;
     }
@@ -86,8 +86,12 @@ public class BuildingConverter {
 
     public BuildingSearchResponse toSearchResponse(BuildingEntity buildingEntity){
         BuildingSearchResponse result = modelMapper.map(buildingEntity, BuildingSearchResponse.class);
-
-        result.setCreatedDate(DateUtils.convertDateToString(buildingEntity.getCreatedDate()));
+        String createdDate = DateUtils.convertDateToString(buildingEntity.getCreatedDate());
+        if(createdDate != null){
+            result.setCreatedDate(createdDate);
+        }else {
+            result.setCreatedDate(DateUtils.convertDateToString(buildingEntity.getModifiedDate()));
+        }
 
         List<String> address = new ArrayList<>();
 
@@ -109,8 +113,12 @@ public class BuildingConverter {
         String rentAreaString = buildingEntity.getRentAreas().stream()
                 .map(rentArea -> String.valueOf(rentArea.getValue()))
                 .collect(Collectors.joining(","));
-
-        result.setRentAreaDescription("Diện tích còn trống: " + rentAreaString);
+        String rentAreaDescription = buildingEntity.getRentAreaDescription();
+        if (rentAreaDescription == null || rentAreaDescription.isEmpty()) {
+            result.setRentAreaDescription(rentAreaString);
+        } else {
+            result.setRentAreaDescription(rentAreaString + " - (" + rentAreaDescription + ")");
+        }
         return result;
     }
 

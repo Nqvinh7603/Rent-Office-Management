@@ -12,7 +12,7 @@ public class AbstractDTO<T> implements Serializable {
     private Long id;
     private String createdDate;
     private String createdBy;
-    private Date modifiedDate;
+    private String modifiedDate;
     private String modifiedBy;
     private int maxPageItems = 10;
     private int page = 1;
@@ -57,11 +57,11 @@ public class AbstractDTO<T> implements Serializable {
         this.createdBy = createdBy;
     }
 
-    public Date getModifiedDate() {
+    public String getModifiedDate() {
         return modifiedDate;
     }
 
-    public void setModifiedDate(Date modifiedDate) {
+    public void setModifiedDate(String modifiedDate) {
         this.modifiedDate = modifiedDate;
     }
 

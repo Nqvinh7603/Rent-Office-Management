@@ -88,11 +88,11 @@
                 contentType: 'application/json',
                 data: JSON.stringify(data),
                 success: function (res) {
-                    window.location.href = "<c:url value='/admin/profile/"+res.userName+"?message=update_success'/>";
+                    window.location.href = "<c:url value='/admin/profile-"+res.userName+"?message=update_success'/>";
                 },
                 error: function (res) {
                     console.log(res);
-                    window.location.href = "<c:url value='/admin/profile/"+username+"?message=error_system'/>";
+                    window.location.href = "<c:url value='/admin/profile-"+username+"?message=error_system'/>";
                 }
             });
         }

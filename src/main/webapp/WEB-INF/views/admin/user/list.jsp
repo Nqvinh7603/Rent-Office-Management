@@ -152,7 +152,7 @@
                                                 </a>
                                             </c:if>
                                             <c:if test="${tableList.roleCode == 'ADMIN'}">
-                                               <p>Không đươc thao tác</p>
+                                               <p>Không được thao tác</p>
                                             </c:if>
                                         </display:column>
                                     </display:table>

@@ -4,7 +4,6 @@ import site.rentofficevn.constant.SystemConstant;
 import site.rentofficevn.converter.UserConverter;
 import site.rentofficevn.dto.PasswordDTO;
 import site.rentofficevn.dto.UserDTO;
-import site.rentofficevn.dto.response.StaffResponseDTO;
 import site.rentofficevn.entity.RoleEntity;
 import site.rentofficevn.entity.UserEntity;
 import site.rentofficevn.exception.MyException;
@@ -154,13 +153,10 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Map<Long, String> getStaffMaps() {
-        Map<Long, String> results = new HashMap<>();
-        List<UserEntity> staffs =  userRepository.findByStatusAndRoles_Code(1, "user");
-        for(UserEntity item : staffs){
-            results.put(item.getId(), item.getFullName());
-        }
-        return results;
+    public Map<Long, String> getStaffMap() {
+        List<UserEntity> staffs = userRepository.findByStatusAndRoles_Code(1, "STAFF");
+
+        return staffs.stream().collect(Collectors.toMap(UserEntity::getId, UserEntity::getFullName));
     }
 
     @Override
@@ -173,14 +169,4 @@ public class UserService implements IUserService {
 
     }
 
-    @Override
-    public List<StaffResponseDTO> finAllStaffByBuilding(Long id) {
-        return userConverter.convertToDtoResponse(userRepository.getAllStaffByBuilding(id));
-    }
-    @Override
-    public Map<Long, String> getStaffMap() {
-        List<UserEntity> staffs = userRepository.findByStatusAndRoles_Code(1, "STAFF");
-
-        return staffs.stream().collect(Collectors.toMap(UserEntity::getId, UserEntity::getFullName));
-    }
 }

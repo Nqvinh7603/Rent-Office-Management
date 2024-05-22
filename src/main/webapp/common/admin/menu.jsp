@@ -37,7 +37,7 @@
         <li class="">
             <a href="#" class="dropdown-toggle">
                 <i class="menu-icon fa fas fa-building"></i>
-                <span class="menu-text">QL tòa nhà</span>
+                <span class="menu-text">Quản lý tòa nhà</span>
                 <b class="arrow fa fa-angle-down"></b>
             </a>
             <b class="arrow"></b>
@@ -51,11 +51,28 @@
                 </li>
             </ul>
         </li>
-        <security:authorize access="hasRole('ADMIN')">
         <li class="">
             <a href="#" class="dropdown-toggle">
                 <i class="menu-icon fa fas fa-users"></i>
-                <span class="menu-text">QL tài khoản</span>
+                <span class="menu-text">Quản lý khách hàng</span>
+                <b class="arrow fa fa-angle-down"></b>
+            </a>
+            <b class="arrow"></b>
+            <ul class="submenu">
+                <li class="">
+                    <a href='<c:url value='/admin/customer-list'/>'>
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        Danh sách khách hàng
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+            </ul>
+        </li>
+        <security:authorize access="hasRole('ADMIN')">
+        <li class="">
+            <a href="#" class="dropdown-toggle">
+                <i class="menu-icon fa fas fa-user-secret"></i>
+                <span class="menu-text">Quản lý tài khoản</span>
                 <b class="arrow fa fa-angle-down"></b>
             </a>
             <b class="arrow"></b>
@@ -63,7 +80,7 @@
                 <li class="">
                     <a href='<c:url value='/admin/user-list'/>'>
                         <i class="menu-icon fa fa-caret-right"></i>
-                        DS tài khoản
+                        Danh sách tài khoản
                     </a>
                     <b class="arrow"></b>
                 </li>

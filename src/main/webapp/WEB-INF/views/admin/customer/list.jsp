@@ -1,15 +1,16 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/common/taglib.jsp" %>
-<c:url var="buildingListURL" value="/admin/building-list"/>
-<c:url var="buildingAPI" value="/api/building"/>
-<c:url var="assignmentAPI" value="/api/building/assignment-building"/>
+<c:url var="customerListURL" value="/admin/customer-list"/>
+<%--<c:url var="buildingAPI" value="/api/building"/>
+<c:url var="assignmentAPI" value="/api/building/assignment-building"/>--%>
 <html>
 <head>
     <title>Quản lý tòa nhà</title>
 </head>
 <body>
 <div class="main-content">
-    <form:form modelAttribute="modelSearch" action="${buildingListURL}" id="listForm" method="GET">
+    <%--modelAttribute="modelSearch"--%>
+    <form:form action="${buildingListURL}" id="listForm" method="GET">
     <div class="main-content-inner">
         <div class="breadcrumbs ace-save-state" id="breadcrumbs">
             <ul class="breadcrumb">
@@ -17,7 +18,7 @@
                     <i class="ace-icon fa fa-home home-icon"></i>
                     <a href='<c:url value="/admin/home" />'>Trang chủ</a>
                 </li>
-                <li class="active">Danh sách tòa nhà</li>
+                <li class="active">Danh sách khách hàng</li>
             </ul><!-- /.breadcrumb -->
         </div>
 
@@ -45,78 +46,21 @@
                             <div class="widget-main">
                                 <div class="form-horizontal">
                                     <div class="form-group">
-                                        <div class="col-xs-6">
-                                            <label for="name">Tên sản phẩm</label>
-                                            <form:input path="name" cssClass="form-control"/>
-                                        </div>
-                                        <div class="col-xs-6">
-                                            <label for="floorArea">Diện tích sàn</label>
-                                            <form:input path="floorArea" cssClass="form-control"/>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
                                         <div class="col-xs-4">
-                                            <label for="districtCode">Quận hiện có</label>
-                                            <br>
-                                            <form:select path="districtCode" cssClass="chosen-select">
-                                                <form:option value="">--- Chọn Quận ---</form:option>
-                                                <form:options items="${districts}"/>
-                                            </form:select>
-                                        </div>
-                                        <div class="col-xs-4">
-                                            <label for="ward">Phường</label>
-                                            <form:input path="ward" cssClass="form-control"/>
-                                        </div>
-                                        <div class="col-xs-4">
-                                            <label for="street">Đường</label>
-                                            <form:input path="street" cssClass="form-control"/>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <div class="col-xs-4">
-                                            <label for="numberOfBasement">Số tầng hầm</label>
+                                            <label for="numberOfBasement">Tên khách hàng</label>
                                             <form:input path="numberOfBasement" cssClass="form-control"/>
                                         </div>
                                         <div class="col-xs-4">
-                                            <label for="direction">Hướng</label>
+                                            <label for="direction">Di động</label>
                                             <form:input path="direction" cssClass="form-control"/>
                                         </div>
                                         <div class="col-xs-4">
-                                            <label for="level">Hạng</label>
+                                            <label for="level">Email</label>
                                             <form:input path="level" cssClass="form-control"/>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <div class="col-xs-3">
-                                            <label for="rentAreaFrom">Diện tích từ</label>
-                                            <form:input path="rentAreaFrom" cssClass="form-control"/>
-                                        </div>
-                                        <div class="col-xs-3">
-                                            <label for="rentAreaTo">Diện tích đến</label>
-                                            <form:input path="rentAreaTo" cssClass="form-control"/>
-                                        </div>
-                                        <div class="col-xs-3">
-                                            <label for="rentPriceFrom">Giá thuê từ</label>
-                                            <form:input path="rentPriceFrom" cssClass="form-control"/>
-                                        </div>
-                                        <div class="col-xs-3">
-                                            <label for="rentPriceTo">Giá thuê đến</label>
-                                            <form:input path="rentPriceTo" cssClass="form-control"/>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <div class="col-xs-4">
-                                            <label for="managerName">Tên quản lý</label>
-                                            <form:input path="managerName" cssClass="form-control"/>
-                                        </div>
-                                        <div class="col-xs-4">
-                                            <label for="managerPhone">Số điện thoại</label>
-                                            <form:input path="managerPhone" cssClass="form-control"/>
-                                        </div>
                                         <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
                                             <div class="col-xs-4">
                                                 <label for="staffId">Nhân viên</label>
@@ -127,17 +71,6 @@
                                                 </form:select>
                                             </div>
                                         </security:authorize>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-xs-12">
-                                        <label>Loại toà nhà</label>
-                                        <br>
-                                        <c:forEach var="item" items="${buildingTypes}">
-                                            <label class="checkbox-inline">
-                                                <form:checkbox path="types" value="${item.key}"/>${item.value}
-                                            </label>
-                                        </c:forEach>
                                     </div>
                                 </div>
                                 <button class="btn btn-md btn-success" id="btnSearch" style="margin-top: 10px">Tìm kiếm
@@ -151,22 +84,22 @@
         </div>
         </br>
         <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="pull-right" style="margin-right: 20px">
-                    <a class="btn btn-corner btn-bold"
-                       data-toggle="tooltip"
-                       title="Thêm toà nhà"
-                       href='<c:url value="/admin/building-edit"/>'>
-                        <span><em class="fa fa-plus-circle"></em></span>
-                    </a>
-                    <button id="btnDeleteBuilding" type="button" disabled class="btn btn-danger btn-bold"
-                            data-toggle="tooltip" title="Xóa toà nhà">
-                        <span><em class="fa fa-trash"></em></span>
-                    </button>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="pull-right" style="margin-right: 20px">
+                        <a class="btn btn-corner btn-bold"
+                           data-toggle="tooltip"
+                           title="Thêm toà nhà"
+                           href='<c:url value="/admin/building-edit"/>'>
+                            <span><em class="fa fa-plus-circle"></em></span>
+                        </a>
+                        <button id="btnDeleteBuilding" type="button" disabled class="btn btn-danger btn-bold"
+                                data-toggle="tooltip" title="Xóa toà nhà">
+                            <span><em class="fa fa-trash"></em></span>
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
         </security:authorize>
         <br/>
         <div class="row">
@@ -192,29 +125,27 @@
                                        id="checkbox_${buildingList.id}" class="check-box-element"/>
                             </fieldset>
                         </display:column>
-                        <display:column headerClass="text-left" property="createdDate" title="Ngày"/>
-                        <display:column headerClass="text-left" property="name" title="Tên sản phẩm"/>
-                        <display:column headerClass="text-left" property="address" title="Địa chỉ"/>
-                        <display:column headerClass="text-left" property="managerName" title="Tên quản lý"/>
-                        <display:column headerClass="text-left" property="managerPhone" title="Số điện thoại"/>
-                        <display:column headerClass="text-left" property="floorArea" title="D.T sàn"/>
-                        <display:column headerClass="text-left" property="rentAreaDescription" title="D.T trống"/>
-                        <display:column headerClass="text-left" property="rentPrice" title="Giá thuê"/>
-                        <display:column headerClass="text-left" property="serviceFee" title="Phí dịch vụ"/>
-                        <display:column headerClass="text-left" property="brokerageFee" title="Phí MG"/>
+                        <display:column headerClass="text-left" property="createdDate" title="Tên"/>
+                        <display:column headerClass="text-left" property="name" title="Nhân viên quản lý"/>
+                        <display:column headerClass="text-left" property="address" title="Di động"/>
+                        <display:column headerClass="text-left" property="managerName" title="Email"/>
+                        <display:column headerClass="text-left" property="managerPhone" title="Nhu cầu"/>
+                        <display:column headerClass="text-left" property="floorArea" title="Người nhập"/>
+                        <display:column headerClass="text-left" property="rentAreaDescription" title="Ngày nhập"/>
+                        <display:column headerClass="text-left" property="rentPrice" title="Tình trạng"/>
                         <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
-                        <display:column headerClass="col-actions" title="Thao tác">
-                            <a class="btn btn-xs btn-info"
-                               data-toggle="tooltip"
-                               title="Sửa tòa nhà"
-                               href='<c:url value='/admin/building-edit-${buildingList.id}'/>'>
-                                <span><em class="ace-icon fa fa-pencil "></em></span>
-                            </a>
-                            <button class="btn btn-xs" data-toggle="tooltip"
-                                    title="Giao tòa nhà" id="btnBuildingAssignment" buildingId="${buildingList.id}">
-                                <i class="fa fa-user" aria-hidden="true"></i>
-                            </button>
-                        </display:column>
+                            <display:column headerClass="col-actions" title="Thao tác">
+                                <a class="btn btn-xs btn-info"
+                                   data-toggle="tooltip"
+                                   title="Sửa tòa nhà"
+                                   href='<c:url value='/admin/building-edit-${buildingList.id}'/>'>
+                                    <span><em class="ace-icon fa fa-pencil "></em></span>
+                                </a>
+                                <button class="btn btn-xs" data-toggle="tooltip"
+                                        title="Giao tòa nhà" id="btnBuildingAssignment" buildingId="${buildingList.id}">
+                                    <i class="fa fa-user" aria-hidden="true"></i>
+                                </button>
+                            </display:column>
                         </security:authorize>
                     </display:table>
                 </div>

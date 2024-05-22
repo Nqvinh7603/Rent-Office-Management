@@ -35,6 +35,17 @@ public class UserEntity extends BaseEntity {
     @ManyToMany(mappedBy = "userEntities")
     private List<BuildingEntity> buildingEntities;
 
+    @ManyToMany(mappedBy = "userEntities")
+    private List<CustomerEntity> customer;
+
+    public List<CustomerEntity> getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(List<CustomerEntity> customer) {
+        this.customer = customer;
+    }
+
     public List<BuildingEntity> getBuildingEntities() {
         return buildingEntities;
     }

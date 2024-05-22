@@ -22,6 +22,7 @@ import site.rentofficevn.enums.BuildingTypesEnum;
 import site.rentofficevn.enums.DistrictsEnum;
 import site.rentofficevn.repository.BuildingRepository;
 import site.rentofficevn.repository.UserRepository;
+import site.rentofficevn.security.utils.SecurityUtils;
 import site.rentofficevn.service.IBuildingService;
 import site.rentofficevn.utils.UploadFileUtils;
 
@@ -54,6 +55,10 @@ public class BuildingService implements IBuildingService {
     @Override
     public List<BuildingSearchResponse> findByCondition(BuildingSearchRequest buildingSearchRequest, PageRequest pageRequest) {
         try {
+            if(SecurityUtils.getAuthorities().contains("ROLE_STAFF")){
+                Long staffId = SecurityUtils.getPrincipal().getId();
+                buildingSearchRequest.setStaffId(staffId);
+            }
             List<BuildingEntity> foundBuildings = buildingRepository.findBuilding(buildingConverter.convertParamToBuilder(buildingSearchRequest), pageRequest);
             return foundBuildings.stream().map(buildingConverter::toSearchResponse).collect(Collectors.toList());
         } catch (IllegalArgumentException ex) {

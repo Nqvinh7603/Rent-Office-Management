@@ -21,7 +21,7 @@
             </ul><!-- /.breadcrumb -->
         </div>
 
-        <div class="page-content">
+        <div class="page-content" style="padding-bottom: 0px">
             <div class="row">
                 <c:if test="${null != messageResponse}">
                     <div class="alert alert-block alert-${alert}">
@@ -129,7 +129,6 @@
                                         </security:authorize>
                                     </div>
                                 </div>
-
                                 <div class="form-group">
                                     <div class="col-xs-12">
                                         <label>Loại toà nhà</label>
@@ -141,8 +140,7 @@
                                         </c:forEach>
                                     </div>
                                 </div>
-
-                                <button class="btn btn-md btn-success" id="btnSearch">Tìm kiếm
+                                <button class="btn btn-md btn-success" id="btnSearch" style="margin-top: 10px">Tìm kiếm
                                     <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
                                 </button>
                             </div>
@@ -154,12 +152,12 @@
         </br>
         <div class="row">
             <div class="col-xs-12">
-                <div class="pull-right">
+                <div class="pull-right" style="margin-right: 20px">
                     <a class="btn btn-corner btn-bold"
                        data-toggle="tooltip"
                        title="Thêm toà nhà"
                        href='<c:url value="/admin/building-edit"/>'>
-                        <span><em class="fa fa-plus-circle bigger-110"></em></span>
+                        <span><em class="fa fa-plus-circle"></em></span>
                     </a>
                     <button id="btnDeleteBuilding" type="button" disabled class="btn btn-danger btn-bold"
                             data-toggle="tooltip" title="Xóa toà nhà">

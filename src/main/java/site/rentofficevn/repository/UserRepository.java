@@ -1,5 +1,6 @@
 package site.rentofficevn.repository;
 
+import org.springframework.data.jpa.repository.Query;
 import site.rentofficevn.entity.UserEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +15,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     long countByUserNameContainingIgnoreCaseOrFullNameContainingIgnoreCaseAndStatusNot(String userName, String fullName, int status);
     long countByStatusNot(int status);
     UserEntity findOneByUserName(String userName);
+
     List<UserEntity> findByStatusAndRoles_Code(Integer status, String roleCode);
     List<UserEntity> findByIdIn(List<Long> ids);
 }

@@ -51,6 +51,7 @@
                 </li>
             </ul>
         </li>
+        <security:authorize access="hasRole('ADMIN')">
         <li class="">
             <a href="#" class="dropdown-toggle">
                 <i class="menu-icon fa fas fa-users"></i>
@@ -68,6 +69,7 @@
                 </li>
             </ul>
         </li>
+        </security:authorize>
     </ul>
     <div class="sidebar-toggle sidebar-collapse">
         <i class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>

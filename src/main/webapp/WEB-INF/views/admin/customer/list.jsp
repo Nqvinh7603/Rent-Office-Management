@@ -1,16 +1,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/common/taglib.jsp" %>
 <c:url var="customerListURL" value="/admin/customer-list"/>
-<%--<c:url var="buildingAPI" value="/api/building"/>
-<c:url var="assignmentAPI" value="/api/building/assignment-building"/>--%>
+<c:url var="customerAPI" value="/api/customer"/>
+<c:url var="assignmentAPI" value="/api/customer/assignment-customer"/>
 <html>
 <head>
     <title>Quản lý tòa nhà</title>
 </head>
 <body>
 <div class="main-content">
-    <%--modelAttribute="modelSearch"--%>
-    <form:form action="${buildingListURL}" id="listForm" method="GET">
+    <form:form modelAttribute="modelSearch" action="${customerListURL}" id="listForm" method="GET">
     <div class="main-content-inner">
         <div class="breadcrumbs ace-save-state" id="breadcrumbs">
             <ul class="breadcrumb">
@@ -47,16 +46,16 @@
                                 <div class="form-horizontal">
                                     <div class="form-group">
                                         <div class="col-xs-4">
-                                            <label for="numberOfBasement">Tên khách hàng</label>
-                                            <form:input path="numberOfBasement" cssClass="form-control"/>
+                                            <label for="fullName">Tên khách hàng</label>
+                                            <form:input path="fullName" cssClass="form-control"/>
                                         </div>
                                         <div class="col-xs-4">
-                                            <label for="direction">Di động</label>
-                                            <form:input path="direction" cssClass="form-control"/>
+                                            <label for="phone">Di động</label>
+                                            <form:input path="phone" cssClass="form-control"/>
                                         </div>
                                         <div class="col-xs-4">
-                                            <label for="level">Email</label>
-                                            <form:input path="level" cssClass="form-control"/>
+                                            <label for="email">Email</label>
+                                            <form:input path="email" cssClass="form-control"/>
                                         </div>
                                     </div>
 
@@ -109,10 +108,10 @@
                     <display:table name="modelSearch.listResult"
                                    cellspacing="0"
                                    cellpadding="0"
-                                   requestURI="${buildingListURL}"
+                                   requestURI="${customerListURL}"
                                    partialList="true" sort="external"
                                    size="${modelSearch.totalItems}" defaultsort="2" defaultorder="ascending"
-                                   id="buildingList" pagesize="${modelSearch.maxPageItems}"
+                                   id="customerList" pagesize="${modelSearch.maxPageItems}"
                                    export="false"
                                    class="table table-fcv-ace table-striped table-bordered table-hover dataTable no-footer"
                                    style="margin: 3em 0 1.5em;">
@@ -121,19 +120,19 @@
 												        </fieldset>" class="center select-cell"
                                         headerClass="center select-cell">
                             <fieldset>
-                                <input type="checkbox" name="buildingIds" value="${buildingList.id}"
-                                       id="checkbox_${buildingList.id}" class="check-box-element"/>
+                                <input type="checkbox" name="customerIds" value="${customerList.id}"
+                                       id="checkbox_${customerList.id}" class="check-box-element"/>
                             </fieldset>
                         </display:column>
-                        <display:column headerClass="text-left" property="createdDate" title="Tên"/>
-                        <display:column headerClass="text-left" property="name" title="Nhân viên quản lý"/>
-                        <display:column headerClass="text-left" property="address" title="Di động"/>
-                        <display:column headerClass="text-left" property="managerName" title="Email"/>
-                        <display:column headerClass="text-left" property="managerPhone" title="Nhu cầu"/>
-                        <display:column headerClass="text-left" property="floorArea" title="Người nhập"/>
-                        <display:column headerClass="text-left" property="rentAreaDescription" title="Ngày nhập"/>
-                        <display:column headerClass="text-left" property="rentPrice" title="Tình trạng"/>
-                        <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
+                        <display:column headerClass="text-left" property="fullName" title="Tên khách hàng"/>
+                        <display:column headerClass="text-left" property="staffName" title="Nhân viên quản lý"/>
+                        <display:column headerClass="text-left" property="phone" title="Di động"/>
+                        <display:column headerClass="text-left" property="email" title="Email"/>
+                        <display:column headerClass="text-left" property="requirement" title="Nhu cầu"/>
+                        <display:column headerClass="text-left" property="createdBy" title="Người nhập"/>
+                        <display:column headerClass="text-left" property="createdDate" title="Ngày nhập"/>
+                        <display:column headerClass="text-left" property="status" title="Tình trạng"/>
+                        <%--<security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
                             <display:column headerClass="col-actions" title="Thao tác">
                                 <a class="btn btn-xs btn-info"
                                    data-toggle="tooltip"
@@ -142,11 +141,11 @@
                                     <span><em class="ace-icon fa fa-pencil "></em></span>
                                 </a>
                                 <button class="btn btn-xs" data-toggle="tooltip"
-                                        title="Giao tòa nhà" id="btnBuildingAssignment" buildingId="${buildingList.id}">
+                                        title="Giao tòa nhà" id="btnBuildingAssignment" customerId="${customerList.id}">
                                     <i class="fa fa-user" aria-hidden="true"></i>
                                 </button>
                             </display:column>
-                        </security:authorize>
+                        </security:authorize>--%>
                     </display:table>
                 </div>
             </div>
@@ -157,7 +156,7 @@
 </div><!-- /.main-content -->
 
 <!-- assignmentBuilding -->
-<div class="modal fade" id="assignmentBuildingModal" role="dialog">
+<%--<div class="modal fade" id="assignmentCustomerModal" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
@@ -176,7 +175,7 @@
                     <tbody>
                     </tbody>
                 </table>
-                <input type="hidden" id="buildingId" name="buildingId" value="">
+                <input type="hidden" id="customerId" name="customerId" value="">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" id="btnAssignBuilding">Giao tòa nhà</button>
@@ -184,15 +183,15 @@
             </div>
         </div>
     </div>
-</div>
+</div>--%>
 
 <script type="text/javascript">
-    $(document).ready(function () {
+    /*$(document).ready(function () {
         const checkboxAll = $('#checkAll');
-        const buildingItemsCheckbox = $('#buildingList input[type=checkbox][name="buildingIds"]');
+        const buildingItemsCheckbox = $('#customerList input[type=checkbox][name="customerIds"]');
 
         buildingItemsCheckbox.change(function () {
-            const numberOfChecked = $('#buildingList input[type=checkbox][name="buildingIds"]:checked').length;
+            const numberOfChecked = $('#customerList input[type=checkbox][name="buildingIds"]:checked').length;
             const isCheckedAll = buildingItemsCheckbox.length === numberOfChecked;
             checkboxAll.prop('checked', isCheckedAll);
 
@@ -214,12 +213,12 @@
 
     function openModalAssignmentBuilding() {
         $('#assignmentBuildingModal').modal();
-    }
+    }*/
 
-    function loadStaff(buildingId) {
+    /*function loadStaff(customerId) {
         $.ajax({
             type: "GET",
-            url: "${buildingAPI}/" + buildingId + "/staffs",
+            url: "${buildingAPI}/" + customerId + "/staffs",
             dataType: "json",
             success: function (response) {
                 console.log('success');
@@ -236,9 +235,9 @@
                 showNotification('error', 'Đã xảy ra lỗi hệ thống, vui lòng thử lại sau.');
             }
         });
-    }
+    }*/
 
-    $('#btnAssignBuilding').click(function (e) {
+    /*$('#btnAssignBuilding').click(function (e) {
         e.preventDefault();
         let dataLength;
         let data = {};
@@ -250,9 +249,9 @@
         showConfirmationAlertBeforeAction(function () {
             assignStaff(data);
         }, "Giao", "Giao ".concat(dataLength > 1 ? "các " : "", "nhân viên đã chọn quản lý tòa nhà này?"));
-    });
+    });*/
 
-    function assignStaff(data) {
+    /*function assignStaff(data) {
         $.ajax({
             type: "POST",
             url: "${buildingAPI}/assignment-building",
@@ -266,9 +265,9 @@
                 showNotification('error', 'Đã xảy ra lỗi hệ thống, vui lòng thử lại sau.');
             }
         });
-    }
+    }*/
 
-    $('#btnDeleteBuilding').click(function (e) {
+    /*$('#btnDeleteBuilding').click(function (e) {
         e.preventDefault();
         let buildingIds = $('#buildingList').find(
             'tbody input[type=checkbox]:checked').map(function () {
@@ -293,7 +292,7 @@
                 showNotification('error', 'Đã xảy ra lỗi hệ thống, vui lòng thử lại sau.');
             }
         });
-    }
+    }*/
 
     $('#btnSearch').click(function (e) {
         e.preventDefault();

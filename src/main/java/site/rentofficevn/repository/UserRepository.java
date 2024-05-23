@@ -15,7 +15,12 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     long countByUserNameContainingIgnoreCaseOrFullNameContainingIgnoreCaseAndStatusNot(String userName, String fullName, int status);
     long countByStatusNot(int status);
     UserEntity findOneByUserName(String userName);
-
     List<UserEntity> findByStatusAndRoles_Code(Integer status, String roleCode);
     List<UserEntity> findByIdIn(List<Long> ids);
+
+    @Query(value = "SELECT u.fullname " +
+            "FROM user u " +
+            "JOIN assignmentcustomer ac ON u.id = ac.staffid " +
+            "WHERE ac.customerid = :customerId", nativeQuery = true)
+    String findFullNameByCustomerId(Long customerId);
 }

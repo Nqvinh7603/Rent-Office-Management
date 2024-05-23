@@ -87,7 +87,7 @@ public class UserController {
 	private void initMessageResponse(ModelAndView mav, HttpServletRequest request) {
 		String message = request.getParameter("message");
 		if (message != null && StringUtils.isNotEmpty(message)) {
-			Map<String, String> messageMap = messageUtil.getMessage(message);
+			Map<String, String> messageMap = messageUtil.getMessageForUser(message);
 			mav.addObject(SystemConstant.ALERT, messageMap.get(SystemConstant.ALERT));
 			mav.addObject(SystemConstant.MESSAGE_RESPONSE, messageMap.get(SystemConstant.MESSAGE_RESPONSE));
 		}

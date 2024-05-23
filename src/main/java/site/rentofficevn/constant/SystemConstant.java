@@ -20,11 +20,13 @@ public class SystemConstant {
     public static final String CHANGE_PASSWORD_FAIL = "change_password_fail";
     public static final String WHERE_ONE_EQUAL_ONE = " WHERE 1 = 1";
     public static final String BUILDINGS = "buildings";
+    public static final String CUSTOMERS = "customers";
     public static final String DISTRICT_MAP = "districts";
     public static final String STAFF_MAP = "staffmaps";
     public static final String BUILDING_TYPE_MAP = "buildingTypes";
     public static final String DANGER = "danger";
     public static final String BUILDING_ALIAS = "b.";
+    public static final String CUSTOMER_ALIAS = "c.";
     public static final String EQUAL_OPERATOR = " = ";
     public static final String STAFF_SEARCH_PARAM = "staffId";
     public static final String BUILDING_TYPE_SEARCH_PARAM = "types";
@@ -35,6 +37,8 @@ public class SystemConstant {
     public static final String GREATER_THAN_OPERATOR = " >= ";
     public static final String LESS_THAN_OPERATOR = " <= ";
     public static final String BUILDING_ID = "buildingId";
+    public static final String CUSTOMER_ID = "customerId";
     public static final String BUILDING = "building";
+    public static final String CUSTOMER = "customer";
     public static final int ACTIVE_STATUS = 1;
 }

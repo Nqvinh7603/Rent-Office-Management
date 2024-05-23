@@ -9,10 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import site.rentofficevn.constant.SystemConstant;
-import site.rentofficevn.dto.BuildingDTO;
-import site.rentofficevn.dto.request.BuildingSearchRequest;
+import site.rentofficevn.dto.CustomerDTO;
 import site.rentofficevn.dto.request.CustomerSearchRequest;
-import site.rentofficevn.dto.response.BuildingSearchResponse;
+import site.rentofficevn.dto.response.CustomerSearchResponse;
 import site.rentofficevn.service.impl.CustomerService;
 import site.rentofficevn.service.impl.UserService;
 import site.rentofficevn.utils.DisplayTagUtils;
@@ -26,13 +25,13 @@ import java.util.Map;
 @Controller
 @RequestMapping("/admin")
 public class CustomerController {
-    private final CustomerService buildingService;
+    private final CustomerService customerService;
     private final UserService userService;
     private final MessageUtils messageUtils;
 
     @Autowired
-    public CustomerController(CustomerService buildingService, UserService userService, MessageUtils messageUtils) {
-        this.buildingService = buildingService;
+    public CustomerController(CustomerService customerService, UserService userService, MessageUtils messageUtils) {
+        this.customerService = customerService;
         this.userService = userService;
         this.messageUtils = messageUtils;
     }
@@ -41,18 +40,18 @@ public class CustomerController {
     public ModelAndView listBuilding(@ModelAttribute("modelSearch") CustomerSearchRequest customerSearchRequest, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("admin/customer/list");
 
-        customerSearchRequest.setTableId("buildingList");
+        customerSearchRequest.setTableId("customerList");
         DisplayTagUtils.of(request, customerSearchRequest);
 
-        List<BuildingSearchResponse> foundCustomers = buildingService.findByCondition(customerSearchRequest,
+        List<CustomerSearchResponse> foundCustomers = customerService.findByCondition(customerSearchRequest,
                 PageRequest.of(customerSearchRequest.getPage() - 1, customerSearchRequest.getMaxPageItems()));
 
 
         customerSearchRequest.setListResult(foundCustomers);
-        customerSearchRequest.setTotalItems(buildingService.countByCondition(buildingSearchRequest));
+        customerSearchRequest.setTotalItems(customerService.countByCondition(customerSearchRequest));
         customerSearchRequest.setTotalPage((int) Math.ceil((double) customerSearchRequest.getTotalItems() / customerSearchRequest.getMaxPageItems()));
 
-        mav.addObject(SystemConstant.BUILDINGS, foundCustomers);
+        mav.addObject(SystemConstant.CUSTOMERS, foundCustomers);
         mav.addObject(SystemConstant.STAFF_MAP, userService.getStaffMap());
 
         initMessageResponse(mav, request);
@@ -62,22 +61,18 @@ public class CustomerController {
     @GetMapping("/customer-edit")
     public ModelAndView createBuilding(){
         ModelAndView mav = new ModelAndView("admin/customer/edit");
-        BuildingDTO buildingDTO = new BuildingDTO();
-
-        mav.addObject(SystemConstant.BUILDING, buildingDTO);
-
+        CustomerDTO customerDTO = new CustomerDTO();
+        mav.addObject(SystemConstant.CUSTOMER, customerDTO);
         return mav;
     }
     @GetMapping("/customer-edit-{id}")
-    public ModelAndView updateBuilding(@PathVariable(value="id",required = false) Long buildingId, HttpServletRequest request){
+    public ModelAndView updateBuilding(@PathVariable(value="id",required = false) Long customerId, HttpServletRequest request){
         ModelAndView mav = new ModelAndView("admin/building/edit");
-        BuildingDTO buildingDTO = buildingService.findById(buildingId);
-        buildingDTO.setId(buildingId);
+        CustomerDTO customerDTO = customerService.findById(customerId);
+        customerDTO.setId(customerId);
 
-        mav.addObject(SystemConstant.BUILDING, buildingDTO);
-        mav.addObject(SystemConstant.BUILDING_ID, buildingId);
-        mav.addObject(SystemConstant.DISTRICT_MAP, buildingService.getDistrictMap());
-        mav.addObject(SystemConstant.BUILDING_TYPE_MAP, buildingService.getBuildingTypeMap());
+        mav.addObject(SystemConstant.CUSTOMER, customerDTO);
+        mav.addObject(SystemConstant.CUSTOMER_ID, customerId);
 
         initMessageResponse(mav, request);
         return mav;

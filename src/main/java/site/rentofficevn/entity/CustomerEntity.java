@@ -23,11 +23,14 @@ public class CustomerEntity extends BaseEntity{
     @Column(name = "status")
     private String status;
 
+    @Column(name = "note")
+    private String note;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "assignmentcustomer",
-            joinColumns = @JoinColumn(name = "customer_id"),
-            inverseJoinColumns = @JoinColumn(name = "staff_id"))
+            joinColumns = @JoinColumn(name = "customerid"),
+            inverseJoinColumns = @JoinColumn(name = "staffid"))
     private List<UserEntity> userEntities = new ArrayList<>();
 
     @OneToMany(mappedBy = "customer",fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
@@ -87,6 +90,14 @@ public class CustomerEntity extends BaseEntity{
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 }
 

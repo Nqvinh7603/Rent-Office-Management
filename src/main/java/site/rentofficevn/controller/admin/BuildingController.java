@@ -87,7 +87,7 @@ public class BuildingController {
     private void initMessageResponse(ModelAndView mav, HttpServletRequest request) {
         String message = request.getParameter(SystemConstant.MESSAGE);
         if(!StringUtils.isNullOrEmpty(message)){
-            Map<String, String> messageMap = messageUtils.getMessage(message);
+            Map<String, String> messageMap = messageUtils.getMessageForBuilding(message);
             mav.addObject(SystemConstant.ALERT, messageMap.get(SystemConstant.ALERT));
             mav.addObject(SystemConstant.MESSAGE_RESPONSE, messageMap.get(SystemConstant.MESSAGE));
         }

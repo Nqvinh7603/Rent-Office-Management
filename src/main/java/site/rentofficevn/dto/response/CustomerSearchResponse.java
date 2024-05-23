@@ -1,11 +1,14 @@
-package site.rentofficevn.dto;
+package site.rentofficevn.dto.response;
 
-public class CustomerDTO extends AbstractDTO {
+import site.rentofficevn.dto.AbstractDTO;
+
+public class CustomerSearchResponse extends AbstractDTO {
     private String fullName;
+    private String staffName;
     private String phone;
     private String email;
-    private String note;
     private String requirement;
+    private String status;
 
     public String getFullName() {
         return fullName;
@@ -13,6 +16,14 @@ public class CustomerDTO extends AbstractDTO {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public String getStaffName() {
+        return staffName;
+    }
+
+    public void setStaffName(String staffName) {
+        this.staffName = staffName;
     }
 
     public String getPhone() {
@@ -31,19 +42,19 @@ public class CustomerDTO extends AbstractDTO {
         this.email = email;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
-
     public String getRequirement() {
         return requirement;
     }
 
     public void setRequirement(String requirement) {
         this.requirement = requirement;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

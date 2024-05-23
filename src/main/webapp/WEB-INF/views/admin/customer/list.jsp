@@ -88,12 +88,12 @@
                     <div class="pull-right" style="margin-right: 20px">
                         <a class="btn btn-corner btn-bold"
                            data-toggle="tooltip"
-                           title="Thêm toà nhà"
-                           href='<c:url value="/admin/building-edit"/>'>
+                           title="Thêm khách hàng"
+                           href='<c:url value="/admin/customer-edit"/>'>
                             <span><em class="fa fa-plus-circle"></em></span>
                         </a>
-                        <button id="btnDeleteBuilding" type="button" disabled class="btn btn-danger btn-bold"
-                                data-toggle="tooltip" title="Xóa toà nhà">
+                        <button id="btnDeleteCustomer" type="button" disabled class="btn btn-danger btn-bold"
+                                data-toggle="tooltip" title="Xóa khách hàng">
                             <span><em class="fa fa-trash"></em></span>
                         </button>
                     </div>
@@ -104,7 +104,7 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="table-responsive">
-                        <%--pagesize="${modelSearch.maxPageItems}"--%>
+
                     <display:table name="modelSearch.listResult"
                                    cellspacing="0"
                                    cellpadding="0"
@@ -132,20 +132,20 @@
                         <display:column headerClass="text-left" property="createdBy" title="Người nhập"/>
                         <display:column headerClass="text-left" property="createdDate" title="Ngày nhập"/>
                         <display:column headerClass="text-left" property="status" title="Tình trạng"/>
-                        <%--<security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
+                        <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
                             <display:column headerClass="col-actions" title="Thao tác">
-                                <a class="btn btn-xs btn-info"
+                                <%--<a class="btn btn-xs btn-info"
                                    data-toggle="tooltip"
                                    title="Sửa tòa nhà"
-                                   href='<c:url value='/admin/building-edit-${buildingList.id}'/>'>
+                                   href='<c:url value='/admin/building-edit-${customerList.id}'/>'>
                                     <span><em class="ace-icon fa fa-pencil "></em></span>
-                                </a>
+                                </a>--%>
                                 <button class="btn btn-xs" data-toggle="tooltip"
-                                        title="Giao tòa nhà" id="btnBuildingAssignment" customerId="${customerList.id}">
+                                        title="Giao khách hàng" id="btnCustomerAssignment" customerId="${customerList.id}">
                                     <i class="fa fa-user" aria-hidden="true"></i>
                                 </button>
                             </display:column>
-                        </security:authorize>--%>
+                        </security:authorize>
                     </display:table>
                 </div>
             </div>
@@ -155,8 +155,8 @@
 </form:form>
 </div><!-- /.main-content -->
 
-<!-- assignmentBuilding -->
-<%--<div class="modal fade" id="assignmentCustomerModal" role="dialog">
+<!-- assignmentCustomer -->
+<div class="modal fade" id="assignmentCustomerModal" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
@@ -178,47 +178,47 @@
                 <input type="hidden" id="customerId" name="customerId" value="">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" id="btnAssignBuilding">Giao tòa nhà</button>
+                <button type="button" class="btn btn-default" id="btnAssignCustomer">Giao khách hàng</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Đóng lại</button>
             </div>
         </div>
     </div>
-</div>--%>
+</div>
 
 <script type="text/javascript">
-    /*$(document).ready(function () {
+    $(document).ready(function () {
         const checkboxAll = $('#checkAll');
-        const buildingItemsCheckbox = $('#customerList input[type=checkbox][name="customerIds"]');
+        const customerItemsCheckbox = $('#customerList input[type=checkbox][name="customerIds"]');
 
-        buildingItemsCheckbox.change(function () {
-            const numberOfChecked = $('#customerList input[type=checkbox][name="buildingIds"]:checked').length;
-            const isCheckedAll = buildingItemsCheckbox.length === numberOfChecked;
+        customerItemsCheckbox.change(function () {
+            const numberOfChecked = $('#customerList input[type=checkbox][name="customerIds"]:checked').length;
+            const isCheckedAll = customerItemsCheckbox.length === numberOfChecked;
             checkboxAll.prop('checked', isCheckedAll);
 
             if (1 <= numberOfChecked) {
-                $('#btnDeleteBuilding').attr('disabled', false);
+                $('#btnDeleteCustomer').attr('disabled', false);
             } else {
-                $('#btnDeleteBuilding').attr('disabled', true);
+                $('#btnDeleteCustomer').attr('disabled', true);
             }
         });
     });
 
-    $(document).on("click", "#buildingList button#btnBuildingAssignment", function (e) {
+    $(document).on("click", "#customerList button#btnCustomerAssignment", function (e) {
         e.preventDefault();
-        openModalAssignmentBuilding();
-        let buildingId = $(this).attr('buildingId');
-        $('#buildingId').val(buildingId);
-        loadStaff(buildingId);
+        openModalAssignmentCustomer();
+        let customerId = $(this).attr('customerId');
+        $('#customerId').val(customerId);
+        loadStaff(customerId);
     })
 
-    function openModalAssignmentBuilding() {
-        $('#assignmentBuildingModal').modal();
-    }*/
+    function openModalAssignmentCustomer() {
+        $('#assignmentCustomerModal').modal();
+    }
 
-    /*function loadStaff(customerId) {
+    function loadStaff(customerId) {
         $.ajax({
             type: "GET",
-            url: "${buildingAPI}/" + customerId + "/staffs",
+            url: "${customerAPI}/" + customerId + "/staffs",
             dataType: "json",
             success: function (response) {
                 console.log('success');
@@ -235,13 +235,13 @@
                 showNotification('error', 'Đã xảy ra lỗi hệ thống, vui lòng thử lại sau.');
             }
         });
-    }*/
+    }
 
-    /*$('#btnAssignBuilding').click(function (e) {
+    $('#btnAssignCustomer').click(function (e) {
         e.preventDefault();
         let dataLength;
         let data = {};
-        data['buildingId'] = $('#buildingId').val();
+        data['customerId'] = $('#customerId').val();
         data['staffIds'] = $('#staffList').find('tbody input[type=checkbox]:checked').map(function () {
             return $(this).val();
         }).get();
@@ -249,12 +249,12 @@
         showConfirmationAlertBeforeAction(function () {
             assignStaff(data);
         }, "Giao", "Giao ".concat(dataLength > 1 ? "các " : "", "nhân viên đã chọn quản lý tòa nhà này?"));
-    });*/
+    });
 
-    /*function assignStaff(data) {
+    function assignStaff(data) {
         $.ajax({
             type: "POST",
-            url: "${buildingAPI}/assignment-building",
+            url: "${customerAPI}/assignment-customer",
             data: JSON.stringify(data),
             dataType: "json",
             contentType: 'application/json',
@@ -265,34 +265,34 @@
                 showNotification('error', 'Đã xảy ra lỗi hệ thống, vui lòng thử lại sau.');
             }
         });
-    }*/
+    }
 
-    /*$('#btnDeleteBuilding').click(function (e) {
+    $('#btnDeleteCustomer').click(function (e) {
         e.preventDefault();
-        let buildingIds = $('#buildingList').find(
+        let customerIds = $('#customerList').find(
             'tbody input[type=checkbox]:checked').map(function () {
             return $(this).val();
         }).get();
         showConfirmationAlertBeforeAction(function () {
-            deleteBuilding(buildingIds);
-        }, "Xóa", "Xóa ".concat(buildingIds > 1 ? "các " : "", "tòa nhà đã chọn?"));
+            deleteCustomer(customerIds);
+        }, "Xóa", "Xóa ".concat(customerIds > 1 ? "các " : "", "tòa nhà đã chọn?"));
     });
 
-    function deleteBuilding(data) {
+    function deleteCustomer(data) {
         $.ajax({
             type: "DELETE",
-            url: "${buildingAPI}",
+            url: "${customerAPI}",
             data: JSON.stringify(data),
             dataType: "json",
             contentType: 'application/json',
             success: function () {
-                window.location.href = "<c:url value ='/admin/building-list?message=delete_success'/>"
+                window.location.href = "<c:url value ='/admin/customer-list?message=delete_success'/>"
             },
             error: function () {
                 showNotification('error', 'Đã xảy ra lỗi hệ thống, vui lòng thử lại sau.');
             }
         });
-    }*/
+    }
 
     $('#btnSearch').click(function (e) {
         e.preventDefault();

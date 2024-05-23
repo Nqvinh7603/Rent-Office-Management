@@ -4,14 +4,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.stereotype.Service;
+import site.rentofficevn.constant.SystemConstant;
 import site.rentofficevn.converter.CustomerConverter;
-import site.rentofficevn.dto.BuildingDTO;
+import site.rentofficevn.converter.UserConverter;
 import site.rentofficevn.dto.CustomerDTO;
+import site.rentofficevn.dto.request.AssignmentCustomerRequest;
 import site.rentofficevn.dto.request.CustomerSearchRequest;
+import site.rentofficevn.dto.response.AssignmentStaffResponse;
 import site.rentofficevn.dto.response.CustomerSearchResponse;
 import site.rentofficevn.entity.BuildingEntity;
 import site.rentofficevn.entity.CustomerEntity;
+import site.rentofficevn.entity.UserEntity;
 import site.rentofficevn.repository.CustomerRepository;
+import site.rentofficevn.repository.UserRepository;
 import site.rentofficevn.security.utils.SecurityUtils;
 import site.rentofficevn.service.ICustomerService;
 
@@ -24,18 +29,22 @@ import java.util.stream.Collectors;
 public class CustomerService implements ICustomerService {
 
     private final CustomerRepository customerRepository;
-    private final CustomerConverter customerConverter ;
+    private final CustomerConverter customerConverter;
+    private final UserRepository userRepository;
+    private final UserConverter userConverter;
 
     @Autowired
-    public CustomerService(CustomerRepository customerRepository, CustomerConverter customerConverter) {
+    public CustomerService(CustomerRepository customerRepository, CustomerConverter customerConverter, UserRepository userRepository, UserConverter userConverter) {
         this.customerRepository = customerRepository;
         this.customerConverter = customerConverter;
+        this.userRepository = userRepository;
+        this.userConverter = userConverter;
     }
 
     @Override
     public List<CustomerSearchResponse> findByCondition(CustomerSearchRequest customerSearchRequest, PageRequest pageRequest) {
         try {
-            if(SecurityUtils.getAuthorities().contains("ROLE_STAFF")){
+            if (SecurityUtils.getAuthorities().contains("ROLE_STAFF")) {
                 Long staffId = SecurityUtils.getPrincipal().getId();
                 customerSearchRequest.setStaffId(staffId);
             }
@@ -58,5 +67,43 @@ public class CustomerService implements ICustomerService {
         return customerConverter.toDTO(customerEntity);
     }
 
+    @Override
+    public void delete(List<Long> customerIds) {
+        if (!customerIds.isEmpty()) {
+            Long count = customerRepository.countByIdIn(customerIds);
+            if (count != customerIds.size()) {
+                throw new NotFoundException("Some buildings not found!");
+            }
+            customerRepository.deleteByIdIn(customerIds);
+        }
+    }
 
+    @Override
+    public void assignmentCustomerToStaffs(AssignmentCustomerRequest assignmentCustomerRequest) {
+        Long customerId = assignmentCustomerRequest.getCustomerId();
+        List<Long> staffIdRequest = assignmentCustomerRequest.getStaffIds();
+        CustomerEntity foundCustomer = Optional.of(customerRepository.findById(customerId)).get()
+                .orElseThrow(() -> new NotFoundException("Building not found!"));
+        List<UserEntity> foundUsers = userRepository.findByIdIn(staffIdRequest);
+        foundCustomer.setUserEntities(foundUsers);
+        customerRepository.save(foundCustomer);
+    }
+
+    @Override
+    public List<AssignmentStaffResponse> loadStaffByCustomerId(Long customerId) {
+        List<UserEntity> allStaffs = userRepository.findByStatusAndRoles_Code(SystemConstant.ACTIVE_STATUS, "STAFF");
+
+        return allStaffs.stream().map(staff ->
+                {
+                    AssignmentStaffResponse assignmentStaffResponse = userConverter.toAssignmentStaffResponse(staff);
+                    for (BuildingEntity building : staff.getBuildingEntities()) {
+                        if (customerId.equals(building.getId())){
+                            assignmentStaffResponse.setChecked("checked");
+                            break;
+                        }
+                    }
+                    return assignmentStaffResponse;
+                }
+        ).collect(Collectors.toList());
+    }
 }

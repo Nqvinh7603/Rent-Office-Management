@@ -164,10 +164,10 @@
         let id = $('#customerId').val();
         if ('' === id) {
             title = 'Thêm';
-            message = 'Thêm tòa nhà mới?';
+            message = 'Thêm khách hàng mới?';
         } else {
             title = 'Cập nhật';
-            message = 'Cập nhật tòa nhà này?';
+            message = 'Cập nhật thông tin khách hàng này?';
         }
         showMessageConfirmation(function () {
             if ('' === id) {

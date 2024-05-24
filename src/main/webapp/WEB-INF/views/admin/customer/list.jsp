@@ -5,7 +5,7 @@
 <c:url var="assignmentAPI" value="/api/customer/assignment-customer"/>
 <html>
 <head>
-    <title>Quản lý khaách hàng</title>
+    <title>Quản lý khách hàng</title>
 </head>
 <body>
 <div class="main-content">
@@ -136,12 +136,12 @@
                             <display:column headerClass="col-actions" title="Thao tác">
                                 <a class="btn btn-xs btn-info"
                                    data-toggle="tooltip"
-                                   title="Sửa tòa nhà"
+                                   title="Sửa thông tin khách hàng"
                                    href='<c:url value='/admin/customer-edit-${customerList.id}'/>'>
                                     <span><em class="ace-icon fa fa-pencil "></em></span>
                                 </a>
                                 <button class="btn btn-xs" data-toggle="tooltip"
-                                        title="Giao khách hàng" id="btnCustomerAssignment" customerId="${customerList.id}">
+                                        title="Giao khách hàng cho nhân viên quản lý" id="btnCustomerAssignment" customerId="${customerList.id}">
                                     <i class="fa fa-user" aria-hidden="true"></i>
                                 </button>
                             </display:column>
@@ -179,7 +179,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" id="btnAssignCustomer">Giao khách hàng</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng lại</button>
+                <button type="button" class="btn btn-default" id="btnCloseModal" data-dismiss="modal">Đóng lại</button>
             </div>
         </div>
     </div>
@@ -200,6 +200,10 @@
             } else {
                 $('#btnDeleteCustomer').attr('disabled', true);
             }
+        });
+
+        $('#btnCloseModal').click(function () {
+            location.reload();
         });
     });
 
@@ -248,7 +252,7 @@
         dataLength = data['staffIds'].length;
         showConfirmationAlertBeforeAction(function () {
             assignStaff(data);
-        }, "Giao", "Giao ".concat(dataLength > 1 ? "các " : "", "nhân viên đã chọn quản lý tòa nhà này?"));
+        }, "Giao", "Giao ".concat(dataLength > 1 ? "các " : "", "nhân viên đã chọn quản lý khách hàng này?"));
     });
 
     function assignStaff(data) {
@@ -259,10 +263,7 @@
             dataType: "json",
             contentType: 'application/json',
             success: function () {
-                showNotification('success', 'Giao tòa nhà cho nhân viên quản lý thành công!');
-                setTimeout(function() {
-                    window.location.reload(); // Tải lại trang sau 1 giây
-                }, 1000);
+                showNotification('success', 'Giao khách hàng cho nhân viên quản lý thành công!');
             },
             error: function () {
                 showNotification('error', 'Đã xảy ra lỗi hệ thống, vui lòng thử lại sau.');

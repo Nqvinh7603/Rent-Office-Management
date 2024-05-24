@@ -121,6 +121,7 @@ public class CustomerService implements ICustomerService {
             customerEntity.setModifiedDate(new Date());
             customerEntity.setModifiedBy(foundCustomer.getModifiedBy());
             customerEntity.setUserEntities(foundCustomer.getUserEntities());
+            customerEntity.setTransactionEntities(foundCustomer.getTransactionEntities());
         }
         return customerConverter.toDTO(customerRepository.save(customerEntity));
     }

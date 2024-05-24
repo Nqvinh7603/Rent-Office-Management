@@ -8,6 +8,7 @@ import site.rentofficevn.converter.TransactionConverter;
 import site.rentofficevn.dto.TransactionDTO;
 import site.rentofficevn.entity.TransactionEntity;
 import site.rentofficevn.enums.TransactionsEnum;
+import site.rentofficevn.repository.CustomerRepository;
 import site.rentofficevn.repository.TransactionRepository;
 import site.rentofficevn.service.ITransactionService;
 
@@ -21,11 +22,13 @@ public class TransactionService implements ITransactionService {
 
     private final TransactionConverter transactionConverter;
     private final TransactionRepository transactionRepository;
+    private final CustomerRepository customerRepository;
 
     @Autowired
-    public TransactionService(TransactionConverter transactionConverter, TransactionRepository transactionRepository) {
+    public TransactionService(TransactionConverter transactionConverter, TransactionRepository transactionRepository, CustomerRepository customerRepository) {
         this.transactionConverter = transactionConverter;
         this.transactionRepository = transactionRepository;
+        this.customerRepository = customerRepository;
     }
 
     @Override
@@ -38,22 +41,17 @@ public class TransactionService implements ITransactionService {
         return transactionConverter.toDTO(transactionEntity);
     }
 
-    private List<TransactionDTO> getTransactionList(Long customerId) {
-        List<TransactionEntity> listTransaction = transactionRepository.findByCustomerId(customerId);
-        return listTransaction.stream()
-                .map(transactionConverter::toDTO)
-                .collect(Collectors.toList());
-    }
-
-    private Map<String, String> getTransactionMap() {
-        return Arrays.stream(TransactionsEnum.values()).collect(Collectors.toMap(Enum::toString, TransactionsEnum::getTransactionTypeValue));
-    }
-
     @Override
     public TransactionDTO getTransactionData(Long customerId) {
-        Map<String, String> transactionMap = getTransactionMap();
-        List<TransactionDTO> transactionList = getTransactionList(customerId);
-        return new TransactionDTO(transactionMap, transactionList);
+        Map<String, String> transactionMap = Arrays.stream(TransactionsEnum.values())
+                .collect(Collectors.toMap(Enum::toString, TransactionsEnum::getTransactionTypeValue));
+
+        List<TransactionEntity> transactionList = customerRepository.findTransactionByCustomerId(customerId);
+        List<TransactionDTO> transactionDTOList = transactionList.stream()
+                .map(transactionConverter::toDTO)
+                .collect(Collectors.toList());
+
+        return new TransactionDTO(transactionMap, transactionDTOList);
     }
 
 }

@@ -103,6 +103,7 @@
 
             <br>
             <c:forEach var="item" items="${transactionMaps}">
+                <c:if test="${not empty customer.id}">
                 <div class="row">
                     <div class="col-xs-12">
                         <h4 style="color: darkred">${item.value}
@@ -144,6 +145,7 @@
                         </table>
                     </div>
                 </div>
+                </c:if>
             </c:forEach>
         </div> <!-- PAGE CONTENT ENDS -->
     </div><!-- /.page-content -->
@@ -213,12 +215,17 @@
         });
     }
 
-    function createTraction(formId) {
-        const data = {};
+    function createTraction(value) {
+        var data = {
+            "code" : value,
+            "note" : $("#note" + value + "").val(),
+            "customerId" : "${customer.id}"
+        };
+        /*const data = {};
         const formData = $(formId).serializeArray();
         $.each(formData, function (indexInArray, element) {
             data["" + element.name + ""] = element.value;
-        });
+        });*/
         $('#loading_image_trans').show();
 
         $.ajax({

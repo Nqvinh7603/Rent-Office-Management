@@ -1,7 +1,9 @@
 package site.rentofficevn.service.impl;
 
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import site.rentofficevn.converter.TransactionConverter;
 import site.rentofficevn.dto.TransactionDTO;
 import site.rentofficevn.entity.TransactionEntity;
@@ -22,9 +24,13 @@ public class TransactionService implements ITransactionService {
     TransactionRepository transactionRepository;
 
     @Override
-    public TransactionDTO save(TransactionDTO transaction) {
+    @Transactional
+    public TransactionDTO save(TransactionDTO transaction) throws NotFoundException {
         TransactionEntity transactionEntity = transactionConverter.toEntity(transaction);
-        return transactionConverter.toDTO(transactionRepository.save(transactionEntity));
+        if(transaction != null){
+            transactionRepository.save(transactionEntity);
+        }
+        return transactionConverter.toDTO(transactionEntity);
     }
 
     @Override

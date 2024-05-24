@@ -1,5 +1,6 @@
 package site.rentofficevn.api.admin;
 
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +46,7 @@ public class CustomerAPI {
     }
 
     @PostMapping("/transaction")
-    private ResponseEntity<TransactionDTO> saveTransaction(@RequestBody TransactionDTO transaction) {
+    private ResponseEntity<TransactionDTO> saveTransaction(@RequestBody TransactionDTO transaction) throws NotFoundException {
         return ResponseEntity.ok(transactionService.save(transaction));
     }
 }

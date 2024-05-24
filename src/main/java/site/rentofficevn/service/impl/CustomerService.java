@@ -15,15 +15,13 @@ import site.rentofficevn.dto.response.AssignmentStaffResponse;
 import site.rentofficevn.dto.response.CustomerSearchResponse;
 import site.rentofficevn.entity.CustomerEntity;
 import site.rentofficevn.entity.UserEntity;
+import site.rentofficevn.enums.TransactionsEnum;
 import site.rentofficevn.repository.CustomerRepository;
 import site.rentofficevn.repository.UserRepository;
 import site.rentofficevn.security.utils.SecurityUtils;
 import site.rentofficevn.service.ICustomerService;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -125,5 +123,14 @@ public class CustomerService implements ICustomerService {
             customerEntity.setUserEntities(foundCustomer.getUserEntities());
         }
         return customerConverter.toDTO(customerRepository.save(customerEntity));
+    }
+    @Override
+    public Map<String, String> getTransactionMap() {
+        //return Arrays.stream(TransactionsEnum.values()).collect(Collectors.toMap(Enum::toString, TransactionsEnum::getTransactionTypeValue));
+        Map<String, String> result = new HashMap<>();
+        for (TransactionsEnum transaction : TransactionsEnum.values()) {
+            result.put(transaction.toString(), transaction.getTransactionTypeValue());
+        }
+        return result;
     }
 }

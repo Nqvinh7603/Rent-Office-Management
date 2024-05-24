@@ -23,6 +23,7 @@ public class SystemConstant {
     public static final String CUSTOMERS = "customers";
     public static final String DISTRICT_MAP = "districts";
     public static final String STAFF_MAP = "staffmaps";
+    public static final String TRANSACTION_MAP = "transactionMaps";
     public static final String BUILDING_TYPE_MAP = "buildingTypes";
     public static final String DANGER = "danger";
     public static final String BUILDING_ALIAS = "b.";
@@ -41,4 +42,6 @@ public class SystemConstant {
     public static final String BUILDING = "building";
     public static final String CUSTOMER = "customer";
     public static final int ACTIVE_STATUS = 1;
+    public static final String TRANSACTION_LIST = "transactionList";
+    public static final String TRANSACTION = "transaction";
 }

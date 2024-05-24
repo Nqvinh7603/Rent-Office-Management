@@ -102,83 +102,49 @@
             </div><!-- /.row -->
 
             <br>
-            <div class="row">
-                <div class="col-xs-12">
-                    <h4 style="display: inline-block; color: #3a87ad">
-                        QUÁ TRÌNH CSKH
-                        <button type="button"
-                                class="btn btn-white btn-info btn-bold"
-                                data-toggle="tooltip"
-                                onclick="createTraction(CHAM_SOC_KHACH_HANG)"
-                                title="Thêm giao dịch">
-                            <span><em class="fa fa-plus-circle bigger-110 purple"></em></span>
-                            <img src="/img/loading.gif" style="display: none; height: 100px" id="loading_image_trans">
-                        </button>
-                    </h4>
-                    <table class="table table-bordered table-hover">
-                        <thead>
-                        <tr>
-                            <th style="width: 15%;">Ngày tạo</th>
-                            <th style="width: 20%;">Nguời tạo</th>
-                            <th style="width: 65%;">Ghi chú</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td>
-                                <form id="CHAM_SOC_KHACH_HANG">
-                                    <input type="hidden" name="code" value="CHAM_SOC_KHACH_HANG"/>
-                                    <input type="hidden" name="customerId" value="1"/>
-                                    <input class="form-control" name="note"/>
-                                </form>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+            <c:forEach var="item" items="${transactionMaps}">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h4 style="color: darkred">${item.value}
+                            <button class="btn btn-white btn-info btn-bold"
+                                    type="button"
+                                    value="${item.key}"
+                                    data-toggle="tooltip" title="Thêm Giao Dịch"
+                                    onclick="createTraction(value)">
+                                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                            </button>
+                        </h4>
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Ngày Tạo</th>
+                                <th>Người tạo</th>
+                                <th>Ghi Chú</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <c:forEach var="value" items="${transactionList}">
+                                <c:if test="${item.key == value.code}" >
+                                    <tr>
+                                        <td>${value.createdDate}</td>
+                                        <td>${value.createdBy}</td>
+                                        <td>${value.note}</td>
+                                    </tr>
+                                </c:if>
+                            </c:forEach>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td><input type="text" id="note${item.key}"
+                                           class="form-control" name="${item.key}"></td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
                 </div>
-            </div>
-
-            <br>
-            <div class="row">
-                <div class="col-xs-12">
-                    <h4 style="display: inline-block; color: #3a87ad">
-                        DẪN ĐI XEM
-                        <button type="button"
-                                class="btn btn-white btn-info btn-bold"
-                                data-toggle="tooltip"
-                                onclick="createTraction(DAN_DI_XEM)"
-                                title="Thêm giao dịch">
-                            <span><em class="fa fa-plus-circle bigger-110 purple"></em></span>
-                            <img src="/img/loading.gif" style="display: none; height: 100px" id="loading_image_trans">
-                        </button>
-                    </h4>
-                    <table class="table table-bordered table-hover">
-                        <thead>
-                        <tr>
-                            <th style="width: 15%;">Ngày tạo</th>
-                            <th style="width: 20%;">Nguời tạo</th>
-                            <th style="width: 65%;">Ghi chú</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td>
-                                <form id="DAN_DI_XEM">
-                                    <input type="hidden" name="code" value="DAN_DI_XEM"/>
-                                    <input type="hidden" name="customerId" value="1"/>
-                                    <input class="form-control" name="note"/>
-                                </form>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
+            </c:forEach>
         </div> <!-- PAGE CONTENT ENDS -->
     </div><!-- /.page-content -->
 </div><!-- /.main-content -->
@@ -243,6 +209,31 @@
             },
             error: function () {
                 showNotification('error', 'Đã xảy ra lỗi hệ thống, vui lòng thử lại sau.');
+            }
+        });
+    }
+
+    function createTraction(formId) {
+        const data = {};
+        const formData = $(formId).serializeArray();
+        $.each(formData, function (indexInArray, element) {
+            data["" + element.name + ""] = element.value;
+        });
+        $('#loading_image_trans').show();
+
+        $.ajax({
+            type: "POST",
+            url: "${customerAPI}/transaction",
+            data: JSON.stringify(data),
+            dataType: "json",
+            contentType: "application/json",
+            success: function (response) {
+                window.location.reload()
+            },
+            error: function (response) {
+                $('#loading_image').hide();
+                showNotification('error', 'Đã xảy ra lỗi hệ thống, vui lòng thử lại sau.');
+
             }
         });
     }

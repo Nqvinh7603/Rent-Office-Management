@@ -1,6 +1,6 @@
 package site.rentofficevn.enums;
 
-public enum TransactionEnum {
+public enum TransactionsEnum {
     QUA_TRINH_CSKH("QUÁ TRÌNH CSKH"),
     DAN_DI_XEM("DẪN KHÁCH ĐI XEM");
 
@@ -10,7 +10,7 @@ public enum TransactionEnum {
         return transactionTypeValue;
     }
 
-    TransactionEnum(String transactionTypeValue) {
+    TransactionsEnum(String transactionTypeValue) {
         this.transactionTypeValue = transactionTypeValue;
     }
 }

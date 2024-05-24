@@ -8,8 +8,6 @@ import site.rentofficevn.dto.CustomerDTO;
 import site.rentofficevn.dto.request.CustomerSearchRequest;
 import site.rentofficevn.dto.response.CustomerSearchResponse;
 import site.rentofficevn.entity.CustomerEntity;
-import site.rentofficevn.entity.UserEntity;
-import site.rentofficevn.repository.CustomerRepository;
 import site.rentofficevn.repository.UserRepository;
 import site.rentofficevn.utils.DateUtils;
 import java.util.*;

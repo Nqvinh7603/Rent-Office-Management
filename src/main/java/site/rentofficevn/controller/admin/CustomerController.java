@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import site.rentofficevn.constant.SystemConstant;
 import site.rentofficevn.dto.CustomerDTO;
+import site.rentofficevn.dto.TransactionDTO;
 import site.rentofficevn.dto.request.CustomerSearchRequest;
 import site.rentofficevn.dto.response.CustomerSearchResponse;
 import site.rentofficevn.service.impl.CustomerService;
+import site.rentofficevn.service.impl.TransactionService;
 import site.rentofficevn.service.impl.UserService;
 import site.rentofficevn.utils.DisplayTagUtils;
 import site.rentofficevn.utils.MessageUtils;
@@ -27,17 +29,20 @@ import java.util.Map;
 public class CustomerController {
     private final CustomerService customerService;
     private final UserService userService;
+    private final TransactionService transactionService;
     private final MessageUtils messageUtils;
 
     @Autowired
-    public CustomerController(CustomerService customerService, UserService userService, MessageUtils messageUtils) {
+    public CustomerController(CustomerService customerService, UserService userService, TransactionService transactionService, MessageUtils messageUtils) {
         this.customerService = customerService;
         this.userService = userService;
+        this.transactionService = transactionService;
         this.messageUtils = messageUtils;
     }
 
+
     @GetMapping("/customer-list")
-    public ModelAndView listBuilding(@ModelAttribute("modelSearch") CustomerSearchRequest customerSearchRequest, HttpServletRequest request) {
+    public ModelAndView listController(@ModelAttribute("modelSearch") CustomerSearchRequest customerSearchRequest, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("admin/customer/list");
 
         customerSearchRequest.setTableId("customerList");
@@ -62,8 +67,8 @@ public class CustomerController {
     public ModelAndView createCustomer(){
         ModelAndView mav = new ModelAndView("admin/customer/edit");
         CustomerDTO customerDTO = new CustomerDTO();
-
         mav.addObject(SystemConstant.CUSTOMER, customerDTO);
+        mav.addObject(SystemConstant.TRANSACTION_MAP, customerService.getTransactionMap());
         return mav;
     }
     @GetMapping("/customer-edit-{id}")
@@ -74,6 +79,8 @@ public class CustomerController {
 
         mav.addObject(SystemConstant.CUSTOMER, customerDTO);
         mav.addObject(SystemConstant.CUSTOMER_ID, customerId);
+        mav.addObject(SystemConstant.TRANSACTION_MAP, customerService.getTransactionMap());
+        mav.addObject(SystemConstant.TRANSACTION_LIST, transactionService.getTransactionList(customerId));
 
         initMessageResponse(mav, request);
         return mav;

@@ -17,17 +17,20 @@ import java.util.stream.Collectors;
 @Service
 public class TransactionService implements ITransactionService {
 
-    @Autowired
-    TransactionConverter transactionConverter;
+    private final TransactionConverter transactionConverter;
+    private final TransactionRepository transactionRepository;
 
     @Autowired
-    TransactionRepository transactionRepository;
+    public TransactionService(TransactionConverter transactionConverter, TransactionRepository transactionRepository) {
+        this.transactionConverter = transactionConverter;
+        this.transactionRepository = transactionRepository;
+    }
 
     @Override
     @Transactional
     public TransactionDTO save(TransactionDTO transaction) throws NotFoundException {
         TransactionEntity transactionEntity = transactionConverter.toEntity(transaction);
-        if(transaction != null){
+        if (transaction != null) {
             transactionRepository.save(transactionEntity);
         }
         return transactionConverter.toDTO(transactionEntity);

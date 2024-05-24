@@ -10,17 +10,21 @@ import site.rentofficevn.dto.response.CustomerSearchResponse;
 import site.rentofficevn.entity.CustomerEntity;
 import site.rentofficevn.repository.UserRepository;
 import site.rentofficevn.utils.DateUtils;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
 public class CustomerConverter {
-    @Autowired
-    private ModelMapper modelMapper;
+
+    private final ModelMapper modelMapper;
+    private final UserRepository userRepository;
 
     @Autowired
-    private UserRepository userRepository;
-
+    public CustomerConverter(ModelMapper modelMapper, UserRepository userRepository) {
+        this.modelMapper = modelMapper;
+        this.userRepository = userRepository;
+    }
 
     public CustomerDTO toDTO(CustomerEntity customerEntity) {
         CustomerDTO customerDTO = modelMapper.map(customerEntity, CustomerDTO.class);
@@ -58,6 +62,7 @@ public class CustomerConverter {
             return DateUtils.convertDateToString(customerEntity.getModifiedDate());
         }
     }
+
     private String getFormattedStaffName(Long id) {
         List<String> staffNames = userRepository.findFullNameByCustomerId(id);
         if (staffNames != null && !staffNames.isEmpty()) {

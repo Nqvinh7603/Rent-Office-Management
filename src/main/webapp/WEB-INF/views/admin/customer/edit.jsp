@@ -221,11 +221,6 @@
             "note" : $("#note" + value + "").val(),
             "customerId" : "${customer.id}"
         };
-        /*const data = {};
-        const formData = $(formId).serializeArray();
-        $.each(formData, function (indexInArray, element) {
-            data["" + element.name + ""] = element.value;
-        });*/
         $('#loading_image_trans').show();
 
         $.ajax({

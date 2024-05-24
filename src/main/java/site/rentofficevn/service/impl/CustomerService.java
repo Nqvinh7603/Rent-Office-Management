@@ -98,7 +98,7 @@ public class CustomerService implements ICustomerService {
                 {
                     AssignmentStaffResponse assignmentStaffResponse = userConverter.toAssignmentStaffResponse(staff);
                     for (CustomerEntity customer : staff.getCustomer()) {
-                        if (customerId.equals(customer.getId())){
+                        if (customerId.equals(customer.getId())) {
                             assignmentStaffResponse.setChecked("checked");
                             break;
                         }
@@ -113,7 +113,7 @@ public class CustomerService implements ICustomerService {
     public CustomerDTO save(CustomerDTO customerDTO) {
         Long customerId = customerDTO.getId();
         CustomerEntity customerEntity = customerConverter.toEntity(customerDTO);
-        if(customerId != null){
+        if (customerId != null) {
             CustomerEntity foundCustomer = Optional.of(customerRepository.findById(customerId)).get()
                     .orElseThrow(() -> new NotFoundException("Customer not found!"));
             customerEntity.setCreatedDate(foundCustomer.getCreatedDate());
@@ -124,13 +124,9 @@ public class CustomerService implements ICustomerService {
         }
         return customerConverter.toDTO(customerRepository.save(customerEntity));
     }
+
     @Override
     public Map<String, String> getTransactionMap() {
-        //return Arrays.stream(TransactionsEnum.values()).collect(Collectors.toMap(Enum::toString, TransactionsEnum::getTransactionTypeValue));
-        Map<String, String> result = new HashMap<>();
-        for (TransactionsEnum transaction : TransactionsEnum.values()) {
-            result.put(transaction.toString(), transaction.getTransactionTypeValue());
-        }
-        return result;
+        return Arrays.stream(TransactionsEnum.values()).collect(Collectors.toMap(Enum::toString, TransactionsEnum::getTransactionTypeValue));
     }
 }

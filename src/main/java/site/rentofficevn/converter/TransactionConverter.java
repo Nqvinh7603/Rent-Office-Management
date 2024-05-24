@@ -17,7 +17,6 @@ public class TransactionConverter {
     CustomerRepository customerRepository;
 
     public TransactionEntity toEntity(TransactionDTO dto){
-        //TransactionEntity result = modelMapper.map(dto, TransactionEntity.class);
         TransactionEntity transactionEntity = new TransactionEntity();
         transactionEntity.setCode(dto.getCode());
         transactionEntity.setNote(dto.getNote());

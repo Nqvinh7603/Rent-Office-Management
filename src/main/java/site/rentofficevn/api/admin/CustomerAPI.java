@@ -17,11 +17,14 @@ import java.util.List;
 @RequestMapping("/api/customer")
 public class CustomerAPI {
 
-    @Autowired
-    CustomerService customerService;
+    private final CustomerService customerService;
+    private final TransactionService transactionService;
 
     @Autowired
-    TransactionService transactionService;
+    public CustomerAPI(CustomerService customerService, TransactionService transactionService) {
+        this.customerService = customerService;
+        this.transactionService = transactionService;
+    }
 
     @PostMapping
     public ResponseEntity<CustomerDTO> saveCustomer(@RequestBody CustomerDTO customerDTO) throws IllegalArgumentException {

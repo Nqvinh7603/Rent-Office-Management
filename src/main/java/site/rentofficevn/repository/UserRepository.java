@@ -22,5 +22,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
             "FROM user u " +
             "JOIN assignmentcustomer ac ON u.id = ac.staffid " +
             "WHERE ac.customerid = :customerId", nativeQuery = true)
-    String findFullNameByCustomerId(Long customerId);
+    List<String> findFullNameByCustomerId(Long customerId);
+
 }

@@ -8,9 +8,12 @@ import site.rentofficevn.dto.CustomerDTO;
 import site.rentofficevn.dto.request.CustomerSearchRequest;
 import site.rentofficevn.dto.response.CustomerSearchResponse;
 import site.rentofficevn.entity.CustomerEntity;
+import site.rentofficevn.entity.UserEntity;
 import site.rentofficevn.repository.CustomerRepository;
 import site.rentofficevn.repository.UserRepository;
 import site.rentofficevn.utils.DateUtils;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class CustomerConverter {
@@ -20,8 +23,6 @@ public class CustomerConverter {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private CustomerRepository customerRepository;
 
     public CustomerDTO toDTO(CustomerEntity customerEntity) {
         CustomerDTO customerDTO = modelMapper.map(customerEntity, CustomerDTO.class);
@@ -59,8 +60,11 @@ public class CustomerConverter {
             return DateUtils.convertDateToString(customerEntity.getModifiedDate());
         }
     }
-    private String getFormattedStaffName(Long id){
-        return userRepository.findFullNameByCustomerId(id);
+    private String getFormattedStaffName(Long id) {
+        List<String> staffNames = userRepository.findFullNameByCustomerId(id);
+        if (staffNames != null && !staffNames.isEmpty()) {
+            return staffNames.stream().collect(Collectors.joining(", "));
+        }
+        return null;
     }
-
 }

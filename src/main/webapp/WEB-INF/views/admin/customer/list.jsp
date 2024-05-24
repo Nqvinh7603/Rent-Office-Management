@@ -5,7 +5,7 @@
 <c:url var="assignmentAPI" value="/api/customer/assignment-customer"/>
 <html>
 <head>
-    <title>Quản lý tòa nhà</title>
+    <title>Quản lý khaách hàng</title>
 </head>
 <body>
 <div class="main-content">
@@ -134,12 +134,12 @@
                         <display:column headerClass="text-left" property="status" title="Tình trạng"/>
                         <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
                             <display:column headerClass="col-actions" title="Thao tác">
-                                <%--<a class="btn btn-xs btn-info"
+                                <a class="btn btn-xs btn-info"
                                    data-toggle="tooltip"
                                    title="Sửa tòa nhà"
-                                   href='<c:url value='/admin/building-edit-${customerList.id}'/>'>
+                                   href='<c:url value='/admin/customer-edit-${customerList.id}'/>'>
                                     <span><em class="ace-icon fa fa-pencil "></em></span>
-                                </a>--%>
+                                </a>
                                 <button class="btn btn-xs" data-toggle="tooltip"
                                         title="Giao khách hàng" id="btnCustomerAssignment" customerId="${customerList.id}">
                                     <i class="fa fa-user" aria-hidden="true"></i>
@@ -260,6 +260,9 @@
             contentType: 'application/json',
             success: function () {
                 showNotification('success', 'Giao tòa nhà cho nhân viên quản lý thành công!');
+                setTimeout(function() {
+                    window.location.reload(); // Tải lại trang sau 1 giây
+                }, 1000);
             },
             error: function () {
                 showNotification('error', 'Đã xảy ra lỗi hệ thống, vui lòng thử lại sau.');

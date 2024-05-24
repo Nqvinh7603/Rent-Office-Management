@@ -6,6 +6,15 @@ public class CustomerDTO extends AbstractDTO {
     private String email;
     private String note;
     private String requirement;
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getFullName() {
         return fullName;

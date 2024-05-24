@@ -59,15 +59,16 @@ public class CustomerController {
     }
 
     @GetMapping("/customer-edit")
-    public ModelAndView createBuilding(){
+    public ModelAndView createCustomer(){
         ModelAndView mav = new ModelAndView("admin/customer/edit");
         CustomerDTO customerDTO = new CustomerDTO();
+
         mav.addObject(SystemConstant.CUSTOMER, customerDTO);
         return mav;
     }
     @GetMapping("/customer-edit-{id}")
-    public ModelAndView updateBuilding(@PathVariable(value="id",required = false) Long customerId, HttpServletRequest request){
-        ModelAndView mav = new ModelAndView("admin/building/edit");
+    public ModelAndView updateCustomer(@PathVariable(value="id",required = false) Long customerId, HttpServletRequest request){
+        ModelAndView mav = new ModelAndView("admin/customer/edit");
         CustomerDTO customerDTO = customerService.findById(customerId);
         customerDTO.setId(customerId);
 

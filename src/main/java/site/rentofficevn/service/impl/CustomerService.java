@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import site.rentofficevn.constant.SystemConstant;
 import site.rentofficevn.converter.CustomerConverter;
 import site.rentofficevn.converter.UserConverter;
@@ -12,7 +13,6 @@ import site.rentofficevn.dto.request.AssignmentCustomerRequest;
 import site.rentofficevn.dto.request.CustomerSearchRequest;
 import site.rentofficevn.dto.response.AssignmentStaffResponse;
 import site.rentofficevn.dto.response.CustomerSearchResponse;
-import site.rentofficevn.entity.BuildingEntity;
 import site.rentofficevn.entity.CustomerEntity;
 import site.rentofficevn.entity.UserEntity;
 import site.rentofficevn.repository.CustomerRepository;
@@ -21,6 +21,7 @@ import site.rentofficevn.security.utils.SecurityUtils;
 import site.rentofficevn.service.ICustomerService;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -68,22 +69,24 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
+    @Transactional
     public void delete(List<Long> customerIds) {
         if (!customerIds.isEmpty()) {
             Long count = customerRepository.countByIdIn(customerIds);
             if (count != customerIds.size()) {
-                throw new NotFoundException("Some buildings not found!");
+                throw new NotFoundException("Some customers not found!");
             }
             customerRepository.deleteByIdIn(customerIds);
         }
     }
 
     @Override
+    @Transactional
     public void assignmentCustomerToStaffs(AssignmentCustomerRequest assignmentCustomerRequest) {
         Long customerId = assignmentCustomerRequest.getCustomerId();
         List<Long> staffIdRequest = assignmentCustomerRequest.getStaffIds();
         CustomerEntity foundCustomer = Optional.of(customerRepository.findById(customerId)).get()
-                .orElseThrow(() -> new NotFoundException("Building not found!"));
+                .orElseThrow(() -> new NotFoundException("Customer not found!"));
         List<UserEntity> foundUsers = userRepository.findByIdIn(staffIdRequest);
         foundCustomer.setUserEntities(foundUsers);
         customerRepository.save(foundCustomer);
@@ -96,8 +99,8 @@ public class CustomerService implements ICustomerService {
         return allStaffs.stream().map(staff ->
                 {
                     AssignmentStaffResponse assignmentStaffResponse = userConverter.toAssignmentStaffResponse(staff);
-                    for (BuildingEntity building : staff.getBuildingEntities()) {
-                        if (customerId.equals(building.getId())){
+                    for (CustomerEntity customer : staff.getCustomer()) {
+                        if (customerId.equals(customer.getId())){
                             assignmentStaffResponse.setChecked("checked");
                             break;
                         }
@@ -105,5 +108,22 @@ public class CustomerService implements ICustomerService {
                     return assignmentStaffResponse;
                 }
         ).collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public CustomerDTO save(CustomerDTO customerDTO) {
+        Long customerId = customerDTO.getId();
+        CustomerEntity customerEntity = customerConverter.toEntity(customerDTO);
+        if(customerId != null){
+            CustomerEntity foundCustomer = Optional.of(customerRepository.findById(customerId)).get()
+                    .orElseThrow(() -> new NotFoundException("Customer not found!"));
+            customerEntity.setCreatedDate(foundCustomer.getCreatedDate());
+            customerEntity.setCreatedBy(foundCustomer.getCreatedBy());
+            customerEntity.setModifiedDate(new Date());
+            customerEntity.setModifiedBy(foundCustomer.getModifiedBy());
+            customerEntity.setUserEntities(foundCustomer.getUserEntities());
+        }
+        return customerConverter.toDTO(customerRepository.save(customerEntity));
     }
 }

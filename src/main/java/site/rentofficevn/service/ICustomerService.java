@@ -15,4 +15,5 @@ public interface ICustomerService {
     void delete(List<Long> customerIds);
     void assignmentCustomerToStaffs(AssignmentCustomerRequest assignmentCustomerRequest);
     List<AssignmentStaffResponse> loadStaffByCustomerId(Long customerId);
+    CustomerDTO save(CustomerDTO customerDTO);
 }

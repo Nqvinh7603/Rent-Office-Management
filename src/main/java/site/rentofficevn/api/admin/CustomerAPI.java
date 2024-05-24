@@ -3,6 +3,7 @@ package site.rentofficevn.api.admin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import site.rentofficevn.dto.CustomerDTO;
 import site.rentofficevn.dto.request.AssignmentCustomerRequest;
 import site.rentofficevn.dto.response.AssignmentStaffResponse;
 import site.rentofficevn.service.impl.CustomerService;
@@ -12,13 +13,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/customer")
 public class CustomerAPI {
+
     @Autowired
     CustomerService customerService;
 
-    /*@PostMapping
+    @PostMapping
     public ResponseEntity<CustomerDTO> saveCustomer(@RequestBody CustomerDTO customerDTO) throws IllegalArgumentException {
         return ResponseEntity.ok(customerService.save(customerDTO));
-    }*/
+    }
 
     @DeleteMapping
     public ResponseEntity<Void> deleteCustomer(@RequestBody List<Long> ids) {

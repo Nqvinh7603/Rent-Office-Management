@@ -7,7 +7,6 @@ import site.rentofficevn.dto.request.CustomerSearchRequest;
 import site.rentofficevn.dto.response.AssignmentStaffResponse;
 import site.rentofficevn.dto.response.CustomerSearchResponse;
 import java.util.List;
-import java.util.Map;
 
 public interface ICustomerService {
     List<CustomerSearchResponse> findByCondition(CustomerSearchRequest customerSearchRequest, PageRequest pageRequest);
@@ -17,5 +16,4 @@ public interface ICustomerService {
     void assignmentCustomerToStaffs(AssignmentCustomerRequest assignmentCustomerRequest);
     List<AssignmentStaffResponse> loadStaffByCustomerId(Long customerId);
     CustomerDTO save(CustomerDTO customerDTO);
-    Map<String,String> getTransactionMap();
 }

@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import site.rentofficevn.constant.SystemConstant;
 import site.rentofficevn.dto.CustomerDTO;
-import site.rentofficevn.dto.TransactionDTO;
 import site.rentofficevn.dto.request.CustomerSearchRequest;
 import site.rentofficevn.dto.response.CustomerSearchResponse;
 import site.rentofficevn.service.impl.CustomerService;
@@ -68,7 +67,6 @@ public class CustomerController {
         ModelAndView mav = new ModelAndView("admin/customer/edit");
         CustomerDTO customerDTO = new CustomerDTO();
         mav.addObject(SystemConstant.CUSTOMER, customerDTO);
-        mav.addObject(SystemConstant.TRANSACTION_MAP, customerService.getTransactionMap());
         return mav;
     }
     @GetMapping("/customer-edit-{id}")
@@ -79,8 +77,7 @@ public class CustomerController {
 
         mav.addObject(SystemConstant.CUSTOMER, customerDTO);
         mav.addObject(SystemConstant.CUSTOMER_ID, customerId);
-        mav.addObject(SystemConstant.TRANSACTION_MAP, customerService.getTransactionMap());
-        mav.addObject(SystemConstant.TRANSACTION_LIST, transactionService.getTransactionList(customerId));
+        mav.addObject(SystemConstant.TRANSACTION_DATA, transactionService.getTransactionData(customerId));
 
         initMessageResponse(mav, request);
         return mav;

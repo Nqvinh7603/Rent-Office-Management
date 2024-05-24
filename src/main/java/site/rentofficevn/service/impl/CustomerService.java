@@ -15,7 +15,6 @@ import site.rentofficevn.dto.response.AssignmentStaffResponse;
 import site.rentofficevn.dto.response.CustomerSearchResponse;
 import site.rentofficevn.entity.CustomerEntity;
 import site.rentofficevn.entity.UserEntity;
-import site.rentofficevn.enums.TransactionsEnum;
 import site.rentofficevn.repository.CustomerRepository;
 import site.rentofficevn.repository.UserRepository;
 import site.rentofficevn.security.utils.SecurityUtils;
@@ -31,13 +30,15 @@ public class CustomerService implements ICustomerService {
     private final CustomerConverter customerConverter;
     private final UserRepository userRepository;
     private final UserConverter userConverter;
+    private final TransactionService transactionService;
 
     @Autowired
-    public CustomerService(CustomerRepository customerRepository, CustomerConverter customerConverter, UserRepository userRepository, UserConverter userConverter) {
+    public CustomerService(CustomerRepository customerRepository, CustomerConverter customerConverter, UserRepository userRepository, UserConverter userConverter, TransactionService transactionService) {
         this.customerRepository = customerRepository;
         this.customerConverter = customerConverter;
         this.userRepository = userRepository;
         this.userConverter = userConverter;
+        this.transactionService = transactionService;
     }
 
     @Override
@@ -126,8 +127,5 @@ public class CustomerService implements ICustomerService {
         return customerConverter.toDTO(customerRepository.save(customerEntity));
     }
 
-    @Override
-    public Map<String, String> getTransactionMap() {
-        return Arrays.stream(TransactionsEnum.values()).collect(Collectors.toMap(Enum::toString, TransactionsEnum::getTransactionTypeValue));
-    }
+
 }

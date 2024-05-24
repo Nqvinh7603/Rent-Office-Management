@@ -102,7 +102,7 @@
             </div><!-- /.row -->
 
             <br>
-            <c:forEach var="item" items="${transactionMaps}">
+            <c:forEach var="item" items="${transactionData.transactionMap}">
                 <c:if test="${not empty customer.id}">
                 <div class="row">
                     <div class="col-xs-12">
@@ -124,7 +124,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:forEach var="value" items="${transactionList}">
+                            <c:forEach var="value" items="${transactionData.transactionList}">
                                 <c:if test="${item.key == value.code}" >
                                     <tr>
                                         <td>${value.createdDate}</td>
@@ -188,7 +188,6 @@
             success: function (response) {
                 $('#loading_image').hide();
                 window.location.href = "${customerEditURL}-" + response.id + "?message=insert_success";
-                window.location.href = "/admin/customer-list";
             },
             error: function () {
                 $('#loading_image').hide();

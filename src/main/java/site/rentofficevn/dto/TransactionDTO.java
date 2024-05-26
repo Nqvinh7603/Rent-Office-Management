@@ -1,19 +1,17 @@
 package site.rentofficevn.dto;
 
-import java.util.*;
-
-public class TransactionDTO extends AbstractDTO{
+public class TransactionDTO extends AbstractDTO<TransactionDTO>{
     private String code;
     private String note;
     private Long customerId;
 
-    private Map<String, String> transactionMap;
-    private List<TransactionDTO> transactionList;
+    /*private Map<String, String> transactionMap;
+    private List<TransactionDTO> transactionList;*/
 
     public TransactionDTO() {
     }
 
-    public TransactionDTO(Map<String, String> transactionMap, List<TransactionDTO> transactionList) {
+    /*public TransactionDTO(Map<String, String> transactionMap, List<TransactionDTO> transactionList) {
         this.transactionMap = transactionMap;
         this.transactionList = transactionList;
     }
@@ -32,7 +30,7 @@ public class TransactionDTO extends AbstractDTO{
 
     public void setTransactionList(List<TransactionDTO> transactionList) {
         this.transactionList = transactionList;
-    }
+    }*/
     public String getCode() {
         return code;
     }

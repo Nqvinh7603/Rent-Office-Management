@@ -77,7 +77,7 @@ public class CustomerController {
 
         mav.addObject(SystemConstant.CUSTOMER, customerDTO);
         mav.addObject(SystemConstant.CUSTOMER_ID, customerId);
-        mav.addObject(SystemConstant.TRANSACTION_DATA, transactionService.getTransactionData(customerId));
+        mav.addObject(SystemConstant.TRANSACTION, transactionService.getTransactionData(customerId));
 
         initMessageResponse(mav, request);
         return mav;

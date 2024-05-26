@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.rentofficevn.converter.TransactionConverter;
 import site.rentofficevn.dto.TransactionDTO;
+import site.rentofficevn.dto.TransactionTypeDTO;
 import site.rentofficevn.entity.TransactionEntity;
 import site.rentofficevn.enums.TransactionsEnum;
 import site.rentofficevn.repository.CustomerRepository;
@@ -13,6 +14,7 @@ import site.rentofficevn.repository.TransactionRepository;
 import site.rentofficevn.service.ITransactionService;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -42,16 +44,28 @@ public class TransactionService implements ITransactionService {
     }
 
     @Override
-    public TransactionDTO getTransactionData(Long customerId) {
-        Map<String, String> transactionMap = Arrays.stream(TransactionsEnum.values())
-                .collect(Collectors.toMap(Enum::toString, TransactionsEnum::getTransactionTypeValue));
-
+    public List<TransactionTypeDTO> getTransactionData(Long customerId) {
+        List<TransactionTypeDTO> transactionTypeList = Arrays.stream(TransactionsEnum.values())
+                .map(transactionEnum -> {
+                    TransactionTypeDTO transactionTypeDTO = new TransactionTypeDTO();
+                    transactionTypeDTO.setCode(transactionEnum.toString());
+                    transactionTypeDTO.setName(transactionEnum.getTransactionTypeValue());
+                    return transactionTypeDTO;
+                })
+                .collect(Collectors.toList());
         List<TransactionEntity> transactionList = customerRepository.findTransactionByCustomerId(customerId);
         List<TransactionDTO> transactionDTOList = transactionList.stream()
                 .map(transactionConverter::toDTO)
                 .collect(Collectors.toList());
 
-        return new TransactionDTO(transactionMap, transactionDTOList);
+        Map<String, List<TransactionDTO>> transactionsByType = transactionDTOList.stream()
+                .collect(Collectors.groupingBy(TransactionDTO::getCode));
+
+        transactionTypeList.forEach(transactionTypeDTO -> {
+            List<TransactionDTO> transactions = transactionsByType.get(transactionTypeDTO.getCode());
+            transactionTypeDTO.setTransactions(transactions != null ? transactions : Collections.emptyList());
+        });
+        return transactionTypeList;
     }
 
 }

@@ -30,15 +30,13 @@ public class CustomerService implements ICustomerService {
     private final CustomerConverter customerConverter;
     private final UserRepository userRepository;
     private final UserConverter userConverter;
-    private final TransactionService transactionService;
 
     @Autowired
-    public CustomerService(CustomerRepository customerRepository, CustomerConverter customerConverter, UserRepository userRepository, UserConverter userConverter, TransactionService transactionService) {
+    public CustomerService(CustomerRepository customerRepository, CustomerConverter customerConverter, UserRepository userRepository, UserConverter userConverter) {
         this.customerRepository = customerRepository;
         this.customerConverter = customerConverter;
         this.userRepository = userRepository;
         this.userConverter = userConverter;
-        this.transactionService = transactionService;
     }
 
     @Override

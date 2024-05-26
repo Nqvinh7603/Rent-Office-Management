@@ -2,8 +2,11 @@ package site.rentofficevn.service;
 
 import javassist.NotFoundException;
 import site.rentofficevn.dto.TransactionDTO;
+import site.rentofficevn.dto.TransactionTypeDTO;
+
+import java.util.*;
 
 public interface ITransactionService {
     TransactionDTO save(TransactionDTO transaction) throws NotFoundException;
-    TransactionDTO getTransactionData(Long customerId);
+    List<TransactionTypeDTO> getTransactionData(Long customerId);
 }

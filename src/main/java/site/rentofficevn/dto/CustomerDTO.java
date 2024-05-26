@@ -1,6 +1,6 @@
 package site.rentofficevn.dto;
 
-public class CustomerDTO extends AbstractDTO {
+public class CustomerDTO extends AbstractDTO<CustomerDTO> {
     private String fullName;
     private String phone;
     private String email;

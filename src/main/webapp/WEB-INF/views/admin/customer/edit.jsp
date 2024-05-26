@@ -100,51 +100,48 @@
                     </form:form>
                 </div>
             </div><!-- /.row -->
-
             <br>
-            <c:forEach var="item" items="${transactionData.transactionMap}">
+            <c:forEach var="transactionType" items="${transaction}">
                 <c:if test="${not empty customer.id}">
-                <div class="row">
-                    <div class="col-xs-12">
-                        <h4 style="color: darkred">${item.value}
-                            <button class="btn btn-white btn-info btn-bold"
-                                    type="button"
-                                    value="${item.key}"
-                                    data-toggle="tooltip" title="Thêm Giao Dịch"
-                                    onclick="createTraction(value)">
-                                <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                            </button>
-                        </h4>
-                        <table class="table table-bordered">
-                            <thead>
-                            <tr>
-                                <th>Ngày Tạo</th>
-                                <th>Người tạo</th>
-                                <th>Ghi Chú</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <c:forEach var="value" items="${transactionData.transactionList}">
-                                <c:if test="${item.key == value.code}" >
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <h4 style="color: darkred">${transactionType.name}
+                                <button class="btn btn-white btn-info btn-bold"
+                                        type="button"
+                                        value="${transactionType.code}"
+                                        data-toggle="tooltip" title="Thêm Giao Dịch"
+                                        onclick="createTransaction(value)">
+                                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                </button>
+                            </h4>
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Ngày Tạo</th>
+                                    <th>Người tạo</th>
+                                    <th>Ghi Chú</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <c:forEach var="transaction" items="${transactionType.transactions}">
                                     <tr>
-                                        <td>${value.createdDate}</td>
-                                        <td>${value.createdBy}</td>
-                                        <td>${value.note}</td>
+                                        <td>${transaction.createdDate}</td>
+                                        <td>${transaction.createdBy}</td>
+                                        <td>${transaction.note}</td>
                                     </tr>
-                                </c:if>
-                            </c:forEach>
-                            </tbody>
-                            <tfoot>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td><input type="text" id="note${item.key}"
-                                           class="form-control" name="${item.key}"></td>
-                            </tr>
-                            </tfoot>
-                        </table>
+                                </c:forEach>
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td><input type="text" id="note${transactionType.code}"
+                                               class="form-control" name="${transactionType.code}"></td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
                     </div>
-                </div>
                 </c:if>
             </c:forEach>
         </div> <!-- PAGE CONTENT ENDS -->
@@ -214,12 +211,14 @@
         });
     }
 
-    function createTraction(value) {
+    function createTransaction(transactionTypeCode) {
+        var note = $('#note' + transactionTypeCode).val();
         var data = {
-            "code" : value,
-            "note" : $("#note" + value + "").val(),
-            "customerId" : "${customer.id}"
+            "code": transactionTypeCode,
+            "note": note,
+            "customerId": "${customer.id}"
         };
+
         $('#loading_image_trans').show();
 
         $.ajax({
@@ -229,12 +228,12 @@
             dataType: "json",
             contentType: "application/json",
             success: function (response) {
-                window.location.reload()
+                $('#loading_image_trans').hide();
+                window.location.reload();
             },
             error: function (response) {
-                $('#loading_image').hide();
+                $('#loading_image_trans').hide();
                 showNotification('error', 'Đã xảy ra lỗi hệ thống, vui lòng thử lại sau.');
-
             }
         });
     }

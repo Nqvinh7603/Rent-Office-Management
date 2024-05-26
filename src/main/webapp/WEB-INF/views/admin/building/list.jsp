@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/common/taglib.jsp" %>
-<c:url var="buildingListURL" value="/admin/building-list"/>
+<c:url var="buildingListURL" value="/admin/building/list"/>
 <c:url var="buildingAPI" value="/api/building"/>
 <c:url var="assignmentAPI" value="/api/building/assignment-building"/>
 <html>
@@ -157,7 +157,7 @@
                     <a class="btn btn-corner btn-bold"
                        data-toggle="tooltip"
                        title="Thêm toà nhà"
-                       href='<c:url value="/admin/building-edit"/>'>
+                       href='<c:url value="/admin/building/edit"/>'>
                         <span><em class="fa fa-plus-circle"></em></span>
                     </a>
                     <button id="btnDeleteBuilding" type="button" disabled class="btn btn-danger btn-bold"
@@ -356,7 +356,7 @@
             dataType: "json",
             contentType: 'application/json',
             success: function () {
-                window.location.href = "<c:url value ='/admin/building-list?message=delete_success'/>"
+                window.location.href = "<c:url value ='/admin/building/list?message=delete_success'/>"
             },
             error: function () {
                 showNotification('error', 'Đã xảy ra lỗi hệ thống, vui lòng thử lại sau.');

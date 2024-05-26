@@ -43,7 +43,7 @@
             <b class="arrow"></b>
             <ul class="submenu">
                 <li class="">
-                    <a href='<c:url value='/admin/building-list'/>'>
+                    <a href='<c:url value='/admin/building/list'/>'>
                         <i class="menu-icon fa fa-caret-right"></i>
                         Danh sách tòa nhà
                     </a>

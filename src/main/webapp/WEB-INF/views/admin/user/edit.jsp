@@ -108,7 +108,7 @@
             if (roleCode != '') {
                 updateUser(dataArray, $('#userId').val());
             } else {
-                window.location.href = "<c:url value='/admin/user-edit-"+userId+"?message=role_require'/>";
+                window.location.href = "<c:url value='/admin/user/edit/"+userId+"?message=role_require'/>";
             }
         }
         else {
@@ -118,7 +118,7 @@
                 $('#loading_image').show();
                 addUser(dataArray);
             } else {
-                window.location.href = "<c:url value='/admin/user-edit?message=username_role_require'/>";
+                window.location.href = "<c:url value='/admin/user/edit?message=username_role_require'/>";
             }
         }
     });
@@ -138,10 +138,10 @@
             data: JSON.stringify(data),
             success: function (res) {
                 $('#loading_image').hide();
-                window.location.href = "<c:url value='/admin/user-edit-"+res.id+"?message=insert_success'/>";
+                window.location.href = "<c:url value='/admin/user/edit/"+res.id+"?message=insert_success'/>";
             },
             error: function (res) {
-                window.location.href = "<c:url value='/admin/user-edit-"+res.id+"?message=error_system'/>";
+                window.location.href = "<c:url value='/admin/user/edit/"+res.id+"?message=error_system'/>";
             }
         });
     }
@@ -154,10 +154,10 @@
             contentType: 'application/json',
             data: JSON.stringify(data),
             success: function (res) {
-                window.location.href = "<c:url value='/admin/user-edit-"+res.id+"?message=update_success'/>";
+                window.location.href = "<c:url value='/admin/user/edit/"+res.id+"?message=update_success'/>";
             },
             error: function (res) {
-                window.location.href = "<c:url value='/admin/user-edit-"+id+"?message=error_system'/>";
+                window.location.href = "<c:url value='/admin/user/edit/"+id+"?message=error_system'/>";
             }
         });
     }
@@ -169,10 +169,10 @@
             dataType: 'json',
             success: function (res) {
                 $('#loading_image').hide();
-                window.location.href = "<c:url value='/admin/user-edit-"+res.id+"?message=reset_password_success'/>";
+                window.location.href = "<c:url value='/admin/user/edit/"+res.id+"?message=reset_password_success'/>";
             },
             error: function (res) {
-                window.location.href = "<c:url value='/admin/user-edit-"+id+"?message=error_system'/>";
+                window.location.href = "<c:url value='/admin/user/edit/"+id+"?message=error_system'/>";
             }
         });
     }

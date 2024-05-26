@@ -122,14 +122,14 @@
                 data: JSON.stringify(data),
                 success: function (res) {
                     if (res == 'update_success') {
-                        window.location.href = "<c:url value='/admin/profile-password?message=update_success'/>";
+                        window.location.href = "<c:url value='/admin/profile/password?message=update_success'/>";
                     } else if (res == 'change_password_fail') {
-                        window.location.href = "<c:url value='/admin/profile-password?message=change_password_fail'/>";
+                        window.location.href = "<c:url value='/admin/profile/password?message=change_password_fail'/>";
                     }
                 },
                 error: function (res) {
                     console.log(res);
-                    window.location.href = "<c:url value='/admin/profile-password?message=error_system'/>";
+                    window.location.href = "<c:url value='/admin/profile/password?message=error_system'/>";
                 }
             });
         }

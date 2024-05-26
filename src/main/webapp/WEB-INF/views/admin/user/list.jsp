@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@include file="/common/taglib.jsp" %>
-<c:url var="formUrl" value="/admin/user-list"/>
+<c:url var="formUrl" value="/admin/user/list"/>
 <c:url var="formAjax" value="/api/user"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -73,7 +73,7 @@
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">
                                                         <%--<spring:message code="label.search.value"/>--%>
-                                                            Giá trị cần tìm
+                                                            Tìm kiếm tên người dùng
                                                     </label>
                                                     <div class="col-sm-8">
                                                         <div class="fg-line">
@@ -104,7 +104,7 @@
                                                data-toggle="tooltip"
                                                <%--title='<spring:message code="label.user.add"/>'--%>
                                                title="Thêm người dùng"
-                                               href='<c:url value="/admin/user-edit"/>'>
+                                               href='<c:url value="/admin/user/edit"/>'>
 															<span>
 																<i class="fa fa-plus-circle bigger-110 purple"></i>
 															</span>
@@ -147,7 +147,7 @@
                                             <c:if test="${tableList.roleCode != 'ADMIN'}">
                                                 <a class="btn btn-sm btn-primary btn-edit" data-toggle="tooltip"
                                                    title="Cập nhật người dùng"
-                                                   href='<c:url value="/admin/user-edit-${tableList.id}"/>'>
+                                                   href='<c:url value="/admin/user/edit/${tableList.id}"/>'>
                                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                 </a>
                                             </c:if>
@@ -168,7 +168,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        var someJsVar = "<c:out value='${addOrEditNews}'/>";
+        var someJsVar = "<:out value='${addOrEditNews}'/>";
         $('#btnSearch').click(function () {
             $('#listForm').submit();
         });
@@ -192,11 +192,11 @@
             contentType: 'application/json',
             data: JSON.stringify(data),
             success: function (res) {
-                window.location.href = "<c:url value='/admin/user-list?message=delete_success'/>";
+                window.location.href = "<c:url value='/admin/user/list?message=delete_success'/>";
             },
             error: function (res) {
                 console.log(res);
-                window.location.href = "<c:url value='/admin/user-list?message=error_system'/>";
+                window.location.href = "<c:url value='/admin/user/list?message=error_system'/>";
             }
         });
     }

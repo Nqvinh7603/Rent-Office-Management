@@ -1,7 +1,7 @@
 <%@include file="/common/taglib.jsp"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <c:url var = "buildingAPI" value ="/api/building"/>
-<c:url var ="buildingEditURL" value="/admin/building-edit"/>
+<c:url var ="buildingEditURL" value="/admin/building/edit"/>
 <html>
 <head>
     <c:if test="${empty buildingId}">
@@ -330,8 +330,7 @@
             contentType: 'application/json',
             success: function (response) {
                 $('#loading_image').hide();
-                window.location.href = "${buildingEditURL}-" + response.id + "?message=insert_success";
-                window.location.href = "/admin/building-list";
+                window.location.href = "${buildingEditURL}/" + response.id + "?message=insert_success";
             },
             error: function () {
                 $('#loading_image').hide();
@@ -349,8 +348,7 @@
             contentType: 'application/json',
             success: function (response) {
                 $('#loading_image').hide();
-                window.location.href = "${buildingEditURL}-" + response.id + "?message=update_success";
-                window.location.href = "/admin/building-list";
+                window.location.href = "${buildingEditURL}/" + response.id + "?message=update_success";
             },
             error: function () {
                 showNotification('error', 'Đã xảy ra lỗi hệ thống, vui lòng thử lại sau.');
@@ -386,7 +384,7 @@
         let id= $('#buildingId').val();
 
         if ('' !== id) {
-            showAlertBeforeCanceling("/admin/building-list");
+            showAlertBeforeCanceling("/admin/building/list");
         }
     });
 </script>

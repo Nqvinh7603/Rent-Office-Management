@@ -207,7 +207,7 @@
                             <a class="btn btn-xs btn-info"
                                data-toggle="tooltip"
                                title="Sửa tòa nhà"
-                               href='<c:url value='/admin/building-edit-${buildingList.id}'/>'>
+                               href='<c:url value='/admin/building/edit/${buildingList.id}'/>'>
                                 <span><em class="ace-icon fa fa-pencil "></em></span>
                             </a>
                             <button class="btn btn-xs" data-toggle="tooltip"

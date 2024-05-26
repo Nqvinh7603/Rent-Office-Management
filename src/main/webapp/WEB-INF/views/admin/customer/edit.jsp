@@ -1,7 +1,7 @@
 <%@include file="/common/taglib.jsp" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <c:url var="customerAPI" value="/api/customer"/>
-<c:url var="customerEditURL" value="/admin/customer-edit"/>
+<c:url var="customerEditURL" value="/admin/customer/edit"/>
 <html>
 <head>
     <c:if test="${empty customerId}">
@@ -184,7 +184,7 @@
             contentType: 'application/json',
             success: function (response) {
                 $('#loading_image').hide();
-                window.location.href = "${customerEditURL}-" + response.id + "?message=insert_success";
+                window.location.href = "${customerEditURL}/" + response.id + "?message=insert_success";
             },
             error: function () {
                 $('#loading_image').hide();
@@ -202,8 +202,7 @@
             contentType: 'application/json',
             success: function (response) {
                 $('#loading_image').hide();
-                window.location.href = "${customerEditURL}-" + response.id + "?message=update_success";
-                window.location.href = "/admin/customer-list";
+                window.location.href = "${customerEditURL}/" + response.id + "?message=update_success";
             },
             error: function () {
                 showNotification('error', 'Đã xảy ra lỗi hệ thống, vui lòng thử lại sau.');
@@ -242,7 +241,7 @@
         let id = $('#customerId').val();
 
         if ('' !== id) {
-            showAlertBeforeCanceling("/admin/customer-list");
+            showAlertBeforeCanceling("/admin/customer/list");
         }
     });
 </script>

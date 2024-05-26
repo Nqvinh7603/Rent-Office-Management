@@ -69,7 +69,7 @@ public class BuildingController {
 
         return mav;
     }
-    @GetMapping("/building/edit-{id}")
+    @GetMapping("/building/edit/{id}")
     public ModelAndView updateBuilding(@PathVariable(value="id",required = false) Long buildingId, HttpServletRequest request){
         ModelAndView mav = new ModelAndView("admin/building/edit");
         BuildingDTO buildingDTO = buildingService.findById(buildingId);

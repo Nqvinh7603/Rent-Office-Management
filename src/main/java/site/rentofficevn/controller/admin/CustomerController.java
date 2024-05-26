@@ -40,7 +40,7 @@ public class CustomerController {
     }
 
 
-    @GetMapping("/customer-list")
+    @GetMapping("/customer/list")
     public ModelAndView listController(@ModelAttribute("modelSearch") CustomerSearchRequest customerSearchRequest, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("admin/customer/list");
 
@@ -62,14 +62,14 @@ public class CustomerController {
         return mav;
     }
 
-    @GetMapping("/customer-edit")
+    @GetMapping("/customer/edit")
     public ModelAndView createCustomer(){
         ModelAndView mav = new ModelAndView("admin/customer/edit");
         CustomerDTO customerDTO = new CustomerDTO();
         mav.addObject(SystemConstant.CUSTOMER, customerDTO);
         return mav;
     }
-    @GetMapping("/customer-edit-{id}")
+    @GetMapping("/customer/edit/{id}")
     public ModelAndView updateCustomer(@PathVariable(value="id",required = false) Long customerId, HttpServletRequest request){
         ModelAndView mav = new ModelAndView("admin/customer/edit");
         CustomerDTO customerDTO = customerService.findById(customerId);

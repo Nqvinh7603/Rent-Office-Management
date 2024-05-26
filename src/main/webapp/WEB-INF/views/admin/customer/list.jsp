@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/common/taglib.jsp" %>
-<c:url var="customerListURL" value="/admin/customer-list"/>
+<c:url var="customerListURL" value="/admin/customer/list"/>
 <c:url var="customerAPI" value="/api/customer"/>
 <c:url var="assignmentAPI" value="/api/customer/assignment-customer"/>
 <html>
@@ -89,7 +89,7 @@
                         <a class="btn btn-corner btn-bold"
                            data-toggle="tooltip"
                            title="Thêm khách hàng"
-                           href='<c:url value="/admin/customer-edit"/>'>
+                           href='<c:url value="/admin/customer/edit"/>'>
                             <span><em class="fa fa-plus-circle"></em></span>
                         </a>
                         <button id="btnDeleteCustomer" type="button" disabled class="btn btn-danger btn-bold"
@@ -137,7 +137,7 @@
                                 <a class="btn btn-xs btn-info"
                                    data-toggle="tooltip"
                                    title="Sửa thông tin khách hàng"
-                                   href='<c:url value='/admin/customer-edit-${customerList.id}'/>'>
+                                   href='<c:url value='/admin/customer/edit/${customerList.id}'/>'>
                                     <span><em class="ace-icon fa fa-pencil "></em></span>
                                 </a>
                                 <button class="btn btn-xs" data-toggle="tooltip"
@@ -290,7 +290,7 @@
             dataType: "json",
             contentType: 'application/json',
             success: function () {
-                window.location.href = "<c:url value ='/admin/customer-list?message=delete_success'/>"
+                window.location.href = "<c:url value ='/admin/customer/list?message=delete_success'/>"
             },
             error: function () {
                 showNotification('error', 'Đã xảy ra lỗi hệ thống, vui lòng thử lại sau.');

@@ -33,8 +33,8 @@ public class UserController {
 	@Autowired
 	private MessageUtils messageUtil;
 
-	@RequestMapping(value = "/admin/user-list", method = RequestMethod.GET)
-	public ModelAndView getNews(@ModelAttribute(SystemConstant.MODEL) UserDTO model, HttpServletRequest request) {
+	@RequestMapping(value = "/admin/user/list", method = RequestMethod.GET)
+	public ModelAndView getUsers(@ModelAttribute(SystemConstant.MODEL) UserDTO model, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("admin/user/list");
 		DisplayTagUtils.of(request, model);
 		List<UserDTO> news = userService.getUsers(model.getSearchValue(),
@@ -46,7 +46,7 @@ public class UserController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/admin/user-edit", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/user/edit", method = RequestMethod.GET)
 	public ModelAndView addUser(@ModelAttribute(SystemConstant.MODEL) UserDTO model, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("admin/user/edit");
 		model.setRoleDTOs(roleService.getRoles());
@@ -55,7 +55,7 @@ public class UserController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/admin/profile-{username}", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/profile/{username}", method = RequestMethod.GET)
 	public ModelAndView updateProfile(@PathVariable("username") String username, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("admin/user/profile");
 		UserDTO model = userService.findOneByUserName(username);
@@ -65,7 +65,7 @@ public class UserController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/admin/user-edit-{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/user/edit/{id}", method = RequestMethod.GET)
 	public ModelAndView updateUser(@PathVariable("id") Long id, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("admin/user/edit");
 		UserDTO model = userService.findUserById(id);
@@ -75,7 +75,7 @@ public class UserController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/admin/profile-password", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/profile/password", method = RequestMethod.GET)
 	public ModelAndView updatePassword(HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("admin/user/password");
 		UserDTO model = userService.findOneByUserName(SecurityUtils.getPrincipal().getUsername());

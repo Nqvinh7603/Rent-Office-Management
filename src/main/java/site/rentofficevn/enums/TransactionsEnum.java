@@ -13,4 +13,6 @@ public enum TransactionsEnum {
     TransactionsEnum(String transactionTypeValue) {
         this.transactionTypeValue = transactionTypeValue;
     }
+
+
 }

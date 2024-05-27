@@ -13,10 +13,7 @@ import site.rentofficevn.repository.CustomerRepository;
 import site.rentofficevn.repository.TransactionRepository;
 import site.rentofficevn.service.ITransactionService;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,27 +42,24 @@ public class TransactionService implements ITransactionService {
 
     @Override
     public List<TransactionTypeDTO> getTransactionData(Long customerId) {
-        List<TransactionTypeDTO> transactionTypeList = Arrays.stream(TransactionsEnum.values())
-                .map(transactionEnum -> {
-                    TransactionTypeDTO transactionTypeDTO = new TransactionTypeDTO();
-                    transactionTypeDTO.setCode(transactionEnum.toString());
-                    transactionTypeDTO.setName(transactionEnum.getTransactionTypeValue());
-                    return transactionTypeDTO;
-                })
-                .collect(Collectors.toList());
-        List<TransactionEntity> transactionList = customerRepository.findTransactionByCustomerId(customerId);
-        List<TransactionDTO> transactionDTOList = transactionList.stream()
-                .map(transactionConverter::toDTO)
-                .collect(Collectors.toList());
+        List<TransactionTypeDTO> transactionResponseDTOS = new ArrayList<>();
 
-        Map<String, List<TransactionDTO>> transactionsByType = transactionDTOList.stream()
+        Map<String, List<TransactionDTO>> transactions = transactionRepository.findByCustomerId(customerId).stream()
+                .map(transactionConverter::toDTO)
                 .collect(Collectors.groupingBy(TransactionDTO::getCode));
 
-        transactionTypeList.forEach(transactionTypeDTO -> {
-            List<TransactionDTO> transactions = transactionsByType.get(transactionTypeDTO.getCode());
-            transactionTypeDTO.setTransactions(transactions != null ? transactions : Collections.emptyList());
+        Arrays.stream(TransactionsEnum.values()).forEach(transactionType -> {
+            TransactionTypeDTO transactionResponseDTO = new TransactionTypeDTO();
+
+            transactionResponseDTO.setCode(transactionType.name());
+            transactionResponseDTO.setName(transactionType.getTransactionTypeValue());
+            transactionResponseDTO.setTransactions(transactions.get(transactionType.name()));
+
+            transactionResponseDTOS.add(transactionResponseDTO);
         });
-        return transactionTypeList;
+
+        return transactionResponseDTOS;
     }
+
 
 }

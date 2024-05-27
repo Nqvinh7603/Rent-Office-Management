@@ -1,6 +1,7 @@
 package site.rentofficevn.repository;
 
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import site.rentofficevn.entity.UserEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,10 +19,10 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     List<UserEntity> findByStatusAndRoles_Code(Integer status, String roleCode);
     List<UserEntity> findByIdIn(List<Long> ids);
 
-    @Query(value = "SELECT u.fullname " +
-            "FROM user u " +
-            "JOIN assignmentcustomer ac ON u.id = ac.staffid " +
-            "WHERE ac.customerid = :customerId", nativeQuery = true)
-    List<String> findFullNameByCustomerId(Long customerId);
+    @Query("SELECT u.fullName " +
+            "FROM CustomerEntity c " +
+            "JOIN c.userEntities u " +
+            "WHERE c.id = :customerId")
+    List<String> findFullNameByCustomerId(@Param("customerId") Long customerId);
 
 }

@@ -5,11 +5,18 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+import javax.servlet.Filter;
+
 @Configuration
 @ComponentScan(basePackages = "site.rentofficevn")
-public class ModelMapperConfig {
+public class ApplicationConfig {
     @Bean
     public ModelMapper modelMapper(){
         return new ModelMapper();
+    }
+
+    @Bean
+    public Filter siteMeshFilter(){
+        return new MySiteMeshFilter();
     }
 }

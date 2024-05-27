@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title><dec:title default="Trang chủ" /></title>
+	<title><sitemesh:write property="title"/></title>
 
 	<link rel="stylesheet" href="<c:url value="/template/admin/assets/css/bootstrap.min.css" />" />
 	<link rel="stylesheet" href="<c:url value="/template/admin/font-awesome/4.5.0/css/font-awesome.min.css" />" />
@@ -31,8 +31,8 @@
 		<!-- header -->
     	<%@ include file="/common/admin/menu.jsp" %>
     	<!-- header -->
-		
-		<dec:body/>
+
+		<sitemesh:write property="body"/>
 		
 		<!-- footer -->
     	<%@ include file="/common/admin/footer.jsp" %>

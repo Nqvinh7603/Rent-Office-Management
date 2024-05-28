@@ -15,7 +15,6 @@ import site.rentofficevn.dto.response.CustomerSearchResponse;
 import site.rentofficevn.service.impl.CustomerService;
 import site.rentofficevn.service.impl.TransactionService;
 import site.rentofficevn.service.impl.UserService;
-import site.rentofficevn.utils.DisplayTagUtils;
 import site.rentofficevn.utils.MessageUtils;
 import site.rentofficevn.utils.StringUtils;
 
@@ -45,7 +44,7 @@ public class CustomerController {
         ModelAndView mav = new ModelAndView("admin/customer/list");
 
         customerSearchRequest.setTableId("customerList");
-        DisplayTagUtils.of(request, customerSearchRequest);
+        //DisplayTagUtils.of(request, customerSearchRequest);
 
         List<CustomerSearchResponse> foundCustomers = customerService.findByCondition(customerSearchRequest,
                 PageRequest.of(customerSearchRequest.getPage() - 1, customerSearchRequest.getMaxPageItems()));

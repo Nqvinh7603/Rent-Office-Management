@@ -5,7 +5,6 @@ import site.rentofficevn.dto.UserDTO;
 import site.rentofficevn.security.utils.SecurityUtils;
 import site.rentofficevn.service.IUserService;
 import site.rentofficevn.service.impl.RoleService;
-import site.rentofficevn.utils.DisplayTagUtils;
 import site.rentofficevn.utils.MessageUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +35,7 @@ public class UserController {
 	@RequestMapping(value = "/admin/user/list", method = RequestMethod.GET)
 	public ModelAndView getUsers(@ModelAttribute(SystemConstant.MODEL) UserDTO model, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("admin/user/list");
-		DisplayTagUtils.of(request, model);
+		//DisplayTagUtils.of(request, model);
 		List<UserDTO> news = userService.getUsers(model.getSearchValue(),
 				PageRequest.of(model.getPage() - 1, model.getMaxPageItems()));
 		model.setListResult(news);

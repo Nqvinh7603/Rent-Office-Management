@@ -10,7 +10,6 @@ import site.rentofficevn.dto.request.BuildingSearchRequest;
 import site.rentofficevn.dto.response.BuildingSearchResponse;
 import site.rentofficevn.service.impl.BuildingService;
 import site.rentofficevn.service.impl.UserService;
-import site.rentofficevn.utils.DisplayTagUtils;
 import org.springframework.data.domain.PageRequest;
 import site.rentofficevn.utils.MessageUtils;
 import site.rentofficevn.utils.StringUtils;
@@ -39,7 +38,7 @@ public class BuildingController {
         ModelAndView mav = new ModelAndView("admin/building/list");
 
         buildingSearchRequest.setTableId("buildingList");
-        DisplayTagUtils.of(request, buildingSearchRequest);
+        //DisplayTagUtils.of(request, buildingSearchRequest);
 
         List< BuildingSearchResponse> foundBuildings = buildingService.findByCondition(buildingSearchRequest,
                 PageRequest.of(buildingSearchRequest.getPage() - 1, buildingSearchRequest.getMaxPageItems()));

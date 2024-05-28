@@ -18,6 +18,11 @@
 	<%--sweetalert--%>
 	<script type='text/javascript' src="<c:url value="/template/admin/assets/sweetalert2/sweetalert2.min.js"/>"></script>
 	<link rel="stylesheet" href="<c:url value="/template/admin/assets/sweetalert2/sweetalert2.min.css"/>">
+
+	<%--Pagination--%>
+	<script src="<c:url value="/template/admin/js/paging/jquery.twbsPagination.js"/>"></script>
+	<link  href="<c:url value="/template/admin/css/pagination.css"/>" rel="stylesheet" type="text/css" />
+
 </head>
 <body class="no-skin">
 	<!-- header -->

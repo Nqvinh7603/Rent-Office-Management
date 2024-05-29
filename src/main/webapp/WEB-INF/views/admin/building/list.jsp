@@ -359,22 +359,6 @@
         });
     });
 
-   /* $(document).ready(function () {
-        const checkboxAll = $('#checkAll');
-        const buildingItemsCheckbox = $('#buildingList input[type=checkbox][name="buildingIds"]');
-
-        buildingItemsCheckbox.change(function () {
-            const numberOfChecked = $('#buildingList input[type=checkbox][name="buildingIds"]:checked').length;
-            const isCheckedAll = buildingItemsCheckbox.length === numberOfChecked;
-            checkboxAll.prop('checked', isCheckedAll);
-
-            if (1 <= numberOfChecked) {
-                $('#btnDeleteBuilding').attr('disabled', false);
-            } else {
-                $('#btnDeleteBuilding').attr('disabled', true);
-            }
-        });
-    });*/
     $(document).ready(function () {
         const checkboxAll = $('#checkAll');
         const buildingItemsCheckbox = $('#buildingList input[type=checkbox][name="buildingIds"]');

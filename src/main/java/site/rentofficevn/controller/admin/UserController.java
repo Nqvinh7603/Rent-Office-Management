@@ -35,11 +35,11 @@ public class UserController {
 	@RequestMapping(value = "/admin/user/list", method = RequestMethod.GET)
 	public ModelAndView getUsers(@ModelAttribute(SystemConstant.MODEL) UserDTO model, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("admin/user/list");
-		//DisplayTagUtils.of(request, model);
-		List<UserDTO> news = userService.getUsers(model.getSearchValue(),
+		List<UserDTO> users = userService.getUsers(model.getSearchValue(),
 				PageRequest.of(model.getPage() - 1, model.getMaxPageItems()));
-		model.setListResult(news);
+		model.setListResult(users);
 		model.setTotalItems(userService.getTotalItems(model.getSearchValue()));
+		model.setTotalPage((int) Math.ceil((double) model.getTotalItems() / model.getMaxPageItems()));
 		mav.addObject(SystemConstant.MODEL, model);
 		initMessageResponse(mav, request);
 		return mav;

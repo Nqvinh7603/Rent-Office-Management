@@ -125,40 +125,63 @@
                         <div class="row">
                             <div class="col-xs-12">
                                 <div class="table-responsive">
-                                    <display:table name="model.listResult" cellspacing="0" cellpadding="0"
-                                                   requestURI="${formUrl}" partialList="true" sort="external"
-                                                   size="${model.totalItems}" defaultsort="2" defaultorder="ascending"
-                                                   id="tableList" pagesize="${model.maxPageItems}"
-                                                   export="false"
-                                                   class="table table-fcv-ace table-striped table-bordered table-hover dataTable no-footer"
-                                                   style="margin: 3em 0 1.5em;">
-                                        <display:column title="<fieldset class='form-group'>
-												        <input type='checkbox' id='checkAll' class='check-box-element'>
-												        </fieldset>" class="center select-cell"
-                                                        headerClass="center select-cell">
-                                            <fieldset>
-                                                <input type="checkbox" name="checkList" value="${tableList.id}"
-                                                       id="checkbox_${tableList.id}" class="check-box-element"/>
-                                            </fieldset>
-                                        </display:column>
-                                        <display:column headerClass="text-left" property="userName" title="Tên"/>
-                                        <display:column headerClass="text-left" property="fullName" title="full name"/>
-                                        <display:column headerClass="col-actions" title="Thao tác">
-                                            <c:if test="${tableList.roleCode != 'ADMIN'}">
-                                                <a class="btn btn-sm btn-primary btn-edit" data-toggle="tooltip"
-                                                   title="Cập nhật người dùng"
-                                                   href='<c:url value="/admin/user/edit/${tableList.id}"/>'>
-                                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                                </a>
-                                            </c:if>
-                                            <c:if test="${tableList.roleCode == 'ADMIN'}">
-                                               <p>Không được thao tác</p>
-                                            </c:if>
-                                        </display:column>
-                                    </display:table>
+                                    <table id="tableList"
+                                           class="table table-fcv-ace table-striped table-bordered table-hover dataTable no-footer"
+                                           style="margin: 3em 0 1.5em;">
+                                        <thead>
+                                        <tr>
+                                            <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
+                                                <th class="left select-cell">
+                                                    <fieldset class="form-group"><input type="checkbox" id="checkAll"
+                                                                                        class="check-box-element"></fieldset>
+                                                </th>
+                                            </security:authorize>
+                                            <th class="text-left">Tên đăng nhập</th>
+                                            <th class="text-left">Họ và tên đầy đủ</th>
+                                            <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
+                                                <th class="col-actions">Thao tác</th>
+                                            </security:authorize>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <c:forEach var="item" items="${model.listResult}">
+                                            <tr>
+                                                <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
+                                                    <td>
+                                                        <input type="checkbox" name="customerIds" value="${tableList.id}"
+                                                               id="checkbox_${tableList.id}" class="check-box-element"/>
+                                                    </td>
+                                                </security:authorize>
+                                                <td>${item.userName}</td>
+                                                <td>${item.fullName}</td>
+                                                <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
+                                                    <td>
+                                                        <c:if test="${item.roleCode != 'ADMIN'}">
+                                                        <c:url var="editUser" value="/admin/user/edit/${item.id}">
+                                                            <c:param name="id" value="${item.id}"/>
+                                                        </c:url>
+                                                        <a class="btn btn-xs btn-info" data-toggle="tooltip"
+                                                           title="Cập nhật thông tin người dùng" href='${editUser}'><i
+                                                                class="fa fa-pencil-square-o"
+                                                                aria-hidden="true"></i>
+                                                        </a>
+                                                        </c:if>
+                                                        <c:if test="${item.roleCode == 'ADMIN'}">
+                                                            <p>Không được thao tác</p>
+                                                        </c:if>
+                                                    </td>
+                                                </security:authorize>
+                                            </tr>
+                                        </c:forEach>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
+                        <div class="text-center">
+                            <ul id="pagination" class="pagination"></ul>
+                        </div>
+                        <form:hidden path="page" id="page"/>
                     </div>
                 </div>
             </div>
@@ -168,9 +191,31 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        var someJsVar = "<:out value='${addOrEditNews}'/>";
         $('#btnSearch').click(function () {
+            $('#page').val(1);
             $('#listForm').submit();
+        });
+    });
+
+    var totalPages = ${model.totalPages};
+    var currentPage = ${model.page};
+    var totalItems = ${model.totalItems};
+    $(function () {
+        window.pagObj = $('#pagination').twbsPagination({
+            totalPages: totalPages,
+            visiblePages: 10,
+            startPage: currentPage,
+            onPageClick: function (event, page) {
+                if (currentPage !== page) {
+                    $('#page').val(page);
+                    $('#listForm').submit();
+                }
+            },
+            // Text labels
+            first: 'Trang đầu',
+            prev: 'Trang trước',
+            next: 'Tiếp theo',
+            last: 'Trang cuối',
         });
     });
 

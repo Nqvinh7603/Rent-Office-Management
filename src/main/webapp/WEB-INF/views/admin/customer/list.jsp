@@ -257,26 +257,6 @@
 </div>
 
 <script type="text/javascript">
-   /* $(document).ready(function () {
-        const checkboxAll = $('#checkAll');
-        const customerItemsCheckbox = $('#customerList input[type=checkbox][name="customerIds"]');
-
-        customerItemsCheckbox.change(function () {
-            const numberOfChecked = $('#customerList input[type=checkbox][name="customerIds"]:checked').length;
-            const isCheckedAll = customerItemsCheckbox.length === numberOfChecked;
-            checkboxAll.prop('checked', isCheckedAll);
-
-            if (1 <= numberOfChecked) {
-                $('#btnDeleteCustomer').attr('disabled', false);
-            } else {
-                $('#btnDeleteCustomer').attr('disabled', true);
-            }
-        });
-
-        $('#btnCloseModal').click(function () {
-            location.reload();
-        });
-    });*/
     $(document).ready(function () {
         const checkboxAll = $('#checkAll');
         const customerItemsCheckbox = $('#customerList input[type=checkbox][name="customerIds"]');

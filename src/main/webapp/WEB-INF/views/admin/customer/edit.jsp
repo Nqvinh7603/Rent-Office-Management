@@ -239,10 +239,10 @@
 
     $("#btnCancel").click(function () {
         let id = $('#customerId').val();
-
-        if ('' !== id) {
+       /* if ('' !== id) {
             showAlertBeforeCanceling("/admin/customer/list");
-        }
+        }*/
+        showAlertBeforeCanceling("/admin/customer/list");
     });
 </script>
 </body>

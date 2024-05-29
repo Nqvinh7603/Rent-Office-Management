@@ -379,13 +379,12 @@
             reader.readAsDataURL(input.files[0]);
         }
     }
-
     $("#btnCancel").click(function () {
         let id= $('#buildingId').val();
-
-        if ('' !== id) {
+        /*if ('' !== id) {
             showAlertBeforeCanceling("/admin/building/list");
-        }
+        }*/
+        showAlertBeforeCanceling("/admin/building/list");
     });
 </script>
 </body>

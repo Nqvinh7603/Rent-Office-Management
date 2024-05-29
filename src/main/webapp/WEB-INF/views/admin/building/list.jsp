@@ -203,8 +203,8 @@
                             <tr>
                                 <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
                                     <td>
-                                        <input type="checkbox" name="buildingIds" value="${buildingList.id}"
-                                               id="checkbox_${buildingList.id}" class="check-box-element"/>
+                                        <input type="checkbox" name="buildingIds" value="${item.id}"
+                                               id="checkbox_${item.id}" class="check-box-element"/>
                                     </td>
                                 </security:authorize>
                                 <td>${item.createdDate}</td>

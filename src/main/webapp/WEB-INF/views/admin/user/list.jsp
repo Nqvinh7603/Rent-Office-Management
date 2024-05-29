@@ -145,8 +145,8 @@
                                                 <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
                                                     <td>
                                                         <input type="checkbox" name="customerIds"
-                                                               value="${tableList.id}"
-                                                               id="checkbox_${tableList.id}" class="check-box-element"/>
+                                                               value="${item.id}"
+                                                               id="checkbox_${item.id}" class="check-box-element"/>
                                                     </td>
                                                 </security:authorize>
                                                 <td>${item.userName}</td>

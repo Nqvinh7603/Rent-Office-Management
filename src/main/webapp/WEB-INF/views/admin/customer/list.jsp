@@ -82,12 +82,12 @@
                         </div>
                     </div>
                 </div>
-                    <%--</div>--%>
-                </br>
+                
+                <br>
                 <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
                     <div class="row">
                         <div class="col-xs-12">
-                            <div class="pull-right" style="margin-right: 20px">
+                            <div class="pull-right">
                                 <a class="btn btn-corner btn-bold"
                                    data-toggle="tooltip"
                                    title="Thêm khách hàng"
@@ -102,7 +102,6 @@
                         </div>
                     </div>
                 </security:authorize>
-                <br/>
                 <div class="row">
                     <div class="col-xs-12">
                         <div class="table-responsive">

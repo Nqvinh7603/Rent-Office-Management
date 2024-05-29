@@ -1,6 +1,6 @@
 package site.rentofficevn.builder;
 
-import javax.persistence.Column;
+import jakarta.persistence.Column;
 
 public class CustomerSearchBuilder {
 

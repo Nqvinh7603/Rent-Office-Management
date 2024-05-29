@@ -74,7 +74,7 @@ public class AbstractDTO<T> implements Serializable {
     }
 
     public int getTotalPages() {
-        return (int) Math.ceil((double) this.getTotalItems() / this.getMaxPageItems());
+        return totalPage;
     }
 
     public int getMaxPageItems() {

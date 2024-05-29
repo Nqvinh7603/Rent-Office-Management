@@ -9,10 +9,10 @@ import site.rentofficevn.enums.SpecialSearchParamsEnum;
 import site.rentofficevn.repository.custom.BuildingRepositoryCustom;
 import site.rentofficevn.utils.QueryBuilderUtils;
 
-import javax.persistence.Column;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import jakarta.persistence.Column;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;

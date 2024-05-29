@@ -97,23 +97,26 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="table-btn-controls">
-                                    <div class="pull-right tableTools-container">
-                                        <a flag="info"
-                                           class="btn btn-corner btn-bold"
-                                           data-toggle="tooltip"
-                                            <%--title='<spring:message code="label.user.add"/>'--%>
-                                           title="Thêm người dùng"
-                                           href='<c:url value="/admin/user/edit"/>'>
-                                            <span><em class="fa fa-plus-circle"></em></span>
-                                        </a>
-                                        <button id="btnDelete" type="button" disabled
-                                                class="btn btn-danger btn-bold"
-                                                data-toggle="tooltip"
-                                                title="Xóa người dùng" onclick="warningBeforeDelete()">
-                                            <span><em class="fa fa-trash"></em></span>
-                                        </button>
-                                    </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="pull-right">
+                                    <a flag="info"
+                                       class="btn btn-corner btn-bold"
+                                       data-toggle="tooltip"
+                                        <%--title='<spring:message code="label.user.add"/>'--%>
+                                       title="Thêm người dùng"
+                                       href='<c:url value="/admin/user/edit"/>'>
+                                        <span><em class="fa fa-plus-circle"></em></span>
+                                    </a>
+                                    <button id="btnDelete" type="button" disabled
+                                            class="btn btn-danger btn-bold"
+                                            data-toggle="tooltip"
+                                            title="Xóa người dùng" onclick="warningBeforeDelete()">
+                                        <span><em class="fa fa-trash"></em></span>
+                                    </button>
                                 </div>
                             </div>
                         </div>

@@ -1,5 +1,6 @@
 package site.rentofficevn.config;
 
+import jakarta.servlet.DispatcherType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.web.SecurityFilterChain;
@@ -43,24 +44,26 @@ public class WebSecurityConfig {
 
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-                http.csrf().disable()
-                .authorizeRequests()
-                        .antMatchers("/admin/building").authenticated()
-                        .antMatchers("/admin/building/edit").hasAnyRole("MANAGER","ADMIN")
-                        .antMatchers("/admin/building/edit/**").authenticated()
-                        .antMatchers("/admin/customer").authenticated()
-                        .antMatchers("/admin/customer/edit").hasAnyRole("MANAGER","ADMIN")
-                        .antMatchers("/admin/customer/edit/**").authenticated()
-                        .antMatchers("/admin/user**").hasRole("ADMIN")
-                        .antMatchers("/login", "/resource/**", "/trang-chu", "/api/**").permitAll()
-                .and()
-                .formLogin().loginPage("/login").usernameParameter("j_username").passwordParameter("j_password").permitAll()
+                http.csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/admin/building").authenticated()
+                        .requestMatchers("/admin/building/edit").hasAnyRole("MANAGER","ADMIN")
+                        .requestMatchers("/admin/building/edit/**").authenticated()
+                        .requestMatchers("/admin/customer").authenticated()
+                        .requestMatchers("/admin/customer/edit").hasAnyRole("MANAGER","ADMIN")
+                        .requestMatchers("/admin/customer/edit/**").authenticated()
+                        .requestMatchers("/admin/user**").hasRole("ADMIN")
+                        .requestMatchers("/login", "/resource/**", "/trang-chu", "/api/**").permitAll()
+                        .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
+                        .requestMatchers("/template/**").permitAll()
+                        .anyRequest().authenticated())
+                .formLogin(form -> form.loginPage("/login").usernameParameter("j_username").passwordParameter("j_password").permitAll()
                 .loginProcessingUrl("/j_spring_security_check")
                 .successHandler(myAuthenticationSuccessHandler())
-                .failureUrl("/login?incorrectAccount").and()
-                .logout().logoutUrl("/logout").deleteCookies("JSESSIONID")
-                .and().exceptionHandling().accessDeniedPage("/access-denied").and()
-                .sessionManagement().maximumSessions(1).expiredUrl("/login?sessionTimeout");
+                .failureUrl("/login?incorrectAccount"))
+                .logout(logout -> logout.logoutUrl("/logout").deleteCookies("JSESSIONID"))
+                .exceptionHandling(exception -> exception.accessDeniedPage("/access-denied"))
+                .sessionManagement(session -> session.maximumSessions(1).expiredUrl("/login?sessionTimeout"));
 
                 http.authenticationProvider(authenticationProvider());
                 return http.build();

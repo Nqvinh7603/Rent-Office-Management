@@ -101,55 +101,126 @@
             </div>
         </security:authorize>
         <br/>
+            <%--<div class="row">
+                <div class="col-xs-12">
+                    <div class="table-responsive">
+
+                        <display:table name="modelSearch.listResult"
+                                       cellspacing="0"
+                                       cellpadding="0"
+                                       requestURI="${customerListURL}"
+                                       partialList="true" sort="external"
+                                       size="${modelSearch.totalItems}" defaultsort="2" defaultorder="ascending"
+                                       id="customerList" pagesize="${modelSearch.maxPageItems}"
+                                       export="false"
+                                       class="table table-fcv-ace table-striped table-bordered table-hover dataTable no-footer"
+                                       style="margin: 3em 0 1.5em;">
+                            <display:column title="<fieldset class='form-group'>
+                                                            <input type='checkbox' id='checkAll' class='check-box-element'>
+                                                            </fieldset>" class="center select-cell"
+                                            headerClass="center select-cell">
+                                <fieldset>
+                                    <input type="checkbox" name="customerIds" value="${customerList.id}"
+                                           id="checkbox_${customerList.id}" class="check-box-element"/>
+                                </fieldset>
+                            </display:column>
+                            <display:column headerClass="text-left" property="fullName" title="Tên khách hàng"/>
+                            <display:column headerClass="text-left" property="staffName" title="Nhân viên quản lý"/>
+                            <display:column headerClass="text-left" property="phone" title="Di động"/>
+                            <display:column headerClass="text-left" property="email" title="Email"/>
+                            <display:column headerClass="text-left" property="requirement" title="Nhu cầu"/>
+                            <display:column headerClass="text-left" property="createdBy" title="Người nhập"/>
+                            <display:column headerClass="text-left" property="createdDate" title="Ngày nhập"/>
+                            <display:column headerClass="text-left" property="status" title="Tình trạng"/>
+                            <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
+                                <display:column headerClass="col-actions" title="Thao tác">
+                                    <a class="btn btn-xs btn-info"
+                                       data-toggle="tooltip"
+                                       title="Sửa thông tin khách hàng"
+                                       href='<c:url value='/admin/customer/edit/${customerList.id}'/>'>
+                                        <span><em class="ace-icon fa fa-pencil "></em></span>
+                                    </a>
+                                    <button class="btn btn-xs" data-toggle="tooltip"
+                                            title="Giao khách hàng cho nhân viên quản lý" id="btnCustomerAssignment" customerId="${customerList.id}">
+                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                    </button>
+                                </display:column>
+                            </security:authorize>
+                        </display:table>
+                    </div>
+                </div>
+            </div>--%>
         <div class="row">
             <div class="col-xs-12">
                 <div class="table-responsive">
-
-                    <display:table name="modelSearch.listResult"
-                                   cellspacing="0"
-                                   cellpadding="0"
-                                   requestURI="${customerListURL}"
-                                   partialList="true" sort="external"
-                                   size="${modelSearch.totalItems}" defaultsort="2" defaultorder="ascending"
-                                   id="customerList" pagesize="${modelSearch.maxPageItems}"
-                                   export="false"
-                                   class="table table-fcv-ace table-striped table-bordered table-hover dataTable no-footer"
-                                   style="margin: 3em 0 1.5em;">
-                        <display:column title="<fieldset class='form-group'>
-												        <input type='checkbox' id='checkAll' class='check-box-element'>
-												        </fieldset>" class="center select-cell"
-                                        headerClass="center select-cell">
-                            <fieldset>
-                                <input type="checkbox" name="customerIds" value="${customerList.id}"
-                                       id="checkbox_${customerList.id}" class="check-box-element"/>
-                            </fieldset>
-                        </display:column>
-                        <display:column headerClass="text-left" property="fullName" title="Tên khách hàng"/>
-                        <display:column headerClass="text-left" property="staffName" title="Nhân viên quản lý"/>
-                        <display:column headerClass="text-left" property="phone" title="Di động"/>
-                        <display:column headerClass="text-left" property="email" title="Email"/>
-                        <display:column headerClass="text-left" property="requirement" title="Nhu cầu"/>
-                        <display:column headerClass="text-left" property="createdBy" title="Người nhập"/>
-                        <display:column headerClass="text-left" property="createdDate" title="Ngày nhập"/>
-                        <display:column headerClass="text-left" property="status" title="Tình trạng"/>
-                        <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
-                            <display:column headerClass="col-actions" title="Thao tác">
-                                <a class="btn btn-xs btn-info"
-                                   data-toggle="tooltip"
-                                   title="Sửa thông tin khách hàng"
-                                   href='<c:url value='/admin/customer/edit/${customerList.id}'/>'>
-                                    <span><em class="ace-icon fa fa-pencil "></em></span>
-                                </a>
-                                <button class="btn btn-xs" data-toggle="tooltip"
-                                        title="Giao khách hàng cho nhân viên quản lý" id="btnCustomerAssignment" customerId="${customerList.id}">
-                                    <i class="fa fa-user" aria-hidden="true"></i>
-                                </button>
-                            </display:column>
-                        </security:authorize>
-                    </display:table>
+                    <table id="customerList"
+                           class="table table-fcv-ace table-striped table-bordered table-hover dataTable no-footer"
+                           style="margin: 3em 0 1.5em;">
+                        <thead>
+                        <tr>
+                            <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
+                                <th class="center select-cell">
+                                    <fieldset class="form-group"><input type="checkbox" id="checkAll"
+                                                                        class="check-box-element"></fieldset>
+                                </th>
+                            </security:authorize>
+                            <th class="text-left">Tên khách hàng</th>
+                            <th class="text-left">Nhân viên quản lý</th>
+                            <th class="text-left">Di động</th>
+                            <th class="text-left">Email</th>
+                            <th class="text-left">Nhu cầu</th>
+                            <th class="text-left"> Người nhâp</th>
+                            <th class="text-left"> Ngày nhập</th>
+                            <th class="text-left">Tình trạng</th>
+                            <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
+                                <th class="col-actions">Thao tác</th>
+                            </security:authorize>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach var="item" items="${modelSearch.listResult}">
+                            <tr>
+                                <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
+                                    <td>
+                                        <input type="checkbox" name="customerIds" value="${customerList.id}"
+                                               id="checkbox_${customerList.id}" class="check-box-element"/>
+                                    </td>
+                                </security:authorize>
+                                <td>${item.fullName}</td>
+                                <td>${item.staffName}</td>
+                                <td>${item.phone}</td>
+                                <td>${item.email}</td>
+                                <td>${item.requirement}</td>
+                                <td>${item.createdBy}</td>
+                                <td>${item.createdDate}</td>
+                                <td>${item.status}</td>
+                                <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
+                                    <td>
+                                        <button class="btn btn-xs" title="Giao khách hàng cho nhân viên quản lý"
+                                                id="btnCustomerAssignment" customerId="${item.id}">
+                                            <i class="fa fa-user" aria-hidden="true"></i>
+                                        </button>
+                                        <c:url var="editCustomer" value="/admin/customer/edit">
+                                            <c:param name="id" value="${item.id}"/>
+                                        </c:url>
+                                        <a class="btn btn-xs btn-info" data-toggle="tooltip"
+                                           title="Cập nhật thông tin khách hàng" href='${editCustomer}'><i
+                                                class="fa fa-pencil-square-o"
+                                                aria-hidden="true"></i>
+                                        </a>
+                                    </td>
+                                </security:authorize>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
+        <div class="text-center">
+            <ul id="pagination" class="pagination"></ul>
+        </div>
+        <form:hidden path="page" id="page"/>
     </div> <!-- /.page-content -->
 </div>
 </form:form>
@@ -186,7 +257,7 @@
 </div>
 
 <script type="text/javascript">
-    $(document).ready(function () {
+   /* $(document).ready(function () {
         const checkboxAll = $('#checkAll');
         const customerItemsCheckbox = $('#customerList input[type=checkbox][name="customerIds"]');
 
@@ -205,6 +276,31 @@
         $('#btnCloseModal').click(function () {
             location.reload();
         });
+    });*/
+    $(document).ready(function () {
+        const checkboxAll = $('#checkAll');
+        const customerItemsCheckbox = $('#customerList input[type=checkbox][name="customerIds"]');
+
+        function updateDeleteButtonState() {
+            const numberOfChecked = customerItemsCheckbox.filter(':checked').length;
+            $('#btnDeleteCustomer').attr('disabled', numberOfChecked === 0);
+        }
+
+        checkboxAll.change(function () {
+            const isChecked = $(this).prop('checked');
+            customerItemsCheckbox.prop('checked', isChecked);
+            updateDeleteButtonState();
+        });
+
+        customerItemsCheckbox.change(function () {
+            const numberOfChecked = customerItemsCheckbox.filter(':checked').length;
+            const isCheckedAll = customerItemsCheckbox.length === numberOfChecked;
+            checkboxAll.prop('checked', isCheckedAll);
+
+            updateDeleteButtonState();
+        });
+
+        updateDeleteButtonState();
     });
 
     $(document).on("click", "#customerList button#btnCustomerAssignment", function (e) {
@@ -300,7 +396,30 @@
 
     $('#btnSearch').click(function (e) {
         e.preventDefault();
+        $('#page').val(1);
         $('#listForm').submit();
+    });
+
+    var totalPages = ${modelSearch.totalPages};
+    var currentPage = ${modelSearch.page};
+    var totalItems = ${modelSearch.totalItems};
+    $(function () {
+        window.pagObj = $('#pagination').twbsPagination({
+            totalPages: totalPages,
+            visiblePages: 10,
+            startPage: currentPage,
+            onPageClick: function (event, page) {
+                if (currentPage !== page) {
+                    $('#page').val(page);
+                    $('#listForm').submit();
+                }
+            },
+            // Text labels
+            first: 'Trang đầu',
+            prev: 'Trang trước',
+            next: 'Tiếp theo',
+            last: 'Trang cuối',
+        });
     });
 </script>
 </body>

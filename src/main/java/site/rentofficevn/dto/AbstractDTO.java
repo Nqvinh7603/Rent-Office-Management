@@ -10,9 +10,9 @@ public class AbstractDTO<T> implements Serializable {
     private static final long serialVersionUID = 7213600440729202783L;
 
     private Long id;
-    private Date createdDate;
+    private String createdDate;
     private String createdBy;
-    private Date modifiedDate;
+    private String modifiedDate;
     private String modifiedBy;
     private int maxPageItems = 10;
     private int page = 1;
@@ -20,9 +20,18 @@ public class AbstractDTO<T> implements Serializable {
     private int totalItems = 0;
     private String tableId = "tableList";
     private Integer limit;
-    private Integer totalPage;
+    private Integer totalPage = 0;
     private Integer totalItem;
     private String searchValue;
+    private Integer currentPage;
+
+    public Integer getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(Integer currentPage) {
+        this.currentPage = currentPage;
+    }
 
     public Long getId() {
         return id;
@@ -32,11 +41,11 @@ public class AbstractDTO<T> implements Serializable {
         this.id = id;
     }
 
-    public Date getCreatedDate() {
+    public String getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Date createdDate) {
+    public void setCreatedDate(String createdDate) {
         this.createdDate = createdDate;
     }
 
@@ -48,11 +57,11 @@ public class AbstractDTO<T> implements Serializable {
         this.createdBy = createdBy;
     }
 
-    public Date getModifiedDate() {
+    public String getModifiedDate() {
         return modifiedDate;
     }
 
-    public void setModifiedDate(Date modifiedDate) {
+    public void setModifiedDate(String modifiedDate) {
         this.modifiedDate = modifiedDate;
     }
 
@@ -65,7 +74,7 @@ public class AbstractDTO<T> implements Serializable {
     }
 
     public int getTotalPages() {
-        return (int) Math.ceil((double) this.getTotalItems() / this.getMaxPageItems());
+        return totalPage;
     }
 
     public int getMaxPageItems() {

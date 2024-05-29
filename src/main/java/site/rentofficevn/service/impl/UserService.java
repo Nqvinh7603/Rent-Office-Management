@@ -18,8 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -152,4 +151,22 @@ public class UserService implements IUserService {
             userRepository.save(userEntity);
         }
     }
+
+    @Override
+    public Map<Long, String> getStaffMap() {
+        List<UserEntity> staffs = userRepository.findByStatusAndRoles_Code(1, "STAFF");
+
+        return staffs.stream().collect(Collectors.toMap(UserEntity::getId, UserEntity::getFullName));
+    }
+
+    @Override
+    public List<UserDTO> getAll() {
+        List<UserEntity> listUser = userRepository.findAll();
+        List<UserDTO> result = listUser.stream()
+                .map(userConverter::convertToDto)
+                .collect(Collectors.toList());
+        return result;
+
+    }
+
 }

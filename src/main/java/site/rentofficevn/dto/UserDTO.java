@@ -79,4 +79,6 @@ public class UserDTO extends AbstractDTO {
     public void setRoleDTOs(Map<String, String> roleDTOs) {
         this.roleDTOs = roleDTOs;
     }
+
+
 }

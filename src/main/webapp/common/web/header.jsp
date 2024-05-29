@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.laptrinhjavaweb.security.utils.SecurityUtils" %>
+<%@ page import="site.rentofficevn.security.utils.SecurityUtils" %>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
 	<div class="container">
 		<a class="navbar-brand" href="#">Start Bootstrap</a>

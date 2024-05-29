@@ -1,11 +1,12 @@
 package site.rentofficevn.entity;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class UserEntity extends BaseEntity {
 
     private static final long serialVersionUID = -4988455421375043688L;
@@ -27,9 +28,31 @@ public class UserEntity extends BaseEntity {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id", nullable = false),
-            inverseJoinColumns = @JoinColumn(name = "role_id", nullable = false))
+            joinColumns = @JoinColumn(name = "userid", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "roleid", nullable = false))
     private List<RoleEntity> roles = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "userEntities")
+    private List<BuildingEntity> buildingEntities;
+
+    @ManyToMany(mappedBy = "userEntities")
+    private List<CustomerEntity> customer;
+
+    public List<CustomerEntity> getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(List<CustomerEntity> customer) {
+        this.customer = customer;
+    }
+
+    public List<BuildingEntity> getBuildingEntities() {
+        return buildingEntities;
+    }
+
+    public void setBuildingEntities(List<BuildingEntity> buildingEntities) {
+        this.buildingEntities = buildingEntities;
+    }
 
     public String getUserName() {
         return userName;
@@ -78,4 +101,5 @@ public class UserEntity extends BaseEntity {
     public void setEmail(String email) {
         this.email = email;
     }
+
 }

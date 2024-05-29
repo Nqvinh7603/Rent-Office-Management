@@ -44,11 +44,8 @@ public class CustomerController {
         ModelAndView mav = new ModelAndView("admin/customer/list");
 
         customerSearchRequest.setTableId("customerList");
-        //DisplayTagUtils.of(request, customerSearchRequest);
-
         List<CustomerSearchResponse> foundCustomers = customerService.findByCondition(customerSearchRequest,
                 PageRequest.of(customerSearchRequest.getPage() - 1, customerSearchRequest.getMaxPageItems()));
-
 
         customerSearchRequest.setListResult(foundCustomers);
         customerSearchRequest.setTotalItems(customerService.countByCondition(customerSearchRequest));

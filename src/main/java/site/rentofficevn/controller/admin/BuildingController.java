@@ -38,11 +38,8 @@ public class BuildingController {
         ModelAndView mav = new ModelAndView("admin/building/list");
 
         buildingSearchRequest.setTableId("buildingList");
-        //DisplayTagUtils.of(request, buildingSearchRequest);
-
         List< BuildingSearchResponse> foundBuildings = buildingService.findByCondition(buildingSearchRequest,
                 PageRequest.of(buildingSearchRequest.getPage() - 1, buildingSearchRequest.getMaxPageItems()));
-
 
         buildingSearchRequest.setListResult(foundBuildings);
         buildingSearchRequest.setTotalItems(buildingService.countByCondition(buildingSearchRequest));

@@ -257,7 +257,7 @@
                                     <input type="checkbox" name="buildingIds" value="${buildingList.id}"
                                            id="checkbox_${buildingLisist.id}" class="check-box-element"/>
                                 </td>
-                                <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
+                                </security:authorize>
                                 <td>${item.createdDate}</td>
                                 <td>${item.name}</td>
                                 <td>${item.address}</td>
@@ -359,7 +359,7 @@
         });
     });
 
-    $(document).ready(function () {
+   /* $(document).ready(function () {
         const checkboxAll = $('#checkAll');
         const buildingItemsCheckbox = $('#buildingList input[type=checkbox][name="buildingIds"]');
 
@@ -374,6 +374,31 @@
                 $('#btnDeleteBuilding').attr('disabled', true);
             }
         });
+    });*/
+    $(document).ready(function () {
+        const checkboxAll = $('#checkAll');
+        const buildingItemsCheckbox = $('#buildingList input[type=checkbox][name="buildingIds"]');
+
+        function updateDeleteButtonState() {
+            const numberOfChecked = buildingItemsCheckbox.filter(':checked').length;
+            $('#btnDeleteBuilding').attr('disabled', numberOfChecked === 0);
+        }
+
+        checkboxAll.change(function () {
+            const isChecked = $(this).prop('checked');
+            buildingItemsCheckbox.prop('checked', isChecked);
+            updateDeleteButtonState();
+        });
+
+        buildingItemsCheckbox.change(function () {
+            const numberOfChecked = buildingItemsCheckbox.filter(':checked').length;
+            const isCheckedAll = buildingItemsCheckbox.length === numberOfChecked;
+            checkboxAll.prop('checked', isCheckedAll);
+
+            updateDeleteButtonState();
+        });
+
+        updateDeleteButtonState();
     });
 
     $(document).on("click", "#buildingList button#btnBuildingAssignment", function (e) {

@@ -10,220 +10,176 @@
 <body>
 <div class="main-content">
     <form:form modelAttribute="modelSearch" action="${customerListURL}" id="listForm" method="GET">
-    <div class="main-content-inner">
-        <div class="breadcrumbs ace-save-state" id="breadcrumbs">
-            <ul class="breadcrumb">
-                <li>
-                    <i class="ace-icon fa fa-home home-icon"></i>
-                    <a href='<c:url value="/admin/home" />'>Trang chủ</a>
-                </li>
-                <li class="active">Danh sách khách hàng</li>
-            </ul><!-- /.breadcrumb -->
-        </div>
+        <div class="main-content-inner">
+            <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="ace-icon fa fa-home home-icon"></i>
+                        <a href='<c:url value="/admin/home" />'>Trang chủ</a>
+                    </li>
+                    <li class="active">Danh sách khách hàng</li>
+                </ul><!-- /.breadcrumb -->
+            </div>
 
-        <div class="page-content" style="padding-bottom: 0px">
-            <div class="row">
-                <c:if test="${null != messageResponse}">
-                    <div class="alert alert-block alert-${alert}">
-                        <button type="button" class="close" data-dismiss="alert">
-                            <em class="ace-icon fa fa-times"></em>
-                        </button>
-                            ${messageResponse}
-                    </div>
-                </c:if>
-                <div class="col-xs-12">
-                    <div class="widget-box">
-                        <div class="widget-header">
-                            <h4 class="widget-title">Tìm kiếm</h4>
-                            <div class="widget-toolbar">
-                                <a href="#" data-action="collapse">
-                                    <i class="ace-icon fa fa-chevron-up"></i>
-                                </a>
+            <div class="page-content" style="padding-bottom: 0px">
+                <div class="row">
+                    <c:if test="${null != messageResponse}">
+                        <div class="alert alert-block alert-${alert}">
+                            <button type="button" class="close" data-dismiss="alert">
+                                <em class="ace-icon fa fa-times"></em>
+                            </button>
+                                ${messageResponse}
+                        </div>
+                    </c:if>
+                    <div class="col-xs-12">
+                        <div class="widget-box">
+                            <div class="widget-header">
+                                <h4 class="widget-title">Tìm kiếm</h4>
+                                <div class="widget-toolbar">
+                                    <a href="#" data-action="collapse">
+                                        <i class="ace-icon fa fa-chevron-up"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="widget-body">
+                                <div class="widget-main">
+                                    <div class="form-horizontal">
+                                        <div class="form-group">
+                                            <div class="col-xs-4">
+                                                <label for="fullName">Tên khách hàng</label>
+                                                <form:input path="fullName" cssClass="form-control"/>
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <label for="phone">Di động</label>
+                                                <form:input path="phone" cssClass="form-control"/>
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <label for="email">Email</label>
+                                                <form:input path="email" cssClass="form-control"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
+                                                <div class="col-xs-4">
+                                                    <label for="staffId">Nhân viên</label>
+                                                    <br>
+                                                    <form:select path="staffId">
+                                                        <form:option
+                                                                value="">--- Chọn nhân viên phụ trách ---</form:option>
+                                                        <form:options items="${staffmaps}"/>
+                                                    </form:select>
+                                                </div>
+                                            </security:authorize>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-md btn-success" id="btnSearch" style="margin-top: 10px">Tìm
+                                        kiếm
+                                        <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                        <div class="widget-body">
-                            <div class="widget-main">
-                                <div class="form-horizontal">
-                                    <div class="form-group">
-                                        <div class="col-xs-4">
-                                            <label for="fullName">Tên khách hàng</label>
-                                            <form:input path="fullName" cssClass="form-control"/>
-                                        </div>
-                                        <div class="col-xs-4">
-                                            <label for="phone">Di động</label>
-                                            <form:input path="phone" cssClass="form-control"/>
-                                        </div>
-                                        <div class="col-xs-4">
-                                            <label for="email">Email</label>
-                                            <form:input path="email" cssClass="form-control"/>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
-                                            <div class="col-xs-4">
-                                                <label for="staffId">Nhân viên</label>
-                                                <br>
-                                                <form:select path="staffId">
-                                                    <form:option value="">--- Chọn nhân viên phụ trách ---</form:option>
-                                                    <form:options items="${staffmaps}"/>
-                                                </form:select>
-                                            </div>
-                                        </security:authorize>
-                                    </div>
-                                </div>
-                                <button class="btn btn-md btn-success" id="btnSearch" style="margin-top: 10px">Tìm kiếm
-                                    <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
+                    </div>
+                </div>
+                    <%--</div>--%>
+                </br>
+                <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="pull-right" style="margin-right: 20px">
+                                <a class="btn btn-corner btn-bold"
+                                   data-toggle="tooltip"
+                                   title="Thêm khách hàng"
+                                   href='<c:url value="/admin/customer/edit"/>'>
+                                    <span><em class="fa fa-plus-circle"></em></span>
+                                </a>
+                                <button id="btnDeleteCustomer" type="button" disabled class="btn btn-danger btn-bold"
+                                        data-toggle="tooltip" title="Xóa khách hàng">
+                                    <span><em class="fa fa-trash"></em></span>
                                 </button>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        </br>
-        <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="pull-right" style="margin-right: 20px">
-                        <a class="btn btn-corner btn-bold"
-                           data-toggle="tooltip"
-                           title="Thêm khách hàng"
-                           href='<c:url value="/admin/customer/edit"/>'>
-                            <span><em class="fa fa-plus-circle"></em></span>
-                        </a>
-                        <button id="btnDeleteCustomer" type="button" disabled class="btn btn-danger btn-bold"
-                                data-toggle="tooltip" title="Xóa khách hàng">
-                            <span><em class="fa fa-trash"></em></span>
-                        </button>
+                </security:authorize>
+                <br/>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="table-responsive">
+                            <table id="customerList"
+                                   class="table table-fcv-ace table-striped table-bordered table-hover dataTable no-footer"
+                                   style="margin: 3em 0 1.5em;">
+                                <thead>
+                                <tr>
+                                    <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
+                                        <th class="center select-cell">
+                                            <fieldset class="form-group"><input type="checkbox" id="checkAll"
+                                                                                class="check-box-element"></fieldset>
+                                        </th>
+                                    </security:authorize>
+                                    <th class="text-left">Tên khách hàng</th>
+                                    <th class="text-left">Nhân viên quản lý</th>
+                                    <th class="text-left">Di động</th>
+                                    <th class="text-left">Email</th>
+                                    <th class="text-left">Nhu cầu</th>
+                                    <th class="text-left"> Người nhâp</th>
+                                    <th class="text-left"> Ngày nhập</th>
+                                    <th class="text-left">Tình trạng</th>
+                                    <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
+                                        <th class="col-actions">Thao tác</th>
+                                    </security:authorize>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <c:forEach var="item" items="${modelSearch.listResult}">
+                                    <tr>
+                                        <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
+                                            <td>
+                                                <input type="checkbox" name="customerIds" value="${customerList.id}"
+                                                       id="checkbox_${customerList.id}" class="check-box-element"/>
+                                            </td>
+                                        </security:authorize>
+                                        <td>${item.fullName}</td>
+                                        <td>${item.staffName}</td>
+                                        <td>${item.phone}</td>
+                                        <td>${item.email}</td>
+                                        <td>${item.requirement}</td>
+                                        <td>${item.createdBy}</td>
+                                        <td>${item.createdDate}</td>
+                                        <td>${item.status}</td>
+                                        <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
+                                            <td>
+                                                <div style="display: flex; align-items: center; gap: 5px;">
+                                                    <button class="btn btn-xs"
+                                                            title="Giao khách hàng cho nhân viên quản lý"
+                                                            id="btnCustomerAssignment" customerId="${item.id}">
+                                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                                    </button>
+                                                    <c:url var="editCustomer" value="/admin/customer/edit/${item.id}">
+                                                        <c:param name="id" value="${item.id}"/>
+                                                    </c:url>
+                                                    <a class="btn btn-xs btn-info" data-toggle="tooltip"
+                                                       title="Cập nhật thông tin khách hàng" href='${editCustomer}'><i
+                                                            class="fa fa-pencil-square-o"
+                                                            aria-hidden="true"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </security:authorize>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </security:authorize>
-        <br/>
-            <%--<div class="row">
-                <div class="col-xs-12">
-                    <div class="table-responsive">
-
-                        <display:table name="modelSearch.listResult"
-                                       cellspacing="0"
-                                       cellpadding="0"
-                                       requestURI="${customerListURL}"
-                                       partialList="true" sort="external"
-                                       size="${modelSearch.totalItems}" defaultsort="2" defaultorder="ascending"
-                                       id="customerList" pagesize="${modelSearch.maxPageItems}"
-                                       export="false"
-                                       class="table table-fcv-ace table-striped table-bordered table-hover dataTable no-footer"
-                                       style="margin: 3em 0 1.5em;">
-                            <display:column title="<fieldset class='form-group'>
-                                                            <input type='checkbox' id='checkAll' class='check-box-element'>
-                                                            </fieldset>" class="center select-cell"
-                                            headerClass="center select-cell">
-                                <fieldset>
-                                    <input type="checkbox" name="customerIds" value="${customerList.id}"
-                                           id="checkbox_${customerList.id}" class="check-box-element"/>
-                                </fieldset>
-                            </display:column>
-                            <display:column headerClass="text-left" property="fullName" title="Tên khách hàng"/>
-                            <display:column headerClass="text-left" property="staffName" title="Nhân viên quản lý"/>
-                            <display:column headerClass="text-left" property="phone" title="Di động"/>
-                            <display:column headerClass="text-left" property="email" title="Email"/>
-                            <display:column headerClass="text-left" property="requirement" title="Nhu cầu"/>
-                            <display:column headerClass="text-left" property="createdBy" title="Người nhập"/>
-                            <display:column headerClass="text-left" property="createdDate" title="Ngày nhập"/>
-                            <display:column headerClass="text-left" property="status" title="Tình trạng"/>
-                            <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
-                                <display:column headerClass="col-actions" title="Thao tác">
-                                    <a class="btn btn-xs btn-info"
-                                       data-toggle="tooltip"
-                                       title="Sửa thông tin khách hàng"
-                                       href='<c:url value='/admin/customer/edit/${customerList.id}'/>'>
-                                        <span><em class="ace-icon fa fa-pencil "></em></span>
-                                    </a>
-                                    <button class="btn btn-xs" data-toggle="tooltip"
-                                            title="Giao khách hàng cho nhân viên quản lý" id="btnCustomerAssignment" customerId="${customerList.id}">
-                                        <i class="fa fa-user" aria-hidden="true"></i>
-                                    </button>
-                                </display:column>
-                            </security:authorize>
-                        </display:table>
-                    </div>
+                <div class="text-center">
+                    <ul id="pagination" class="pagination"></ul>
                 </div>
-            </div>--%>
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="table-responsive">
-                    <table id="customerList"
-                           class="table table-fcv-ace table-striped table-bordered table-hover dataTable no-footer"
-                           style="margin: 3em 0 1.5em;">
-                        <thead>
-                        <tr>
-                            <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
-                                <th class="center select-cell">
-                                    <fieldset class="form-group"><input type="checkbox" id="checkAll"
-                                                                        class="check-box-element"></fieldset>
-                                </th>
-                            </security:authorize>
-                            <th class="text-left">Tên khách hàng</th>
-                            <th class="text-left">Nhân viên quản lý</th>
-                            <th class="text-left">Di động</th>
-                            <th class="text-left">Email</th>
-                            <th class="text-left">Nhu cầu</th>
-                            <th class="text-left"> Người nhâp</th>
-                            <th class="text-left"> Ngày nhập</th>
-                            <th class="text-left">Tình trạng</th>
-                            <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
-                                <th class="col-actions">Thao tác</th>
-                            </security:authorize>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <c:forEach var="item" items="${modelSearch.listResult}">
-                            <tr>
-                                <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
-                                    <td>
-                                        <input type="checkbox" name="customerIds" value="${customerList.id}"
-                                               id="checkbox_${customerList.id}" class="check-box-element"/>
-                                    </td>
-                                </security:authorize>
-                                <td>${item.fullName}</td>
-                                <td>${item.staffName}</td>
-                                <td>${item.phone}</td>
-                                <td>${item.email}</td>
-                                <td>${item.requirement}</td>
-                                <td>${item.createdBy}</td>
-                                <td>${item.createdDate}</td>
-                                <td>${item.status}</td>
-                                <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
-                                    <td>
-                                        <button class="btn btn-xs" title="Giao khách hàng cho nhân viên quản lý"
-                                                id="btnCustomerAssignment" customerId="${item.id}">
-                                            <i class="fa fa-user" aria-hidden="true"></i>
-                                        </button>
-                                        <c:url var="editCustomer" value="/admin/customer/edit">
-                                            <c:param name="id" value="${item.id}"/>
-                                        </c:url>
-                                        <a class="btn btn-xs btn-info" data-toggle="tooltip"
-                                           title="Cập nhật thông tin khách hàng" href='${editCustomer}'><i
-                                                class="fa fa-pencil-square-o"
-                                                aria-hidden="true"></i>
-                                        </a>
-                                    </td>
-                                </security:authorize>
-                            </tr>
-                        </c:forEach>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+                <form:hidden path="page" id="page"/>
+            </div> <!-- /.page-content -->
         </div>
-        <div class="text-center">
-            <ul id="pagination" class="pagination"></ul>
-        </div>
-        <form:hidden path="page" id="page"/>
-    </div> <!-- /.page-content -->
-</div>
-</form:form>
+    </form:form>
 </div><!-- /.main-content -->
 
 <!-- assignmentCustomer -->

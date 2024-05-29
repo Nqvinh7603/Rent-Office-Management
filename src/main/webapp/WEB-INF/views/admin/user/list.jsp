@@ -10,7 +10,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>
         <%--<spring:message code="label.user.list"/>--%>
-            Danh sách người dùng
+        Danh sách người dùng
     </title>
 </head>
 
@@ -30,13 +30,13 @@
                     <li>
                         <i class="ace-icon fa fa-home home-icon"></i>
                         <a href="<c:url value="/admin/home"/>">
-                            <%--<spring:message code="label.home"/>--%>
+                                <%--<spring:message code="label.home"/>--%>
                             Trang chủ
                         </a>
                     </li>
                     <li class="active">
-                        <%--<spring:message code="label.user.list"/>--%>
-                            Danh sách người dùng
+                            <%--<spring:message code="label.user.list"/>--%>
+                        Danh sách người dùng
                     </li>
                 </ul>
                 <!-- /.breadcrumb -->
@@ -58,7 +58,7 @@
                                 <div class="widget-box table-filter">
                                     <div class="widget-header">
                                         <h4 class="widget-title">
-                                            <%--<spring:message code="label.search"/>--%>
+                                                <%--<spring:message code="label.search"/>--%>
                                             Tìm kiếm
                                         </h4>
                                         <div class="widget-toolbar">
@@ -72,12 +72,13 @@
                                             <div class="form-horizontal">
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">
-                                                        <%--<spring:message code="label.search.value"/>--%>
-                                                            Tìm kiếm tên người dùng
+                                                            <%--<spring:message code="label.search.value"/>--%>
+                                                        Tìm kiếm tên người dùng
                                                     </label>
                                                     <div class="col-sm-8">
                                                         <div class="fg-line">
-                                                            <form:input path="searchValue" cssClass="form-control input-sm"/>
+                                                            <form:input path="searchValue"
+                                                                        cssClass="form-control input-sm"/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -86,7 +87,7 @@
                                                     <div class="col-sm-8">
                                                         <button id="btnSearch" type="button"
                                                                 class="btn btn-sm btn-success">
-                                                            <%--spring:message code="label.search"/>--%>
+                                                                <%--spring:message code="label.search"/>--%>
                                                             Tìm kiếm
                                                             <i class="ace-icon fa fa-arrow-right icon-on-right bigger-110"></i>
                                                         </button>
@@ -98,26 +99,20 @@
                                 </div>
                                 <div class="table-btn-controls">
                                     <div class="pull-right tableTools-container">
-                                        <div class="dt-buttons btn-overlap btn-group">
-                                            <a flag="info"
-                                               class="dt-button buttons-colvis btn btn-white btn-primary btn-bold"
-                                               data-toggle="tooltip"
-                                               <%--title='<spring:message code="label.user.add"/>'--%>
-                                               title="Thêm người dùng"
-                                               href='<c:url value="/admin/user/edit"/>'>
-															<span>
-																<i class="fa fa-plus-circle bigger-110 purple"></i>
-															</span>
-                                            </a>
-                                            <button id="btnDelete" type="button" disabled
-                                                    class="dt-button buttons-html5 btn btn-white btn-primary btn-bold"
-                                                    data-toggle="tooltip"
-                                                    title="Xóa người dùng" onclick="warningBeforeDelete()">
-															<span>
-																<i class="fa fa-trash-o bigger-110 pink"></i>
-															</span>
-                                            </button>
-                                        </div>
+                                        <a flag="info"
+                                           class="btn btn-corner btn-bold"
+                                           data-toggle="tooltip"
+                                            <%--title='<spring:message code="label.user.add"/>'--%>
+                                           title="Thêm người dùng"
+                                           href='<c:url value="/admin/user/edit"/>'>
+                                            <span><em class="fa fa-plus-circle"></em></span>
+                                        </a>
+                                        <button id="btnDelete" type="button" disabled
+                                                class="btn btn-danger btn-bold"
+                                                data-toggle="tooltip"
+                                                title="Xóa người dùng" onclick="warningBeforeDelete()">
+                                            <span><em class="fa fa-trash"></em></span>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -133,7 +128,8 @@
                                             <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
                                                 <th class="left select-cell">
                                                     <fieldset class="form-group"><input type="checkbox" id="checkAll"
-                                                                                        class="check-box-element"></fieldset>
+                                                                                        class="check-box-element">
+                                                    </fieldset>
                                                 </th>
                                             </security:authorize>
                                             <th class="text-left">Tên đăng nhập</th>
@@ -148,7 +144,8 @@
                                             <tr>
                                                 <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
                                                     <td>
-                                                        <input type="checkbox" name="customerIds" value="${tableList.id}"
+                                                        <input type="checkbox" name="customerIds"
+                                                               value="${tableList.id}"
                                                                id="checkbox_${tableList.id}" class="check-box-element"/>
                                                     </td>
                                                 </security:authorize>
@@ -157,14 +154,14 @@
                                                 <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
                                                     <td>
                                                         <c:if test="${item.roleCode != 'ADMIN'}">
-                                                        <c:url var="editUser" value="/admin/user/edit/${item.id}">
-                                                            <c:param name="id" value="${item.id}"/>
-                                                        </c:url>
-                                                        <a class="btn btn-xs btn-info" data-toggle="tooltip"
-                                                           title="Cập nhật thông tin người dùng" href='${editUser}'><i
-                                                                class="fa fa-pencil-square-o"
-                                                                aria-hidden="true"></i>
-                                                        </a>
+                                                            <c:url var="editUser" value="/admin/user/edit/${item.id}">
+                                                                <c:param name="id" value="${item.id}"/>
+                                                            </c:url>
+                                                            <a class="btn btn-xs btn-info" data-toggle="tooltip"
+                                                               title="Cập nhật thông tin người dùng" href='${editUser}'><i
+                                                                    class="fa fa-pencil-square-o"
+                                                                    aria-hidden="true"></i>
+                                                            </a>
                                                         </c:if>
                                                         <c:if test="${item.roleCode == 'ADMIN'}">
                                                             <p>Không được thao tác</p>

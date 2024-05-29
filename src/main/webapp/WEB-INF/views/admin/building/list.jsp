@@ -148,7 +148,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        <%--</div>--%>
         </br>
         <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
             <div class="row">
@@ -169,57 +169,6 @@
             </div>
         </security:authorize>
         <br/>
-            <%--<div class="row">
-                <div class="col-xs-12">
-                    <div class="table-responsive">
-                            &lt;%&ndash;pagesize="${modelSearch.maxPageItems}"&ndash;%&gt;
-                        <display:table name="modelSearch.listResult"
-                                       cellspacing="0"
-                                       cellpadding="0"
-                                       requestURI="${buildingListURL}"
-                                       partialList="true" sort="external"
-                                       size="${modelSearch.totalItems}" defaultsort="2" defaultorder="ascending"
-                                       id="buildingList" pagesize="${modelSearch.maxPageItems}"
-                                       export="false"
-                                       class="table table-fcv-ace table-striped table-bordered table-hover dataTable no-footer"
-                                       style="margin: 3em 0 1.5em;">
-                            <display:column title="<fieldset class='form-group'>
-                                                            <input type='checkbox' id='checkAll' class='check-box-element'>
-                                                            </fieldset>" class="center select-cell"
-                                            headerClass="center select-cell">
-                                <fieldset>
-                                    <input type="checkbox" name="buildingIds" value="${buildingList.id}"
-                                           id="checkbox_${buildingList.id}" class="check-box-element"/>
-                                </fieldset>
-                            </display:column>
-                            <display:column headerClass="text-left" property="createdDate" title="Ngày"/>
-                            <display:column headerClass="text-left" property="name" title="Tên sản phẩm"/>
-                            <display:column headerClass="text-left" property="address" title="Địa chỉ"/>
-                            <display:column headerClass="text-left" property="managerName" title="Tên quản lý"/>
-                            <display:column headerClass="text-left" property="managerPhone" title="Số điện thoại"/>
-                            <display:column headerClass="text-left" property="floorArea" title="D.T sàn"/>
-                            <display:column headerClass="text-left" property="rentAreaDescription" title="D.T trống"/>
-                            <display:column headerClass="text-left" property="rentPrice" title="Giá thuê"/>
-                            <display:column headerClass="text-left" property="serviceFee" title="Phí dịch vụ"/>
-                            <display:column headerClass="text-left" property="brokerageFee" title="Phí MG"/>
-                            <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
-                            <display:column headerClass="col-actions" title="Thao tác">
-                                <a class="btn btn-xs btn-info"
-                                   data-toggle="tooltip"
-                                   title="Sửa tòa nhà"
-                                   href='<c:url value='/admin/building/edit/${buildingList.id}'/>'>
-                                    <span><em class="ace-icon fa fa-pencil "></em></span>
-                                </a>
-                                <button class="btn btn-xs" data-toggle="tooltip"
-                                        title="Giao tòa nhà" id="btnBuildingAssignment" buildingId="${buildingList.id}">
-                                    <i class="fa fa-user" aria-hidden="true"></i>
-                                </button>
-                            </display:column>
-                            </security:authorize>
-                        </display:table>
-                    </div>
-                </div>
-            </div>--%>
         <div class="row">
             <div class="col-xs-12">
                 <div class="table-responsive">
@@ -229,10 +178,10 @@
                         <thead>
                         <tr>
                             <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
-                            <th class="center select-cell">
-                                <fieldset class="form-group"><input type="checkbox" id="checkAll"
-                                                                    class="check-box-element"></fieldset>
-                            </th>
+                                <th class="center select-cell">
+                                    <fieldset class="form-group"><input type="checkbox" id="checkAll"
+                                                                        class="check-box-element"></fieldset>
+                                </th>
                             </security:authorize>
                             <th class="text-left">Ngày</th>
                             <th class="text-left">Tên sản phẩm</th>
@@ -245,7 +194,7 @@
                             <th class="text-left">Phí dịch vụ</th>
                             <th class="text-left">Phí MG</th>
                             <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
-                            <th class="col-actions">Thao tác</th>
+                                <th class="col-actions">Thao tác</th>
                             </security:authorize>
                         </tr>
                         </thead>
@@ -253,10 +202,10 @@
                         <c:forEach var="item" items="${modelSearch.listResult}">
                             <tr>
                                 <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
-                                <td>
-                                    <input type="checkbox" name="buildingIds" value="${buildingList.id}"
-                                           id="checkbox_${buildingList.id}" class="check-box-element"/>
-                                </td>
+                                    <td>
+                                        <input type="checkbox" name="buildingIds" value="${buildingList.id}"
+                                               id="checkbox_${buildingList.id}" class="check-box-element"/>
+                                    </td>
                                 </security:authorize>
                                 <td>${item.createdDate}</td>
                                 <td>${item.name}</td>
@@ -269,19 +218,22 @@
                                 <td>${item.serviceFee}</td>
                                 <td>${item.brokerageFee}</td>
                                 <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
-                                <td>
-                                    <button class="btn btn-xs" title="Giao tòa nhà"
-                                            id="btnBuildingAssignment" buildingId="${item.id}">
-                                        <i class="fa fa-user" aria-hidden="true"></i>
-                                    </button>
-                                    <c:url var="editBuilding" value="/admin/building/edit">
-                                        <c:param name="id" value="${item.id}"/>
-                                    </c:url>
-                                    <a class="btn btn-xs btn-info" data-toggle="tooltip"
-                                       title="Cập nhật toà nhà" href='${editBuilding}'><i class="fa fa-pencil-square-o"
-                                                                                          aria-hidden="true"></i>
-                                    </a>
-                                </td>
+                                    <td>
+                                        <div style="display: flex; align-items: center; gap: 5px;">
+                                        <button class="btn btn-xs" title="Giao tòa nhà"
+                                                id="btnBuildingAssignment" buildingId="${item.id}">
+                                            <i class="fa fa-user" aria-hidden="true"></i>
+                                        </button>
+                                        <c:url var="editBuilding" value="/admin/building/edit/${item.id}">
+                                            <c:param name="id" value="${item.id}"/>
+                                        </c:url>
+                                        <a class="btn btn-xs btn-info" data-toggle="tooltip"
+                                           title="Cập nhật toà nhà" href='${editBuilding}'><i
+                                                class="fa fa-pencil-square-o"
+                                                aria-hidden="true"></i>
+                                        </a>
+                                        </div>
+                                    </td>
                                 </security:authorize>
                             </tr>
                         </c:forEach>

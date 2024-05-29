@@ -46,14 +46,10 @@ public class WebSecurityConfig {
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
                 http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/admin/building").authenticated()
                         .requestMatchers("/admin/building/edit").hasAnyRole("MANAGER","ADMIN")
-                        .requestMatchers("/admin/building/edit/**").authenticated()
-                        .requestMatchers("/admin/customer").authenticated()
                         .requestMatchers("/admin/customer/edit").hasAnyRole("MANAGER","ADMIN")
-                        .requestMatchers("/admin/customer/edit/**").authenticated()
                         .requestMatchers("/admin/user**").hasRole("ADMIN")
-                        .requestMatchers("/login", "/resource/**", "/trang-chu", "/api/**").permitAll()
+                        .requestMatchers("/login", "/resource/**", "/api/**").permitAll()
                         .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
                         .requestMatchers("/template/**").permitAll()
                         .anyRequest().authenticated())

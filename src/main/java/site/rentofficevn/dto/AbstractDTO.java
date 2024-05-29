@@ -20,7 +20,7 @@ public class AbstractDTO<T> implements Serializable {
     private int totalItems = 0;
     private String tableId = "tableList";
     private Integer limit;
-    private Integer totalPage;
+    private Integer totalPage = 0;
     private Integer totalItem;
     private String searchValue;
     private Integer currentPage;

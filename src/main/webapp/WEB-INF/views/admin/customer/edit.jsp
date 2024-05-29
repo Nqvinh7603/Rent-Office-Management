@@ -94,7 +94,7 @@
                                     <input id="btnSave" type="button" class="btn btn-primary" value="Thêm"/>
                                 </c:if>
                                 <input id="btnCancel" type="button" class="btn btn-warning" value="Huỷ"/>
-                                <img src="/img/loading.gif" style="display: none; height: 100px" id="loading_image">
+                                <img src="/template/img/loading.gif" style="display: none; height: 100px" id="loading_image">
                             </div>
                         </div>
                     </form:form>

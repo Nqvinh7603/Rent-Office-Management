@@ -77,12 +77,12 @@
                                        value="Cập nhật người dùng" id="btnAddOrUpdateUsers"/>
                                 <input type="button" class="btn btn-white btn-warning btn-bold"
                                        value="Reset mật khẩu" id="btnResetPassword"/>
-                                <img src="/img/loading.gif" style="display: none; height: 100px" id="loading_image">
+                                <img src="/template/img/loading.gif" style="display: none; height: 100px" id="loading_image">
                             </c:if>
                             <c:if test="${empty model.id}">
                                 <input type="button" class="btn btn-white btn-warning btn-bold"
                                        value="Thêm mới người dùng" id="btnAddOrUpdateUsers"/>
-                                <img src="/img/loading.gif" style="display: none; height: 100px" id="loading_image">
+                                <img src="/template/img/loading.gif" style="display: none; height: 100px" id="loading_image">
                             </c:if>
                         </div>
                         <!--Btn-->

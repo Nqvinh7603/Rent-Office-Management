@@ -256,7 +256,7 @@
                                     <img src="${imagePath}" id="viewImage" width="300px" height="300px" style="margin-top: 50px">
                                 </c:if>
                                 <c:if test="${empty building.image}">
-                                    <img src="/admin/image/default.png" id="viewImage" width="300px" height="300px">
+                                    <img src="/template/img/default.jpg" id="viewImage" width="300px" height="300px">
                                 </c:if>
                             </div>
                         </div>
@@ -271,7 +271,7 @@
                                     <input id="btnSave" type="button" class="btn btn-primary" value="Thêm" />
                                 </c:if>
                                 <input id="btnCancel" type="button" class="btn btn-warning" value="Huỷ" />
-                                <img src="/img/loading.gif" style="display: none; height: 100px" id="loading_image">
+                                <img src="/template/img/loading.gif" style="display: none; height: 100px" id="loading_image">
                             </div>
                         </div>
                     </form:form>

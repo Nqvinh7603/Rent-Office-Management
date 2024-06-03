@@ -39,67 +39,72 @@
                             ${messageResponse}
                     </div>
                 </c:if>
-
                 <div class="col-xs-12">
                     <form:form modelAttribute="customer" id="formEdit" cssClass="form-horizontal">
-                        <div class="form-group">
-                            <div class="col-xs-9">
-                                <form:hidden path="id" id="customerId" cssClass="form-control"/>
+                        <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
+                            <div class="form-group">
+                                <div class="col-xs-9">
+                                    <form:hidden path="id" id="customerId" cssClass="form-control"/>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-xs-3 no-padding-right" for="fullName">Tên khách hàng</label>
-                            <div class="col-xs-9">
-                                <form:input path="fullName" cssClass="form-control"/>
+                            <div class="form-group">
+                                <label class="col-xs-3 no-padding-right" for="fullName">Tên khách hàng</label>
+                                <div class="col-xs-9">
+                                    <form:input path="fullName" cssClass="form-control"/>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-xs-3 no-padding-right" for="phone">Di động</label>
-                            <div class="col-xs-9">
-                                <form:input path="phone" cssClass="form-control"/>
+                            <div class="form-group">
+                                <label class="col-xs-3 no-padding-right" for="phone">Di động</label>
+                                <div class="col-xs-9">
+                                    <form:input path="phone" cssClass="form-control"/>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-xs-3 no-padding-right" for="email">Email</label>
-                            <div class="col-xs-9">
-                                <form:input path="email" cssClass="form-control"/>
+                            <div class="form-group">
+                                <label class="col-xs-3 no-padding-right" for="email">Email</label>
+                                <div class="col-xs-9">
+                                    <form:input path="email" cssClass="form-control"/>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-xs-3 no-padding-right" for="requirement">Nhu cầu</label>
-                            <div class="col-xs-9">
-                                <form:input path="requirement" cssClass="form-control"/>
+                            <div class="form-group">
+                                <label class="col-xs-3 no-padding-right" for="requirement">Nhu cầu</label>
+                                <div class="col-xs-9">
+                                    <form:input path="requirement" cssClass="form-control"/>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-xs-3 no-padding-right" for="note">Ghi chú</label>
-                            <div class="col-xs-9">
-                                <form:textarea path="note" cssClass="form-control"/>
+                            <div class="form-group">
+                                <label class="col-xs-3 no-padding-right" for="note">Ghi chú</label>
+                                <div class="col-xs-9">
+                                    <form:textarea path="note" cssClass="form-control"/>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-xs-3 no-padding-right" for="status">Tình trạng</label>
-                            <div class="col-xs-9">
-                                <form:input path="status" cssClass="form-control"/>
+                            <div class="form-group">
+                                <label class="col-xs-3 no-padding-right" for="status">Tình trạng</label>
+                                <div class="col-xs-9">
+                                    <form:input path="status" cssClass="form-control"/>
+                                </div>
                             </div>
-                        </div>
-
+                        </security:authorize>
                         <div class="form-group">
                             <label class="col-sm-3 control-label no-padding-right"></label>
                             <div class="col-xs-9">
-                                <c:if test="${not empty customer.id}">
-                                    <input id="btnSave" type="button" class="btn btn-primary" value="Cập nhật"/>
-                                </c:if>
-                                <c:if test="${empty customer.id}">
-                                    <input id="btnSave" type="button" class="btn btn-primary" value="Thêm"/>
-                                </c:if>
+                                <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
+                                    <c:if test="${not empty customer.id}">
+                                        <input id="btnSave" type="button" class="btn btn-primary" value="Cập nhật"/>
+                                    </c:if>
+                                    <c:if test="${empty customer.id}">
+                                        <input id="btnSave" type="button" class="btn btn-primary" value="Thêm"/>
+                                    </c:if>
                                 <input id="btnCancel" type="button" class="btn btn-warning" value="Huỷ"/>
-                                <img src="/template/img/loading.gif" style="display: none; height: 100px" id="loading_image">
+                                <img src="/template/img/loading.gif" style="display: none; height: 100px"
+                                     id="loading_image">
+
+                                </security:authorize>
                             </div>
                         </div>
                     </form:form>
                 </div>
             </div><!-- /.row -->
+
             <br>
             <c:forEach var="transactionType" items="${transaction}">
                 <c:if test="${not empty customer.id}">
@@ -144,6 +149,9 @@
                     </div>
                 </c:if>
             </c:forEach>
+            <security:authorize access="hasRole('STAFF')">
+            <input id="btnCancel" type="button" class="btn btn-warning" value="Thoát"/>
+            </security:authorize>
         </div> <!-- PAGE CONTENT ENDS -->
     </div><!-- /.page-content -->
 </div><!-- /.main-content -->
@@ -239,9 +247,9 @@
 
     $("#btnCancel").click(function () {
         let id = $('#customerId').val();
-       /* if ('' !== id) {
-            showAlertBeforeCanceling("/admin/customer/list");
-        }*/
+        /* if ('' !== id) {
+             showAlertBeforeCanceling("/admin/customer/list");
+         }*/
         showAlertBeforeCanceling("/admin/customer/list");
     });
 </script>

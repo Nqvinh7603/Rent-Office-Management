@@ -82,7 +82,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <br>
                 <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
                     <div class="row">
@@ -124,9 +124,7 @@
                                     <th class="text-left"> Người nhâp</th>
                                     <th class="text-left"> Ngày nhập</th>
                                     <th class="text-left">Tình trạng</th>
-                                    <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
-                                        <th class="col-actions">Thao tác</th>
-                                    </security:authorize>
+                                    <th class="col-actions">Thao tác</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -146,25 +144,25 @@
                                         <td>${item.createdBy}</td>
                                         <td>${item.createdDate}</td>
                                         <td>${item.status}</td>
-                                        <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
-                                            <td>
-                                                <div style="display: flex; align-items: center; gap: 5px;">
+                                        <td>
+                                            <div style="display: flex; align-items: center; gap: 5px;">
+                                                <security:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
                                                     <button class="btn btn-xs"
                                                             title="Giao khách hàng cho nhân viên quản lý"
                                                             id="btnCustomerAssignment" customerId="${item.id}">
                                                         <i class="fa fa-user" aria-hidden="true"></i>
                                                     </button>
-                                                    <c:url var="editCustomer" value="/admin/customer/edit/${item.id}">
-                                                        <c:param name="id" value="${item.id}"/>
-                                                    </c:url>
-                                                    <a class="btn btn-xs btn-info" data-toggle="tooltip"
-                                                       title="Cập nhật thông tin khách hàng" href='${editCustomer}'><i
-                                                            class="fa fa-pencil-square-o"
-                                                            aria-hidden="true"></i>
-                                                    </a>
-                                                </div>
-                                            </td>
-                                        </security:authorize>
+                                                </security:authorize>
+                                                <c:url var="editCustomer" value="/admin/customer/edit/${item.id}">
+                                                    <c:param name="id" value="${item.id}"/>
+                                                </c:url>
+                                                <a class="btn btn-xs btn-info" data-toggle="tooltip"
+                                                   title="Cập nhật thông tin khách hàng" href='${editCustomer}'><i
+                                                        class="fa fa-pencil-square-o"
+                                                        aria-hidden="true"></i>
+                                                </a>
+                                            </div>
+                                        </td>
                                     </tr>
                                 </c:forEach>
                                 </tbody>

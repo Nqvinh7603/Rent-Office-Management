@@ -1,8 +1,0 @@
-Manifest-Version: 1.0
-Created-By: IntelliJ IDEA
-Built-By: vinh
-Build-Jdk: Oracle OpenJDK 22.0.1
-Implementation-Version: 1.0
-Implementation-Vendor-Id: site.rentofficevn
-Main-Class: ${start-class}
-

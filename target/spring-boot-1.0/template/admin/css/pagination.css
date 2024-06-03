@@ -1,0 +1,77 @@
+/* pagination */
+.fa-rotate-45 {
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+.fa-rotate--45 {
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+
+.pagination > .arrow > a{
+    border-radius: 0px;
+    height: 33px;
+    padding-top: 10px;
+    width: 33px;
+    outline: none;
+    border:  solid 1px #d6d6d8;
+    color: #787878;
+    font-size: 0.63em;
+}
+.page-item:first-child .page-link {
+    border-radius: 0px;
+}
+
+.page-item:last-child .page-link {
+    border-radius: 0px;
+}
+a:-webkit-any-link:focus {
+    outline-offset: 0px;
+}
+.pagination > .number > a
+{
+    background-color: white;
+    color:  #787878;
+    border:  none;
+    font-weight: bolder;
+    font-size: 14px;
+}
+
+.pagination > li > a:focus,
+.pagination > li > a:hover,
+.pagination > li > a:active,
+.pagination > li > span:focus,
+.pagination > li > span:hover,
+.pagination > li > span:active
+{
+    color: #5a5a5a;
+    background-color: #ffffff;
+}
+.page-link:focus, .page-link:hover, .page-link:active {
+    box-shadow: none;
+}
+.pagination > .active > a
+{
+    color: white;
+    background-color: #C0504E !Important;
+    border: solid 1px #C0504E !Important;
+    border-radius: 25%;
+}
+
+.pagination > .active > a:hover
+{
+    color: #ffffff;
+}
+
+.page-link {
+    border: none !Important;
+    color: #787878;
+    font-size: 14px;
+    font-weight: 600;
+}

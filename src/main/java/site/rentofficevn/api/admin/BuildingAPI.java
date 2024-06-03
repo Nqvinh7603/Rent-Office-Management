@@ -38,5 +38,5 @@ public class BuildingAPI {
     @GetMapping("/{buildingId}/staffs")
     public ResponseEntity<List<AssignmentStaffResponse>> loadStaffByBuilding(@PathVariable Long buildingId) {
         return ResponseEntity.ok(buildingService.loadStaffByBuildingId(buildingId));
-    }
+    }   
 }

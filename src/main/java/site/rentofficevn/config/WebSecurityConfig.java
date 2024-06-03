@@ -4,6 +4,7 @@ import jakarta.servlet.DispatcherType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import site.rentofficevn.security.CustomSuccessHandler;
 import site.rentofficevn.service.impl.CustomUserDetailService;
 import org.springframework.context.annotation.Bean;
@@ -49,18 +50,16 @@ public class WebSecurityConfig {
                         .requestMatchers("/admin/building/edit").hasAnyRole("MANAGER","ADMIN")
                         .requestMatchers("/admin/customer/edit").hasAnyRole("MANAGER","ADMIN")
                         .requestMatchers("/admin/user**").hasRole("ADMIN")
-                        .requestMatchers("/login", "/resource/**", "/api/**").permitAll()
+                        //.requestMatchers("/login", "/resource/**", "/api/**").permitAll()
                         .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
                         .requestMatchers("/template/**").permitAll()
                         .anyRequest().authenticated())
-                .formLogin(form -> form.loginPage("/login").usernameParameter("j_username").passwordParameter("j_password").permitAll()
-                .loginProcessingUrl("/j_spring_security_check")
+                .formLogin(form -> form.loginPage("/login").permitAll().loginProcessingUrl("/login")
                 .successHandler(myAuthenticationSuccessHandler())
                 .failureUrl("/login?incorrectAccount"))
-                .logout(logout -> logout.logoutUrl("/logout").deleteCookies("JSESSIONID"))
-                .exceptionHandling(exception -> exception.accessDeniedPage("/access-denied"))
-                .sessionManagement(session -> session.maximumSessions(1).expiredUrl("/login?sessionTimeout"));
-
+                .logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout")).deleteCookies("JSESSIONID"))
+                .exceptionHandling(exception -> exception.accessDeniedPage("/login?access-denied"))
+                .sessionManagement(session -> session.maximumSessions(4).expiredUrl("/login?sessionTimeout"));
                 http.authenticationProvider(authenticationProvider());
                 return http.build();
     }

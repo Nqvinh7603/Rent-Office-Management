@@ -45,27 +45,27 @@ public class WebSecurityConfig {
 
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-                http.csrf(csrf -> csrf.disable())
+        http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/admin/building/edit").hasAnyRole("MANAGER","ADMIN")
-                        .requestMatchers("/admin/customer/edit").hasAnyRole("MANAGER","ADMIN")
+                        .requestMatchers("/admin/building/edit").hasAnyRole("MANAGER", "ADMIN")
+                        .requestMatchers("/admin/customer/edit").hasAnyRole("MANAGER", "ADMIN")
                         .requestMatchers("/admin/user**").hasRole("ADMIN")
                         //.requestMatchers("/login", "/resource/**", "/api/**").permitAll()
                         .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
                         .requestMatchers("/template/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form -> form.loginPage("/login").permitAll().loginProcessingUrl("/login")
-                .successHandler(myAuthenticationSuccessHandler())
-                .failureUrl("/login?incorrectAccount"))
+                        .successHandler(myAuthenticationSuccessHandler())
+                        .failureUrl("/login?incorrectAccount"))
                 .logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout")).deleteCookies("JSESSIONID"))
                 .exceptionHandling(exception -> exception.accessDeniedPage("/login?access-denied"))
                 .sessionManagement(session -> session.maximumSessions(4).expiredUrl("/login?sessionTimeout"));
-                http.authenticationProvider(authenticationProvider());
-                return http.build();
+        http.authenticationProvider(authenticationProvider());
+        return http.build();
     }
 
     @Bean
-    public AuthenticationSuccessHandler myAuthenticationSuccessHandler(){
+    public AuthenticationSuccessHandler myAuthenticationSuccessHandler() {
         return new CustomSuccessHandler();
     }
 }

@@ -124,6 +124,4 @@ public class CustomerService implements ICustomerService {
         }
         return customerConverter.toDTO(customerRepository.save(customerEntity));
     }
-
-
 }

@@ -1,6 +1,5 @@
 package site.rentofficevn.dto.response;
 
-import site.rentofficevn.dto.AbstractDTO;
 import site.rentofficevn.dto.UserDTO;
 
 public class AssignmentStaffResponse extends UserDTO {

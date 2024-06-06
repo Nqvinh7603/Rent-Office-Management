@@ -7,8 +7,6 @@ import site.rentofficevn.entity.CustomerEntity;
 import java.util.List;
 
 public interface CustomerRepositoryCustom {
-
     List<CustomerEntity> findCustomer(CustomerSearchBuilder customerSearchBuilder, Pageable pageable);
-
     int countByCondition(CustomerSearchBuilder customerSearchBuilder);
 }

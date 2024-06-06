@@ -3,7 +3,6 @@ package site.rentofficevn.entity;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "user")

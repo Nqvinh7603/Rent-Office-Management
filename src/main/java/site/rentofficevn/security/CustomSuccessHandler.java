@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             url = SystemConstant.ADMIN_HOME;
         } else if (isManager(roles)) {
             url = SystemConstant.ADMIN_HOME;
-        } else if(isAdmin(roles)){
+        } else if (isAdmin(roles)) {
             url = SystemConstant.ADMIN_HOME;
         }
         return url;
@@ -63,6 +64,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         }
         return false;
     }
+
     private boolean isAdmin(List<String> roles) {
         if (roles.contains(SystemConstant.ADMIN_ROLE)) {
             return true;

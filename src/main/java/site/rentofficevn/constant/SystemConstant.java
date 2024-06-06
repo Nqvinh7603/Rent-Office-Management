@@ -42,7 +42,5 @@ public class SystemConstant {
     public static final String BUILDING = "building";
     public static final String CUSTOMER = "customer";
     public static final int ACTIVE_STATUS = 1;
-   /* public static final String TRANSACTION_LIST = "transactionList";
-    public static final String TRANSACTION = "transaction";*/
     public static final String TRANSACTION = "transaction";
 }

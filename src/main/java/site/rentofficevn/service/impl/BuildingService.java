@@ -40,11 +40,11 @@ public class BuildingService implements IBuildingService {
     private final UserConverter userConverter;
     private final UploadFileUtils uploadFileUtils;
 
-    @Value("D:/estatedata")
+    @Value("/home/vinh/estatedata")
     private String dirDefault;
 
     @Autowired
-    public BuildingService( UploadFileUtils uploadFileUtils, UserConverter userConverter, UserRepository userRepository, BuildingConverter buildingConverter, BuildingRepository buildingRepository) {
+    public BuildingService(UploadFileUtils uploadFileUtils, UserConverter userConverter, UserRepository userRepository, BuildingConverter buildingConverter, BuildingRepository buildingRepository) {
         this.uploadFileUtils = uploadFileUtils;
         this.userConverter = userConverter;
         this.userRepository = userRepository;
@@ -55,7 +55,7 @@ public class BuildingService implements IBuildingService {
     @Override
     public List<BuildingSearchResponse> findByCondition(BuildingSearchRequest buildingSearchRequest, PageRequest pageRequest) {
         try {
-            if(SecurityUtils.getAuthorities().contains("ROLE_STAFF")){
+            if (SecurityUtils.getAuthorities().contains("ROLE_STAFF")) {
                 Long staffId = SecurityUtils.getPrincipal().getId();
                 buildingSearchRequest.setStaffId(staffId);
             }
@@ -88,22 +88,22 @@ public class BuildingService implements IBuildingService {
     @Override
     @Transactional
     public void delete(List<Long> buildingIds) {
-       if(!buildingIds.isEmpty()){
-           Long count = buildingRepository.countByIdIn(buildingIds);
-           if(count != buildingIds.size()){
-               throw new NotFoundException("Some buildings not found!");
-           }
-           buildingRepository.deleteByIdIn(buildingIds);
-       }
+        if (!buildingIds.isEmpty()) {
+            Long count = buildingRepository.countByIdIn(buildingIds);
+            if (count != buildingIds.size()) {
+                throw new NotFoundException("Some buildings not found!");
+            }
+            buildingRepository.deleteByIdIn(buildingIds);
+        }
     }
 
 
     @Override
     @Transactional
-    public BuildingDTO save(BuildingDTO buildingDTO)  throws IllegalArgumentException{
+    public BuildingDTO save(BuildingDTO buildingDTO) throws IllegalArgumentException {
         Long buildingId = buildingDTO.getId();
         BuildingEntity buildingEntity = buildingConverter.toEntity(buildingDTO);
-        if(buildingId != null){
+        if (buildingId != null) {
             BuildingEntity foundBuilding = Optional.of(buildingRepository.findById(buildingId)).get()
                     .orElseThrow(() -> new NotFoundException("Building not found!"));
             buildingEntity.setCreatedDate(foundBuilding.getCreatedDate());
@@ -116,6 +116,7 @@ public class BuildingService implements IBuildingService {
         saveThumbnail(buildingDTO, buildingEntity);
         return buildingConverter.toDTO(buildingRepository.save(buildingEntity));
     }
+
     private void saveThumbnail(BuildingDTO buildingDTO, BuildingEntity buildingEntity) {
         String path = "/building/" + buildingDTO.getImageName();
         if (null != buildingDTO.getImageBase64()) {
@@ -139,7 +140,7 @@ public class BuildingService implements IBuildingService {
                 {
                     AssignmentStaffResponse assignmentStaffResponse = userConverter.toAssignmentStaffResponse(staff);
                     for (BuildingEntity building : staff.getBuildingEntities()) {
-                        if (buildingId.equals(building.getId())){
+                        if (buildingId.equals(building.getId())) {
                             assignmentStaffResponse.setChecked("checked");
                             break;
                         }
@@ -161,7 +162,7 @@ public class BuildingService implements IBuildingService {
         List<UserEntity> foundUsers = userRepository.findByIdIn(staffIdRequest);
         foundBuilding.setUserEntities(foundUsers);
         buildingRepository.save(foundBuilding);
-        }
+    }
 
     @Override
     public int countByCondition(BuildingSearchRequest buildingSearchRequest) {

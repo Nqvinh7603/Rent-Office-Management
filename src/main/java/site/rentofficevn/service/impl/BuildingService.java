@@ -40,7 +40,7 @@ public class BuildingService implements IBuildingService {
     private final UserConverter userConverter;
     private final UploadFileUtils uploadFileUtils;
 
-    @Value("/home/vinh/estatedata")
+    @Value("/home")
     private String dirDefault;
 
     @Autowired

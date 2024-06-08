@@ -4,7 +4,7 @@
 <html>
 <head>
 	<title><sitemesh:write property="title"/></title>
-
+	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 	<link rel="stylesheet" href="<c:url value="/template/admin/assets/css/bootstrap.min.css" />" />
 	<link rel="stylesheet" href="<c:url value="/template/admin/font-awesome/4.5.0/css/font-awesome.min.css" />" />
     <link rel="stylesheet" href="<c:url value="/template/admin/assets/css/ace.min.css"/>" class="ace-main-stylesheet" id="main-ace-style" />
@@ -27,7 +27,6 @@
 <body class="no-skin">
 	<!-- header -->
     <%@ include file="/common/admin/header.jsp" %>
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <!-- header -->
 	
 	<div class="main-container" id="main-container">

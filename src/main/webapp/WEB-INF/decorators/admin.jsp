@@ -27,6 +27,7 @@
 <body class="no-skin">
 	<!-- header -->
     <%@ include file="/common/admin/header.jsp" %>
+	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <!-- header -->
 	
 	<div class="main-container" id="main-container">
